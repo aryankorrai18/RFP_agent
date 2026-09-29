@@ -1,8 +1,4 @@
-"""Grounding check 1 (citation validity) and word limits: plain code, no AI.
-
-Check 2 (does the cited fact's text actually support the claim?) is the human reader's job in
-V0 and becomes an automated check in V2. See PRD section 9.8.
-"""
+"""Deterministic citation-validity and word-limit checks; no model call required."""
 
 from __future__ import annotations
 

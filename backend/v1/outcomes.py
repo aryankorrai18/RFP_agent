@@ -1,4 +1,4 @@
-"""V3 slow outcomes, debrief credit, and explicit answer superseding."""
+"""Proposal outcomes, debrief credit, and explicit answer superseding."""
 
 from __future__ import annotations
 

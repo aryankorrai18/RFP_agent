@@ -1,4 +1,4 @@
-"""V2 review-signal attribution and the human-readable memory journal."""
+"""Review-signal attribution and the human-readable memory journal."""
 
 from __future__ import annotations
 

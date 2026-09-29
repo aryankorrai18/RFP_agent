@@ -1,4 +1,4 @@
-"""Offline stand-ins for V1: a fake Hindsight (FakeMemory) and a scripted model (FakeV1LLM)."""
+"""Offline stand-ins: a fake Hindsight client and a scripted model."""
 
 from __future__ import annotations
 

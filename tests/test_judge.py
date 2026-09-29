@@ -1,4 +1,4 @@
-"""V4 live judgment: a judge model and a person compare the before/after drafts blind. Offline, with
+"""A judge model and a person compare the before/after drafts blind. Offline, with
 a scripted judge."""
 
 from __future__ import annotations

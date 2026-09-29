@@ -1,7 +1,7 @@
-"""Token-free evidence-support check for V2.
+"""Token-free evidence-support checks.
 
 This conservative lexical checker is the default while provider tokens are scarce. The interface
-and stored verdicts are provider-neutral so an entailment model can replace it for the final V4
+and stored verdicts are provider-neutral so an entailment model can replace it later
 protocol without changing drafts or the UI.
 """
 

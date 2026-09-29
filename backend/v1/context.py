@@ -1,4 +1,4 @@
-"""Everything V1's routes and jobs share: the database, the memory, the job runner, and access to
+"""Shared runtime context: database, memory, job runner, and model access for
 the current settings and model client (settings are re-read so a key saved in .env takes effect)."""
 
 from __future__ import annotations

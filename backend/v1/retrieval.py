@@ -1,4 +1,4 @@
-"""Plain retrieval: the V1 baseline (design §7).
+"""Approved-answer retrieval with optional outcome and lesson ranking.
 
 Hindsight finds candidates by meaning; SQLite decides which of them may be used. The order
 Hindsight returns *is* the relevance ranking: no scores are recomputed and no threshold is

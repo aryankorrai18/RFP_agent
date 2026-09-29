@@ -1,1 +1,1 @@
-"""RFP Memory Assistant - V0 prototype backend."""
+"""RFP Memory Assistant backend."""

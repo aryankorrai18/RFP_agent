@@ -65,7 +65,7 @@ def parse_document(filename: str, data: bytes, max_chars: int) -> ParsedDocument
     if len(text) > max_chars:
         raise ParseError(
             "document_too_long",
-            f"{filename} contains {len(text):,} characters of text; the V0 limit is {max_chars:,}.",
+            f"{filename} contains {len(text):,} characters of text; the limit is {max_chars:,}.",
         )
 
     if kind == "pdf" and len(text) < MIN_PDF_TEXT_CHARS:

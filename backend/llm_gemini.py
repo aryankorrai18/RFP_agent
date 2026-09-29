@@ -1,4 +1,4 @@
-"""The two V0 AI calls on Google's Gemini API (google-genai SDK).
+"""Google Gemini adapter for extraction, drafting, pair import, and judging.
 
 Same contract as ClaudeLLM in llm.py: returns LLMResult, raises LLMError. Differences:
 - Structured output uses `response_json_schema` and is validated here with Pydantic.

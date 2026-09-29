@@ -1,4 +1,4 @@
-"""SQLite via SQLAlchemy: the source of truth for V1 (design §4, decision V1-D1).
+"""SQLite via SQLAlchemy: the application's exact system of record.
 
 Hindsight only ever holds a searchable copy of approved answers. Every recall result is joined
 back to the `answers` table and filtered here before it can reach a draft (PRD D-10).

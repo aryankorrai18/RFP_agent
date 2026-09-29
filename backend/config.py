@@ -113,13 +113,13 @@ class Settings:
     lessons_enabled: bool = True
     retrieval_top_k: int = 3
     # hindsight (default) ranks with the Hindsight lessons bank; outcome uses local SQLite signals only;
-    # plain is the frozen V1 baseline; none is the fact-sheet-only ablation.
+    # plain uses semantic recall order; none disables past-answer retrieval.
     retrieval_mode: str = "hindsight"
     retrieval_freshness_half_life_days: int = 730
     # Memory may reorder answers that are about equally relevant, never lift a less relevant one above
     # them ("gated"). "rank" is the V2 pre-fix rule, kept to reproduce the earlier results.
     retrieval_relevance: str = "gated"
-    retrieval_relevance_min_share: float = 0.01  # chosen on eval/v2_relevance (stable from 0.005 to 0.02)
+    retrieval_relevance_min_share: float = 0.01
     evidence_check: bool = True
 
     @property

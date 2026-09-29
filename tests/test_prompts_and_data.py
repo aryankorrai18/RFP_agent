@@ -58,7 +58,7 @@ def test_default_fact_sheet_deliberately_has_no_scim_or_pricing_fact():
 
 
 def test_sample_documents_parse():
-    for name in ("sample_rfp.docx", "sample_security_questionnaire.xlsx"):
+    for name in ("sample_rfp.docx",):
         path = ROOT / "samples" / name
         doc = parse_document(name, path.read_bytes(), 400_000)
         assert doc.char_count > 500

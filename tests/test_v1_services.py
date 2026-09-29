@@ -1,4 +1,4 @@
-"""V1 services without HTTP: library, retrieval, outbox, jobs (resume), drafting, review, export."""
+"""Application services without HTTP: library, retrieval, jobs, drafting, review, and export."""
 
 from __future__ import annotations
 

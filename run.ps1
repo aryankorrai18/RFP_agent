@@ -1,5 +1,5 @@
-# Start the RFP Memory Assistant V0 server.
-# Works from any folder:  powershell -ExecutionPolicy Bypass -File <path>\rfp-v0\run.ps1
+# Start the RFP Memory Assistant server.
+# Works from any folder:  powershell -ExecutionPolicy Bypass -File <path>\run.ps1
 # Optional port:          ... -File run.ps1 -Port 8002
 param([int]$Port = 8001)
 

@@ -63,7 +63,7 @@ PARSE_ERROR_STATUS = {
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):  # noqa: ANN201
-    """Start V1: resume jobs interrupted by a restart, start the Hindsight outbox sync.
+    """Start the workspace services, resume jobs, and start Hindsight outbox sync.
     Tests replace the context by setting app.state.v1_factory before starting the app."""
     if getattr(app.state, "v1_factory", None) is None:
         workspaces.ensure_registry(base_settings())  # first run: today's data becomes workspace "main"

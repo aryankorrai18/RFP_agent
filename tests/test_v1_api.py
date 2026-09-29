@@ -1,4 +1,4 @@
-"""V1 over HTTP, with the app's real lifespan (startup, background jobs) and offline fakes."""
+"""HTTP integration tests with the real application lifespan and offline fakes."""
 
 from __future__ import annotations
 

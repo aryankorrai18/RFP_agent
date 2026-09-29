@@ -1,4 +1,4 @@
-"""V1 HTTP API (design §8). Errors use the same {"error": {code, message}} shape as V0."""
+"""HTTP API for projects, the answer library, memory, review, and export."""
 
 from __future__ import annotations
 

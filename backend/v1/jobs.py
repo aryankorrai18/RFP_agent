@@ -1,4 +1,4 @@
-"""Background jobs inside the app process (decision V1-D4; restart rules in design §12.1).
+"""Resumable background jobs inside the application process.
 
     QUEUED → RUNNING → COMPLETED | FAILED | CANCELLED (stopped by a person)
     RUNNING at startup (the process died) → INTERRUPTED → resumed automatically

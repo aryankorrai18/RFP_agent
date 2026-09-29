@@ -1286,7 +1286,7 @@ function comparisonCard(p) {
   return box;
 }
 
-/* ---------- V4: judge model + human spot-check of the before/after drafts ---------- */
+/* ---------- blind judge + human spot-check of the before/after drafts ---------- */
 const OUTCOME_LABEL = { hindsight: "With lessons better", plain: "No lessons better", tie: "Tie",
   depends_on_order: "Depends on order", identical: "Identical", not_judged: "Not judged yet" };
 const OUTCOME_CLASS = { hindsight: "c-ok", plain: "c-bad", tie: "c-muted", depends_on_order: "c-warn", identical: "c-muted", not_judged: "c-muted" };
@@ -1341,7 +1341,7 @@ function judgePanel(p) {
     const scores = j.mean_scores;
     box.replaceChildren(
       el("div", { class: "row spread" },
-        el("div", {}, el("span", { class: "eyebrow", text: "V4 · blind judge" }), el("h2", { text: "Which draft would you submit?" })),
+        el("div", {}, el("span", { class: "eyebrow", text: "Blind judge" }), el("h2", { text: "Which draft would you submit?" })),
         run),
       el("p", { class: "small muted", text: `A second model compares each question's two drafts without being told which used lessons. ${plan.differing} of ${plan.pairs} questions have different drafts${plan.identical ? `; the ${plan.identical === 1 ? "identical one counts" : `${plan.identical} identical ones count`} as a tie at no cost` : ""}.` }),
       el("div", { class: "row judge-controls" },

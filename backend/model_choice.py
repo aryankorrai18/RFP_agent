@@ -1,6 +1,6 @@
 """The model chosen in the UI. It is stored per provider in a small JSON file and overrides
-RFP_MODEL from .env until it is reset. The choice applies to every later model call (V0 quick
-draft, V1 extraction and drafting, background jobs); calls already running keep their model."""
+RFP_MODEL from .env until it is reset. The choice applies to later extraction, drafting, judging,
+and background jobs; calls already running keep their model."""
 
 from __future__ import annotations
 

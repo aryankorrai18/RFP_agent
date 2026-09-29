@@ -1,7 +1,7 @@
-"""V2's deterministic, explainable outcome ranking.
+"""Deterministic, explainable outcome ranking.
 
 Hindsight remains the candidate generator. This module combines its rank with exact signals from
-SQLite. Keeping this pure makes the V4 ablations cheap and completely offline.
+SQLite. Keeping this pure makes ranking deterministic and easy to test.
 """
 
 from __future__ import annotations
