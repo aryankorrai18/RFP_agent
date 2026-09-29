@@ -1,0 +1,96 @@
+{
+  "questions": 22,
+  "captured_at": "2026-09-29T03:44:06+00:00",
+  "rules": {
+    "plain (V1, Hindsight order)": {
+      "top1_best": 17,
+      "top3_best": 22,
+      "top1_trap": 5,
+      "top1_off_topic": 0,
+      "top3_off_topic": 11,
+      "stress_off_topic": 0,
+      "stress_cases": 0
+    },
+    "V2 pre-fix: 1/rank x lessons": {
+      "top1_best": 16,
+      "top3_best": 22,
+      "top1_trap": 3,
+      "top1_off_topic": 3,
+      "top3_off_topic": 23,
+      "stress_off_topic": 2,
+      "stress_cases": 22
+    },
+    "V2 gated 0.005, Hindsight order inside groups": {
+      "top1_best": 19,
+      "top3_best": 22,
+      "top1_trap": 3,
+      "top1_off_topic": 0,
+      "top3_off_topic": 15,
+      "stress_off_topic": 0,
+      "stress_cases": 21
+    },
+    "V2 gated 0.01, Hindsight order inside groups": {
+      "top1_best": 19,
+      "top3_best": 22,
+      "top1_trap": 3,
+      "top1_off_topic": 0,
+      "top3_off_topic": 15,
+      "stress_off_topic": 0,
+      "stress_cases": 21
+    },
+    "V2 gated 0.02, Hindsight order inside groups": {
+      "top1_best": 19,
+      "top3_best": 22,
+      "top1_trap": 3,
+      "top1_off_topic": 0,
+      "top3_off_topic": 14,
+      "stress_off_topic": 0,
+      "stress_cases": 21
+    },
+    "V2 gated 0.05, Hindsight order inside groups": {
+      "top1_best": 18,
+      "top3_best": 22,
+      "top1_trap": 4,
+      "top1_off_topic": 0,
+      "top3_off_topic": 13,
+      "stress_off_topic": 0,
+      "stress_cases": 21
+    },
+    "V2 gated 0.005, memory decides inside groups": {
+      "top1_best": 16,
+      "top3_best": 22,
+      "top1_trap": 4,
+      "top1_off_topic": 1,
+      "top3_off_topic": 17,
+      "stress_off_topic": 1,
+      "stress_cases": 21
+    },
+    "V2 gated 0.01, memory decides inside groups": {
+      "top1_best": 16,
+      "top3_best": 22,
+      "top1_trap": 4,
+      "top1_off_topic": 1,
+      "top3_off_topic": 17,
+      "stress_off_topic": 1,
+      "stress_cases": 21
+    },
+    "V2 gated 0.02, memory decides inside groups": {
+      "top1_best": 17,
+      "top3_best": 22,
+      "top1_trap": 4,
+      "top1_off_topic": 0,
+      "top3_off_topic": 14,
+      "stress_off_topic": 1,
+      "stress_cases": 21
+    },
+    "V2 gated 0.05, memory decides inside groups": {
+      "top1_best": 17,
+      "top3_best": 22,
+      "top1_trap": 5,
+      "top1_off_topic": 0,
+      "top3_off_topic": 13,
+      "stress_off_topic": 0,
+      "stress_cases": 21
+    }
+  }
+}

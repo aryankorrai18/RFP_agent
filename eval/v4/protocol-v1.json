@@ -1,0 +1,25 @@
+{
+  "protocol_version": "v4.0-draft-1",
+  "status": "frozen_offline_scaffold",
+  "corpus": {
+    "historical_proposals": 20,
+    "held_out_rfps": 5,
+    "requirements_per_rfp": 40,
+    "total_held_out_requirements": 200,
+    "synthetic_only": true
+  },
+  "variants": ["none", "plain", "outcome"],
+  "ablations": ["no_review_signals", "no_context", "no_freshness"],
+  "deterministic_gate": {
+    "metric": "right_source_top3",
+    "minimum_outcome_over_plain_margin": 0.20,
+    "invalid_citation_rate": 0.0
+  },
+  "paid_evaluation": {
+    "pairwise_judge": "required",
+    "human_spot_check": "required",
+    "repeated_runs": 3,
+    "completion_evidence": "eval/v4/live_judge_results.json"
+  },
+  "warning": "Passing the offline gate does not complete V4. The paid blind judge and human spot-check remain required."
+}

@@ -1,0 +1,44 @@
+{
+  "disclosure": "Company facts are derived from public Virtusa sources and must be re-approved before use in a real bid. All clients, proposal histories, outcomes and engagement details in this demo corpus are synthetic.",
+  "company_fact_sheet": "virtusa_fact_sheet.json",
+  "past_proposals": [
+    {
+      "filename": "2025-11_northstar_bank_won.docx",
+      "client": "Northstar Bank",
+      "industry": "banking",
+      "submitted_on": "2025-11-15",
+      "recommended_result": "won",
+      "loss_reason": null
+    },
+    {
+      "filename": "2026-03_riverside_health_won.docx",
+      "client": "Riverside Health Network",
+      "industry": "healthcare",
+      "submitted_on": "2026-03-12",
+      "recommended_result": "won",
+      "loss_reason": null
+    },
+    {
+      "filename": "2025-07_metrolink_communications_lost.docx",
+      "client": "MetroLink Communications",
+      "industry": "communications",
+      "submitted_on": "2025-07-18",
+      "recommended_result": "lost",
+      "loss_reason": "response quality"
+    },
+    {
+      "filename": "2026-06_apex_mutual_lost.docx",
+      "client": "Apex Mutual Insurance",
+      "industry": "insurance",
+      "submitted_on": "2026-06-10",
+      "recommended_result": "lost",
+      "loss_reason": "technical fit"
+    }
+  ],
+  "target_project": {
+    "filename": "2026-10_summit_regional_bank_rfp.docx",
+    "name": "Summit Regional Bank - Digital Modernization Partner RFP",
+    "client": "Summit Regional Bank",
+    "industry": "banking"
+  }
+}

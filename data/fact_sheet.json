@@ -1,0 +1,159 @@
+{
+  "company": "Larkspur Data",
+  "facts": [
+    {
+      "id": "FACT-001",
+      "topic": "Company",
+      "statement": "Larkspur Data is a fictional B2B software company, founded in 2019, that provides a cloud customer-data platform for regulated industries.",
+      "valid_from": "2026-01-01",
+      "valid_to": null
+    },
+    {
+      "id": "FACT-002",
+      "topic": "Company",
+      "statement": "Larkspur Data has approximately 240 employees across offices in Denver, USA and Dublin, Ireland.",
+      "valid_from": "2026-06-01",
+      "valid_to": null
+    },
+    {
+      "id": "FACT-003",
+      "topic": "Security / SSO",
+      "statement": "Larkspur supports single sign-on via SAML 2.0 and OpenID Connect, tested with Okta, Microsoft Entra ID and Google Workspace.",
+      "valid_from": "2025-11-01",
+      "valid_to": null
+    },
+    {
+      "id": "FACT-004",
+      "topic": "Security / Access control",
+      "statement": "Larkspur provides role-based access control with built-in roles (Admin, Editor, Analyst, Viewer) and customer-defined custom roles.",
+      "valid_from": "2025-11-01",
+      "valid_to": null
+    },
+    {
+      "id": "FACT-005",
+      "topic": "Security / Encryption",
+      "statement": "Customer data is encrypted at rest with AES-256 using keys managed in AWS KMS.",
+      "valid_from": "2025-01-01",
+      "valid_to": null
+    },
+    {
+      "id": "FACT-006",
+      "topic": "Security / Encryption",
+      "statement": "All data in transit is encrypted with TLS 1.2 or higher.",
+      "valid_from": "2025-01-01",
+      "valid_to": null
+    },
+    {
+      "id": "FACT-007",
+      "topic": "Security / Certifications",
+      "statement": "Larkspur holds a SOC 2 Type II report covering the period 1 April 2025 to 31 March 2026, available to prospective customers under NDA.",
+      "valid_from": "2026-05-15",
+      "valid_to": null
+    },
+    {
+      "id": "FACT-008",
+      "topic": "Security / Certifications",
+      "statement": "Larkspur is certified to ISO/IEC 27001:2022; the certificate was issued in October 2025.",
+      "valid_from": "2025-10-20",
+      "valid_to": null
+    },
+    {
+      "id": "FACT-009",
+      "topic": "Security / Testing",
+      "statement": "An independent third party performs a penetration test of the Larkspur platform at least once a year; an executive summary of the latest test is available under NDA.",
+      "valid_from": "2025-01-01",
+      "valid_to": null
+    },
+    {
+      "id": "FACT-010",
+      "topic": "Security / Audit logs",
+      "statement": "Larkspur records audit logs of user and administrator actions, retains them for 12 months, and customers can export them via the API.",
+      "valid_from": "2025-11-01",
+      "valid_to": null
+    },
+    {
+      "id": "FACT-011",
+      "topic": "Hosting / Data residency",
+      "statement": "Larkspur is hosted on AWS. Customers choose a US region (us-east-1) or an EU region (eu-central-1, Frankfurt), and customer data stays in the chosen region.",
+      "valid_from": "2025-06-01",
+      "valid_to": null
+    },
+    {
+      "id": "FACT-012",
+      "topic": "Hosting / Backups",
+      "statement": "Customer data is backed up daily, backups are encrypted and retained for 35 days, and a copy is stored in a second region within the same geography.",
+      "valid_from": "2025-06-01",
+      "valid_to": null
+    },
+    {
+      "id": "FACT-013",
+      "topic": "Hosting / Disaster recovery",
+      "statement": "Larkspur's disaster-recovery objectives are a recovery point objective (RPO) of 1 hour and a recovery time objective (RTO) of 4 hours; the plan is tested annually.",
+      "valid_from": "2025-06-01",
+      "valid_to": null
+    },
+    {
+      "id": "FACT-014",
+      "topic": "Data handling / Deletion",
+      "statement": "On contract termination, Larkspur deletes customer data within 30 days, and customers can request a full data export before deletion.",
+      "valid_from": "2025-01-01",
+      "valid_to": null
+    },
+    {
+      "id": "FACT-015",
+      "topic": "Data handling / Privacy",
+      "statement": "Larkspur offers a GDPR data processing agreement (DPA) and publishes its list of subprocessors on its trust page.",
+      "valid_from": "2025-01-01",
+      "valid_to": null
+    },
+    {
+      "id": "FACT-016",
+      "topic": "Security / Incidents",
+      "statement": "Larkspur notifies affected customers of a confirmed security breach involving their data within 72 hours of confirmation.",
+      "valid_from": "2025-01-01",
+      "valid_to": null
+    },
+    {
+      "id": "FACT-017",
+      "topic": "Service / Availability",
+      "statement": "Larkspur's standard SLA commits to 99.9% monthly uptime for the production platform, with service credits if it is missed.",
+      "valid_from": "2026-01-01",
+      "valid_to": null
+    },
+    {
+      "id": "FACT-018",
+      "topic": "Service / Support",
+      "statement": "Support is available 24/7 for severity-1 incidents and during business hours (Monday to Friday, 8am to 6pm in the customer's region) for other issues, via a support portal and email.",
+      "valid_from": "2026-01-01",
+      "valid_to": null
+    },
+    {
+      "id": "FACT-019",
+      "topic": "Service / Implementation",
+      "statement": "A typical implementation takes 6 to 8 weeks and is led by a dedicated Larkspur implementation manager.",
+      "valid_from": "2026-01-01",
+      "valid_to": null
+    },
+    {
+      "id": "FACT-020",
+      "topic": "Integration / APIs",
+      "statement": "Larkspur provides a documented REST API and prebuilt connectors for Snowflake, Google BigQuery, Amazon S3 and Salesforce.",
+      "valid_from": "2026-03-01",
+      "valid_to": null
+    },
+    {
+      "id": "FACT-021",
+      "topic": "Integration / Data ingestion",
+      "statement": "Larkspur ingests data in batches through its connectors and the REST API, on schedules as frequent as every 15 minutes.",
+      "valid_from": "2026-03-01",
+      "valid_to": null
+    },
+    {
+      "id": "FACT-099",
+      "topic": "Security / Certifications",
+      "statement": "Larkspur holds a SOC 2 Type I report dated 30 June 2024.",
+      "valid_from": "2024-07-15",
+      "valid_to": "2025-06-30"
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+.venv/
+__pycache__/
+.pytest_cache/
+.env
+runs/
+.hindsight-venv/
+data/rfp.db
+data/rfp.db-*
+data/uploads/
+
+data/model_choice.json
+data/workspaces.json
+data/workspaces/

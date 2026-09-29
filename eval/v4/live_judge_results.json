@@ -1,0 +1,366 @@
+{
+  "status": "live_pairwise_judge",
+  "recorded_at": "2026-09-29T15:55:14+00:00",
+  "protocol": "eval/v4/protocol-v1.json",
+  "prompt_version": "judge-v2",
+  "deviations_from_protocol": [
+    "Corpus: before/after drafts from completed projects in the active app workspace, not the protocol's 200 synthetic held-out requirements. Only pairs whose answers differ are judged; identical pairs are ties.",
+    "Runs: one run, each pair judged in both presentation orders, instead of three repeated runs.",
+    "The judge sees official facts and past-answer texts, never which proposals were won or lost.",
+    "Each project's drafting.ranking_version says which V2 ranking rule made its drafts."
+  ],
+  "totals": {
+    "pairs": 6,
+    "differing": 6,
+    "hindsight": 1,
+    "plain": 1,
+    "tie": 4,
+    "depends_on_order": 0,
+    "identical": 0,
+    "not_judged": 0,
+    "verdicts": 12,
+    "input_tokens": 20978,
+    "output_tokens": 1679,
+    "spot_checked": 6,
+    "spot_check_agreed_with_judge": 2
+  },
+  "projects": [
+    {
+      "project": "Summit Regional Bank - Digital Modernization Partner RFP",
+      "client": "Summit Regional Bank",
+      "industry": "banking",
+      "comparison_job_id": 7,
+      "drafting": {
+        "arms": [
+          "plain",
+          "hindsight"
+        ],
+        "model": "gemini-3.5-flash-lite",
+        "temperature": 0,
+        "relevance": "gated",
+        "min_share": 0.01,
+        "ranking_version": "V2 post-relevance-fix"
+      },
+      "pairs": 6,
+      "differing": 6,
+      "judge": {
+        "comparison_job_id": 7,
+        "judge_model": "gemini-3.5-flash-lite",
+        "served_models": [
+          "gemini-3.5-flash-lite"
+        ],
+        "prompt_version": "judge-v2",
+        "tally": {
+          "hindsight": 1,
+          "plain": 1,
+          "tie": 4,
+          "depends_on_order": 0,
+          "identical": 0,
+          "not_judged": 0
+        },
+        "questions": [
+          {
+            "requirement_id": 1,
+            "code": "REQ-001",
+            "question": "1.1 Describe your organization, global scale and experience serving regulated industries.",
+            "outcome": "tie",
+            "verdicts": [
+              {
+                "order": "hindsight_first",
+                "winner": "tie",
+                "reason": "Both drafts are accurate, well-structured, follow the word limit, and include all necessary elements of scale, organization description, and regulated industries coverage using supported facts and past answers. They are virtually identical in quality.",
+                "scores": {
+                  "hindsight": {
+                    "accurate": 5,
+                    "answers_question": 5,
+                    "specific": 5
+                  },
+                  "plain": {
+                    "accurate": 5,
+                    "answers_question": 5,
+                    "specific": 5
+                  }
+                }
+              },
+              {
+                "order": "plain_first",
+                "winner": "hindsight",
+                "reason": "Draft B fully answers all aspects of the prompt, including regulated industries and specific industry offerings supported by the facts, while remaining accurate and well within the word limit.",
+                "scores": {
+                  "plain": {
+                    "accurate": 5,
+                    "answers_question": 4,
+                    "specific": 4
+                  },
+                  "hindsight": {
+                    "accurate": 5,
+                    "answers_question": 5,
+                    "specific": 5
+                  }
+                }
+              }
+            ],
+            "human": "hindsight"
+          },
+          {
+            "requirement_id": 2,
+            "code": "REQ-002",
+            "question": "2.1 Describe your information-security certifications, privacy certifications and governance relevant to this program.",
+            "outcome": "plain",
+            "verdicts": [
+              {
+                "order": "hindsight_first",
+                "winner": "plain",
+                "reason": "Both drafts are accurate and well-supported by the facts and past answers. Draft B is better because it adopts the natural first-person voice expected in proposal responses, whereas Draft A unnecessarily refers to the company in the third person (\"Virtusa's published security governance...\"). Both fully answer the question within word limits.",
+                "scores": {
+                  "hindsight": {
+                    "accurate": 5,
+                    "answers_question": 5,
+                    "specific": 5
+                  },
+                  "plain": {
+                    "accurate": 5,
+                    "answers_question": 5,
+                    "specific": 5
+                  }
+                }
+              },
+              {
+                "order": "plain_first",
+                "winner": "plain",
+                "reason": "Draft A maintains a professional, direct tone appropriate for an RFP response, whereas Draft B mixes third-person corporate description with first-person pronoun references (\"Virtusa's... our... our\"). Both are factually accurate, but Draft A is better written.",
+                "scores": {
+                  "plain": {
+                    "accurate": 5,
+                    "answers_question": 5,
+                    "specific": 5
+                  },
+                  "hindsight": {
+                    "accurate": 5,
+                    "answers_question": 5,
+                    "specific": 5
+                  }
+                }
+              }
+            ],
+            "human": "plain"
+          },
+          {
+            "requirement_id": 3,
+            "code": "REQ-003",
+            "question": "3.1 Which public-cloud providers and modernization services can you support?",
+            "outcome": "tie",
+            "verdicts": [
+              {
+                "order": "hindsight_first",
+                "winner": "plain",
+                "reason": "Draft B directly addresses the question using specific facts from the fact sheet (Azure, AWS, and Google Cloud partnerships and precise modernization offerings), whereas Draft A relies on past answers.",
+                "scores": {
+                  "hindsight": {
+                    "accurate": 5,
+                    "answers_question": 4,
+                    "specific": 4
+                  },
+                  "plain": {
+                    "accurate": 5,
+                    "answers_question": 5,
+                    "specific": 5
+                  }
+                }
+              },
+              {
+                "order": "plain_first",
+                "winner": "tie",
+                "reason": "Both drafts accurately answer the question by listing the supported cloud providers and modernization services based on the provided facts and past answers. They are both concise, specific, and well within the word limit, making them equally good.",
+                "scores": {
+                  "plain": {
+                    "accurate": 5,
+                    "answers_question": 5,
+                    "specific": 5
+                  },
+                  "hindsight": {
+                    "accurate": 5,
+                    "answers_question": 5,
+                    "specific": 5
+                  }
+                }
+              }
+            ],
+            "human": "plain"
+          },
+          {
+            "requirement_id": 4,
+            "code": "REQ-004",
+            "question": "4.1 Explain your delivery and governance approach for a complex multi-year application modernization program.",
+            "outcome": "tie",
+            "verdicts": [
+              {
+                "order": "hindsight_first",
+                "winner": "tie",
+                "reason": "Both drafts use the exact same approved past answers to convey the delivery and governance approach accurately and concisely within the word limit, making them effectively identical in quality.",
+                "scores": {
+                  "hindsight": {
+                    "accurate": 5,
+                    "answers_question": 5,
+                    "specific": 4
+                  },
+                  "plain": {
+                    "accurate": 5,
+                    "answers_question": 5,
+                    "specific": 4
+                  }
+                }
+              },
+              {
+                "order": "plain_first",
+                "winner": "tie",
+                "reason": "Both drafts use the exact same authorized past answers to construct an accurate, well-targeted response within the word limit, differing only slightly in sentence ordering.",
+                "scores": {
+                  "plain": {
+                    "accurate": 5,
+                    "answers_question": 5,
+                    "specific": 4
+                  },
+                  "hindsight": {
+                    "accurate": 5,
+                    "answers_question": 5,
+                    "specific": 4
+                  }
+                }
+              }
+            ],
+            "human": "hindsight"
+          },
+          {
+            "requirement_id": 5,
+            "code": "REQ-005",
+            "question": "5.1 Describe your artificial-intelligence, data-modernization and governance capabilities for a regulated bank.",
+            "outcome": "tie",
+            "verdicts": [
+              {
+                "order": "hindsight_first",
+                "winner": "tie",
+                "reason": "Both drafts accurately and concisely capture the required points from the facts, covering banking industry offerings, AI capabilities (Global AI Lab, Virtusa Helio), and data modernization and governance via Google Cloud partnerships. They are virtually identical in content and quality.",
+                "scores": {
+                  "hindsight": {
+                    "accurate": 5,
+                    "answers_question": 5,
+                    "specific": 5
+                  },
+                  "plain": {
+                    "accurate": 5,
+                    "answers_question": 5,
+                    "specific": 5
+                  }
+                }
+              },
+              {
+                "order": "plain_first",
+                "winner": "tie",
+                "reason": "Both drafts accurately and concisely cover the required points from the fact sheet (banking industry, AI lab/Helio, and Google Cloud data modernization and governance) without introducing unsupported claims. They are nearly identical in content and quality.",
+                "scores": {
+                  "plain": {
+                    "accurate": 5,
+                    "answers_question": 5,
+                    "specific": 5
+                  },
+                  "hindsight": {
+                    "accurate": 5,
+                    "answers_question": 5,
+                    "specific": 5
+                  }
+                }
+              }
+            ],
+            "human": "plain"
+          },
+          {
+            "requirement_id": 6,
+            "code": "REQ-006",
+            "question": "6.1 How would you operate, support and continually improve the transformed cloud estate?",
+            "outcome": "hindsight",
+            "verdicts": [
+              {
+                "order": "hindsight_first",
+                "winner": "hindsight",
+                "reason": "Draft A successfully addresses all parts of the prompt, including continual improvement, by drawing on supported details from past answers. Draft B misses the continual improvement aspect.",
+                "scores": {
+                  "hindsight": {
+                    "accurate": 5,
+                    "answers_question": 5,
+                    "specific": 5
+                  },
+                  "plain": {
+                    "accurate": 5,
+                    "answers_question": 3,
+                    "specific": 4
+                  }
+                }
+              },
+              {
+                "order": "plain_first",
+                "winner": "hindsight",
+                "reason": "Draft B addresses all parts of the question, including operation, support, and continual improvement (drawing on approved past answers for the improvement aspect), whereas Draft A omits continual improvement.",
+                "scores": {
+                  "plain": {
+                    "accurate": 5,
+                    "answers_question": 3,
+                    "specific": 4
+                  },
+                  "hindsight": {
+                    "accurate": 5,
+                    "answers_question": 5,
+                    "specific": 5
+                  }
+                }
+              }
+            ],
+            "human": "hindsight"
+          }
+        ],
+        "last_run": {
+          "id": 9,
+          "status": "completed",
+          "done": 12,
+          "total": 12,
+          "error": null,
+          "warning": null,
+          "judge_model": "gemini-3.5-flash-lite",
+          "error_info": null
+        },
+        "mean_scores": {
+          "plain": {
+            "accurate": 5.0,
+            "answers_question": 4.58,
+            "specific": 4.58
+          },
+          "hindsight": {
+            "accurate": 5.0,
+            "answers_question": 4.92,
+            "specific": 4.75
+          }
+        },
+        "order_consistency": {
+          "both_orders": 6,
+          "agreed": 4
+        },
+        "tokens": {
+          "input": 20978,
+          "output": 1679
+        },
+        "verdicts": 12,
+        "human_agreement": {
+          "compared": 6,
+          "agreed": 2
+        },
+        "rules": [
+          "blind: drafts shown as A and B",
+          "each pair judged in both orders; a win counts only when both agree",
+          "the judge sees the facts and past-answer texts but not which proposals were won or lost",
+          "fixed prompt judge-v2",
+          "identical answers are a tie without a call"
+        ]
+      }
+    }
+  ]
+}

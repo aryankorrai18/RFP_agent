@@ -1,0 +1,2249 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0f1729">
+<meta name="description" content="Grounded RFP drafting with auditable outcome memory.">
+<title>RFP Memory Assistant</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%235757d9'/%3E%3Cpath d='M10 7h8l5 5v13H10zM18 7v5h5M14 17h5M14 21h5' fill='none' stroke='white' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&family=Source+Code+Pro:wght@400;500;600&display=swap">
+<style>
+:root {
+  color-scheme: light;
+  --paper: #F3F4F1; --surface: #FFFFFF; --surface-2: #F8F9F7;
+  --ink: #1B1F24; --ink-2: #434A53; --muted: #69707A;
+  --line: #DDE0DA; --line-strong: #C4C9C1;
+  --accent: #0E5A6E; --accent-ink: #FFFFFF; --accent-soft: #E1EEF1;
+  --ok: #1F7A45; --ok-soft: #E3F2E8;
+  --warn: #945600; --warn-soft: #FBEFD9;
+  --sme: #5B45B0; --sme-soft: #ECE8FA;
+  --bad: #B3261E; --bad-soft: #FBE7E5;
+  --shadow: 0 1px 2px rgba(27,31,36,.05), 0 6px 20px rgba(27,31,36,.05);
+  --sans: "Public Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --serif: "Source Serif 4", Georgia, "Times New Roman", serif;
+  --mono: "Source Code Pro", ui-monospace, "SFMono-Regular", Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --paper: #111416; --surface: #181C1F; --surface-2: #1D2226;
+    --ink: #E7E9EA; --ink-2: #C1C7CC; --muted: #8E969E;
+    --line: #2A3034; --line-strong: #3B4348;
+    --accent: #62B9CE; --accent-ink: #0A1A1F; --accent-soft: #15313A;
+    --ok: #6FCC8D; --ok-soft: #16291E; --warn: #F0B453; --warn-soft: #33260F;
+    --sme: #B8A7FF; --sme-soft: #252042; --bad: #FF8A80; --bad-soft: #3A1B1A;
+    --shadow: 0 1px 2px rgba(0,0,0,.3);
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --paper: #111416; --surface: #181C1F; --surface-2: #1D2226;
+  --ink: #E7E9EA; --ink-2: #C1C7CC; --muted: #8E969E;
+  --line: #2A3034; --line-strong: #3B4348;
+  --accent: #62B9CE; --accent-ink: #0A1A1F; --accent-soft: #15313A;
+  --ok: #6FCC8D; --ok-soft: #16291E; --warn: #F0B453; --warn-soft: #33260F;
+  --sme: #B8A7FF; --sme-soft: #252042; --bad: #FF8A80; --bad-soft: #3A1B1A;
+  --shadow: 0 1px 2px rgba(0,0,0,.3);
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--paper); color: var(--ink); font: 400 15px/1.55 var(--sans); -webkit-font-smoothing: antialiased; padding-inline: 16px; padding-block: 0 64px; }
+[hidden] { display: none !important; }
+button, input, select, textarea { font: inherit; color: inherit; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
+.vh { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.wrap { max-width: 1280px; margin: 0 auto; }
+h1, h2, h3 { margin: 0; text-wrap: balance; }
+p { margin: 0; }
+.label { font: 600 11.5px/1.3 var(--sans); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.mono { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+.muted { color: var(--muted); }
+.small { font-size: 13px; }
+
+/* header */
+.topbar { display: flex; flex-wrap: wrap; gap: 12px 20px; align-items: center; justify-content: space-between; padding-block: 16px; }
+.brand { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+.brand h1 { font: 700 20px/1.2 var(--sans); letter-spacing: -.01em; }
+.tag { font: 500 12px/1 var(--mono); color: var(--muted); border: 1px solid var(--line-strong); border-radius: 4px; padding: 3px 6px; }
+.nav { display: flex; gap: 4px; flex-wrap: wrap; }
+.nav a { text-decoration: none; color: var(--ink-2); font-weight: 600; padding: 7px 12px; border-radius: 7px; }
+.nav a[aria-current="page"] { background: var(--ink); color: var(--surface); }
+.nav a.quiet { font-weight: 500; color: var(--muted); }
+.status { display: inline-flex; flex-wrap: wrap; gap: 6px; }
+.chip { display: inline-flex; align-items: center; gap: 7px; font: 500 12.5px/1.3 var(--mono); color: var(--ink-2); background: var(--surface); border: 1px solid var(--line); border-radius: 999px; padding: 5px 11px; }
+.dot { width: 8px; height: 8px; border-radius: 50%; background: var(--muted); flex: none; }
+.dot.ok { background: var(--ok); } .dot.warn { background: var(--warn); } .dot.bad { background: var(--bad); }
+
+/* building blocks */
+.panel { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 16px 18px; display: grid; gap: 12px; }
+.panel.raised { box-shadow: var(--shadow); }
+.panel h2 { font: 700 16px/1.3 var(--sans); }
+.stack { display: grid; gap: 16px; }
+.row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+.spread { justify-content: space-between; }
+.grid2 { display: grid; gap: 16px; grid-template-columns: minmax(0, 1fr); align-items: start; }
+@media (min-width: 1100px) { .grid2 { grid-template-columns: minmax(0, 1fr) 360px; } .sticky { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 16px); max-height: calc(100vh - 32px); overflow: auto; } }
+.fields { display: grid; gap: 10px; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); }
+label.field { display: grid; gap: 4px; font-size: 13px; font-weight: 600; color: var(--ink-2); }
+input[type=text], input[type=date], input[type=number], input[type=search], select, textarea {
+  width: 100%; border: 1px solid var(--line-strong); border-radius: 7px; padding: 8px 10px; background: var(--surface); font-weight: 400; }
+textarea { resize: vertical; min-height: 64px; line-height: 1.5; }
+.btn { border: 1px solid var(--line-strong); background: var(--surface); border-radius: 7px; padding: 9px 15px; font-weight: 600; cursor: pointer; }
+.btn:hover:not(:disabled) { border-color: var(--accent); }
+.btn.primary { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+.btn.small { padding: 5px 10px; font-size: 13px; }
+.btn.danger { color: var(--bad); }
+.btn:disabled { opacity: .5; cursor: not-allowed; }
+a.btn { text-decoration: none; color: inherit; display: inline-block; }
+a.btn.primary { color: var(--accent-ink); }
+a.btn[aria-disabled="true"] { opacity: .5; pointer-events: none; }
+.linkish { background: none; border: 0; padding: 0; color: var(--accent); font-weight: 600; cursor: pointer; text-decoration: underline; text-underline-offset: 3px; }
+.drop { display: grid; gap: 2px; align-content: center; min-height: 64px; padding: 12px 14px; border: 1.5px dashed var(--line-strong); border-radius: 8px; background: var(--surface-2); cursor: pointer; }
+.drop:hover, .drop.over { border-color: var(--accent); background: var(--accent-soft); }
+.drop b { overflow-wrap: anywhere; }
+.alert { background: var(--bad-soft); color: var(--bad); border: 1px solid currentColor; border-radius: 10px; padding: 10px 14px; margin-bottom: 14px; }
+.alert p { color: var(--ink); }
+.note { border-radius: 8px; padding: 9px 12px; font-size: 14px; background: var(--role-soft, var(--surface-2)); color: var(--ink); }
+.note .t { font-weight: 700; color: var(--role, var(--ink)); }
+.note ul { margin: 4px 0 0; padding-left: 18px; }
+.bar { height: 6px; border-radius: 4px; background: var(--line); overflow: hidden; }
+.bar span { display: block; height: 100%; background: var(--accent); transition: width .3s; }
+.empty { color: var(--muted); padding: 20px 4px; }
+
+/* status roles */
+.c-ok { --role: var(--ok); --role-soft: var(--ok-soft); }
+.c-warn { --role: var(--warn); --role-soft: var(--warn-soft); }
+.c-sme { --role: var(--sme); --role-soft: var(--sme-soft); }
+.c-bad { --role: var(--bad); --role-soft: var(--bad-soft); }
+.c-info { --role: var(--accent); --role-soft: var(--accent-soft); }
+.c-muted { --role: var(--muted); --role-soft: var(--surface-2); }
+.pill { font: 600 12px/1 var(--sans); color: var(--role); background: var(--role-soft); border-radius: 999px; padding: 5px 10px; white-space: nowrap; }
+
+/* lists */
+.list { display: grid; }
+.item { display: grid; gap: 4px; padding: 12px 4px; border-top: 1px solid var(--line); }
+.item:first-child { border-top: 0; }
+.item a { color: var(--ink); text-decoration: none; font-weight: 600; }
+.item a:hover { color: var(--accent); }
+.item .meta { font-size: 13px; color: var(--muted); display: flex; gap: 6px 12px; flex-wrap: wrap; align-items: center; }
+
+/* pairs + requirements editors */
+.table { display: grid; }
+.trow { display: grid; gap: 10px; grid-template-columns: minmax(0, 1fr); padding: 14px 0; border-top: 1px solid var(--line); }
+.trow:first-child { border-top: 0; }
+@media (min-width: 900px) { .trow.pairs { grid-template-columns: 70px minmax(0, 1fr) minmax(0, 1.4fr) 110px; } .trow.reqs { grid-template-columns: 70px minmax(0, 1fr) 160px 110px 90px 40px; } }
+.trow.dropped { opacity: .5; }
+.seg { display: inline-flex; border: 1px solid var(--line-strong); border-radius: 7px; overflow: hidden; }
+.seg button { border: 0; background: var(--surface); padding: 6px 10px; cursor: pointer; font-size: 13px; font-weight: 600; }
+.seg button[aria-pressed="true"] { background: var(--ink); color: var(--surface); }
+
+/* review sheet */
+.sheet { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; box-shadow: var(--shadow); min-width: 0; }
+.sheet-head { display: flex; flex-wrap: wrap; gap: 10px 16px; align-items: center; justify-content: space-between; padding: 12px 16px; border-bottom: 1px solid var(--line); }
+.filters { display: flex; flex-wrap: wrap; gap: 6px; }
+.filters button { border: 1px solid var(--line); background: var(--surface); border-radius: 999px; padding: 5px 11px; font-size: 13px; font-weight: 500; cursor: pointer; display: inline-flex; gap: 6px; }
+.filters button .n { font: 600 12px/1.4 var(--mono); color: var(--muted); }
+.filters button[aria-pressed="true"] { border-color: var(--ink); background: var(--ink); color: var(--surface); }
+.filters button[aria-pressed="true"] .n { color: inherit; opacity: .75; }
+.req { display: grid; grid-template-columns: minmax(0, 1fr); gap: 8px 22px; padding: 18px 16px; border-top: 1px solid var(--line); }
+.req:first-child { border-top: 0; }
+@media (min-width: 760px) { .req { grid-template-columns: 90px minmax(0, 1fr); padding: 20px; } }
+.req-ref { display: flex; gap: 8px; flex-wrap: wrap; align-items: baseline; }
+@media (min-width: 760px) { .req-ref { display: grid; gap: 2px; align-content: start; } }
+.rid { font: 600 13px/1.4 var(--mono); }
+.req-body { display: grid; gap: 10px; min-width: 0; }
+.req-top { display: flex; flex-wrap: wrap; gap: 6px 8px; align-items: center; }
+.req-top .section { font-size: 13px; color: var(--muted); margin-right: auto; }
+.chip2 { font: 500 12px/1 var(--sans); color: var(--ink-2); border: 1px solid var(--line-strong); border-radius: 4px; padding: 4px 7px; }
+.question { font: 600 17px/1.45 var(--serif); max-width: 70ch; }
+.answer { white-space: pre-wrap; max-width: 72ch; }
+.final-label { font: 600 12px/1.3 var(--sans); color: var(--ok); }
+.meter { display: inline-flex; align-items: center; gap: 8px; font-size: 12.5px; color: var(--muted); }
+.meter .track { width: 64px; height: 4px; border-radius: 4px; background: var(--line); overflow: hidden; }
+.meter .fill { display: block; height: 100%; background: var(--ok); }
+.meter.over { color: var(--bad); font-weight: 600; } .meter.over .fill { background: var(--bad); }
+.sources { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; font-size: 13px; color: var(--muted); }
+.src { font: 600 12px/1 var(--mono); border-radius: 4px; padding: 5px 7px; border: 1px solid transparent; cursor: pointer; }
+.src.fact { color: var(--accent); background: var(--accent-soft); }
+.src.ans { color: var(--sme); background: var(--sme-soft); }
+.src.bad { color: var(--bad); background: var(--bad-soft); text-decoration: line-through; cursor: default; }
+details.more summary { cursor: pointer; font-size: 13px; color: var(--ink-2); width: fit-content; }
+.past { display: grid; gap: 8px; margin-top: 8px; }
+.past-item { border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; display: grid; gap: 4px; font-size: 13.5px; }
+.past-item.cited { border-color: var(--sme); }
+.past-item .q { font-family: var(--serif); font-weight: 600; }
+.actions { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+.editor { display: grid; gap: 8px; }
+.facts { list-style: none; margin: 0; padding: 0; display: grid; gap: 2px; }
+.fact { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 2px 10px; padding: 7px 8px; border-radius: 6px; transition: background .3s; }
+.fact .fid { font: 600 12px/1.6 var(--mono); color: var(--accent); }
+.fact .ft { font-size: 13.5px; color: var(--ink-2); }
+.fact.flash { background: var(--accent-soft); }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition: none !important; animation: none !important; } }
+</style>
+<style>
+/* Production application shell */
+:root {
+  color-scheme: light;
+  --paper: #f5f7fb; --surface: #ffffff; --surface-2: #f8fafc;
+  --ink: #172033; --ink-2: #49536a; --muted: #748096;
+  --line: #e5e9f2; --line-strong: #cfd6e4;
+  --accent: #5757d9; --accent-ink: #ffffff; --accent-soft: #eeeeff;
+  --ok: #14805e; --ok-soft: #e7f7f1;
+  --warn: #a86409; --warn-soft: #fff5df;
+  --sme: #7553c6; --sme-soft: #f1ecff;
+  --bad: #c83f54; --bad-soft: #fff0f2;
+  --shadow: 0 1px 2px rgba(20, 31, 53, .04), 0 12px 34px rgba(20, 31, 53, .07);
+  --shadow-lg: 0 24px 64px rgba(20, 31, 53, .12);
+  --sidebar: #0f1729; --sidebar-2: #172139; --sidebar-text: #e7eaf2; --sidebar-muted: #929db2;
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --paper: #0b1020; --surface: #141b2d; --surface-2: #192237;
+  --ink: #f2f4f8; --ink-2: #c4cadd; --muted: #8e99b0;
+  --line: #273249; --line-strong: #39455f;
+  --accent: #8b8cf5; --accent-ink: #0b1020; --accent-soft: #272850;
+  --ok: #63d0aa; --ok-soft: #16372f;
+  --warn: #f0bb68; --warn-soft: #3c2d18;
+  --sme: #b9a1ff; --sme-soft: #31274d;
+  --bad: #ff8798; --bad-soft: #421f2a;
+  --shadow: 0 12px 32px rgba(0, 0, 0, .22);
+  --shadow-lg: 0 26px 70px rgba(0, 0, 0, .34);
+  --sidebar: #080d19; --sidebar-2: #11192a; --sidebar-text: #f4f6fb; --sidebar-muted: #8e99b0;
+}
+html { min-height: 100%; background: var(--paper); }
+body { min-height: 100vh; padding: 0; background: var(--paper); letter-spacing: -.005em; }
+.app-shell { min-height: 100vh; display: grid; grid-template-columns: 264px minmax(0, 1fr); }
+.sidebar {
+  position: sticky; top: 0; height: 100vh; z-index: 20; display: flex; flex-direction: column;
+  padding: 26px 18px 18px; background:
+    radial-gradient(circle at 12% 4%, rgba(112, 115, 255, .24), transparent 27%),
+    linear-gradient(180deg, var(--sidebar), #0b1120); color: var(--sidebar-text);
+  border-right: 1px solid rgba(255,255,255,.06);
+}
+.brand-lockup { display: flex; gap: 11px; align-items: center; padding: 0 9px 26px; color: inherit; text-decoration: none; }
+.brand-mark {
+  width: 38px; height: 38px; flex: none; display: grid; place-items: center; border-radius: 11px;
+  background: linear-gradient(135deg, #9293ff, #5858df); color: white;
+  box-shadow: 0 10px 26px rgba(87,87,217,.35);
+}
+.brand-mark svg { width: 21px; height: 21px; }
+.brand-copy { display: grid; gap: 1px; }
+.brand-copy strong { font-size: 15px; line-height: 1.2; letter-spacing: -.02em; }
+.brand-copy span { color: var(--sidebar-muted); font-size: 11.5px; }
+.nav { display: grid; gap: 5px; align-content: start; }
+.nav-label { padding: 14px 12px 7px; color: var(--sidebar-muted); font-size: 10px; line-height: 1; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
+.nav a {
+  min-height: 44px; display: flex; align-items: center; gap: 11px; padding: 10px 12px;
+  border-radius: 10px; color: #aeb7c9; font-size: 13.5px; font-weight: 600; text-decoration: none;
+  transition: color .15s ease, background .15s ease, transform .15s ease;
+}
+.nav a:hover { color: white; background: rgba(255,255,255,.06); transform: translateX(2px); }
+.nav a[aria-current="page"] { color: white; background: rgba(126,128,255,.18); box-shadow: inset 3px 0 #8d8eff; }
+.nav a.quiet { color: var(--sidebar-muted); font-weight: 500; }
+.nav svg { width: 18px; height: 18px; flex: none; stroke: currentColor; fill: none; stroke-width: 1.8; }
+.sidebar-bottom { margin-top: auto; display: grid; gap: 12px; }
+.system-card { padding: 12px; border: 1px solid rgba(255,255,255,.08); border-radius: 13px; background: rgba(255,255,255,.035); }
+.system-card-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 9px; color: #d7dce8; font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+.system-card-head span:last-child { color: #67d7ae; font-size: 9px; }
+.status { display: grid; gap: 6px; }
+.status .chip {
+  min-width: 0; padding: 0; border: 0; background: transparent; color: var(--sidebar-muted);
+  border-radius: 0; font: 500 10.5px/1.35 var(--sans); overflow-wrap: anywhere;
+}
+.status .dot { width: 6px; height: 6px; box-shadow: 0 0 0 3px rgba(255,255,255,.04); }
+.sidebar-foot { display: flex; justify-content: space-between; align-items: center; color: var(--sidebar-muted); font-size: 11px; padding: 0 4px; }
+.workspace { min-width: 0; min-height: 100vh; }
+.workspace-top {
+  height: 68px; display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  padding: 0 clamp(20px, 4vw, 54px); background: color-mix(in srgb, var(--surface) 86%, transparent);
+  border-bottom: 1px solid var(--line); backdrop-filter: blur(16px); position: sticky; top: 0; z-index: 15;
+}
+.workspace-context { display: flex; align-items: center; gap: 10px; color: var(--muted); font-size: 12.5px; }
+.workspace-context strong { color: var(--ink); font-weight: 650; }
+.live-badge { display: inline-flex; gap: 6px; align-items: center; padding: 5px 8px; color: var(--ok); background: var(--ok-soft); border-radius: 999px; font-size: 11px; font-weight: 700; }
+.theme-toggle {
+  width: 36px; height: 36px; display: grid; place-items: center; border: 1px solid var(--line);
+  border-radius: 10px; color: var(--ink-2); background: var(--surface); cursor: pointer;
+}
+.theme-toggle:hover { border-color: var(--accent); color: var(--accent); }
+.top-actions { position: relative; display: flex; align-items: center; gap: 8px; margin-left: auto; }
+.model-btn {
+  height: 36px; display: inline-flex; align-items: center; gap: 7px; max-width: min(46vw, 260px); padding: 0 12px;
+  border: 1px solid var(--line); border-radius: 10px; color: var(--ink-2); background: var(--surface); cursor: pointer;
+  font: 500 12.5px/1 var(--mono);
+}
+.model-btn span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.model-btn:hover, .model-btn[aria-expanded="true"] { border-color: var(--accent); color: var(--accent); }
+.model-btn svg { width: 16px; height: 16px; flex: none; stroke: currentColor; fill: none; stroke-width: 1.8; }
+.model-panel {
+  position: absolute; top: calc(100% + 8px); right: 0; z-index: 30; width: min(340px, calc(100vw - 32px));
+  display: grid; gap: 10px; padding: 16px; background: var(--surface); color: var(--ink);
+  border: 1px solid var(--line); border-radius: 12px; box-shadow: 0 18px 40px rgba(15, 23, 41, .18);
+}
+.model-panel .field { display: grid; gap: 4px; font-size: 13px; font-weight: 600; color: var(--ink-2); }
+.model-msg:empty { display: none; }
+.model-msg.ok { color: var(--ok); } .model-msg.bad { color: var(--bad); }
+.model-btn.failing { border-color: var(--bad); color: var(--bad); }
+.model-health { margin: 0; padding: 8px 10px; border-radius: 8px; background: var(--bad-soft); color: var(--ink); font-size: 13px; }
+.model-health b { color: var(--bad); }
+button.chip { cursor: pointer; }
+.ok-text { color: var(--ok); } .bad-text { color: var(--bad); }
+.alert.notice { background: var(--ok-soft); color: var(--ink); border-color: var(--ok); }
+.alert.notice strong { color: var(--ok); }
+.ws-panel { width: min(360px, calc(100vw - 32px)); }
+.ws-list { display: grid; gap: 6px; }
+.ws-row { display: flex; align-items: center; gap: 6px; }
+.ws-item { display: flex; justify-content: space-between; align-items: center; gap: 10px; flex: 1; min-width: 0; text-align: left; padding: 9px 10px;
+  border: 1px solid var(--line); border-radius: 9px; background: var(--surface); color: var(--ink); font: inherit; cursor: pointer; }
+.ws-item > span { display: grid; gap: 2px; }
+.ws-item:hover:not(:disabled) { border-color: var(--accent); }
+.ws-item.active { border-color: var(--ok); cursor: default; }
+.start-grid { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr)); align-items: start; }
+.start-card { display: grid; gap: 10px; }
+.start-card p, .start-list { margin: 0; }
+.start-list { padding-left: 20px; display: grid; gap: 6px; }
+.fact-rows { display: grid; gap: 8px; }
+.fact-row { display: grid; grid-template-columns: 70px minmax(110px, 170px) minmax(0, 1fr) 150px auto; gap: 8px; align-items: start; }
+.fact-row code { padding-top: 8px; font-size: 12px; color: var(--muted); }
+@media (max-width: 760px) { .fact-row { grid-template-columns: minmax(0, 1fr); } }
+.fact-list { display: grid; gap: 8px; }
+.fact { display: flex; gap: 10px; }
+.first-run { display: grid; gap: 10px; margin-bottom: 16px; }
+.checklist { list-style: none; padding: 0; margin: 0; display: grid; gap: 10px; }
+.checklist li { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 12px; align-items: center; }
+.checklist li p { margin: 2px 0 0; }
+.chip.failing { color: var(--bad); border-color: var(--bad); background: var(--bad-soft); }
+.problem { display: grid; gap: 6px; }
+.problem p { margin: 0; }
+.problem details summary { cursor: pointer; font-size: 12px; color: var(--muted); }
+.problem details p { margin-top: 4px; font: 12px/1.45 var(--mono); overflow-wrap: anywhere; color: var(--ink-2); }
+.theme-toggle svg { width: 17px; height: 17px; stroke: currentColor; fill: none; stroke-width: 1.8; }
+.mobile-brand { display: none; font-weight: 750; color: var(--ink); }
+main#view { width: min(1440px, 100%); margin: 0 auto; padding: 34px clamp(20px, 4vw, 54px) 72px; }
+.alert {
+  position: fixed; right: 24px; top: 84px; z-index: 50; width: min(430px, calc(100vw - 32px));
+  margin: 0; padding: 13px 16px; border: 0; border-left: 4px solid var(--bad); border-radius: 12px;
+  background: var(--surface); color: var(--bad); box-shadow: var(--shadow-lg);
+}
+.alert p { margin-top: 3px; color: var(--ink-2); font-size: 13px; }
+.page-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; margin-bottom: 24px; }
+.page-head-copy { display: grid; gap: 6px; }
+.eyebrow { color: var(--accent); font-size: 11px; font-weight: 750; letter-spacing: .12em; text-transform: uppercase; }
+.page-title { font: 700 clamp(27px, 3vw, 38px)/1.14 var(--sans); letter-spacing: -.04em; }
+.page-subtitle { max-width: 690px; color: var(--muted); font-size: 14px; }
+.metric-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin-bottom: 22px; }
+.metric {
+  min-height: 112px; display: grid; align-content: space-between; gap: 12px; padding: 17px 18px;
+  border: 1px solid var(--line); border-radius: 15px; background: var(--surface); box-shadow: var(--shadow);
+}
+.metric-label { color: var(--muted); font-size: 11.5px; font-weight: 650; }
+.metric-value { font: 700 27px/1 var(--sans); letter-spacing: -.04em; }
+.metric-note { color: var(--muted); font-size: 11.5px; }
+.panel {
+  padding: 20px; border: 1px solid var(--line); border-radius: 16px; background: var(--surface);
+  box-shadow: 0 1px 2px rgba(20,31,53,.02); gap: 14px;
+}
+.panel.raised { box-shadow: var(--shadow); }
+.panel h2 { font-size: 16px; letter-spacing: -.015em; }
+.panel-accent {
+  color: white; border: 0; background:
+    radial-gradient(circle at 90% 8%, rgba(255,255,255,.17), transparent 30%),
+    linear-gradient(145deg, #5556d8, #35369c); box-shadow: 0 20px 50px rgba(70,71,190,.22);
+}
+.panel-accent h2, .panel-accent .small, .panel-accent label.field { color: white; }
+.panel-accent .muted { color: rgba(255,255,255,.7); }
+.panel-accent input, .panel-accent select { color: #172033; background: white; border-color: rgba(255,255,255,.4); }
+.panel-accent .drop { color: white; background: rgba(255,255,255,.08); border-color: rgba(255,255,255,.35); }
+.panel-accent .drop:hover, .panel-accent .drop.over { background: rgba(255,255,255,.14); border-color: white; }
+.panel-accent .btn:not(.primary) { color: white; background: rgba(255,255,255,.08); border-color: rgba(255,255,255,.25); }
+.panel-accent .btn.primary { color: #35369c; background: white; border-color: white; }
+.grid2 { gap: 20px; }
+@media (min-width: 1100px) { .grid2 { grid-template-columns: minmax(0, 1fr) 390px; } .sticky { top: 88px; max-height: calc(100vh - 110px); } }
+.btn {
+  min-height: 40px; padding: 9px 14px; border-color: var(--line-strong); border-radius: 9px;
+  background: var(--surface); box-shadow: 0 1px 2px rgba(20,31,53,.03); transition: transform .15s, box-shadow .15s, border-color .15s;
+}
+.btn:hover:not(:disabled) { transform: translateY(-1px); border-color: var(--accent); box-shadow: 0 7px 16px rgba(20,31,53,.08); }
+.btn.primary { background: linear-gradient(135deg, #6263e6, #4e4fc8); box-shadow: 0 7px 18px rgba(87,87,217,.2); }
+.btn.small { min-height: 33px; padding: 6px 10px; }
+input[type=text], input[type=date], input[type=number], input[type=search], select, textarea {
+  min-height: 42px; border-color: var(--line); border-radius: 9px; background: var(--surface);
+  transition: border-color .15s, box-shadow .15s;
+}
+input:focus, select:focus, textarea:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); outline: none; }
+.drop { min-height: 92px; padding: 16px; border-radius: 12px; border-width: 1.5px; }
+.item { padding: 16px 4px; gap: 7px; }
+.item a { font-size: 14px; }
+.sheet { border-radius: 16px; overflow: clip; }
+.sheet-head { padding: 14px 18px; background: var(--surface-2); }
+.req { padding: 23px 20px; transition: background .15s; }
+.req:hover { background: color-mix(in srgb, var(--surface-2) 55%, transparent); }
+.question { font-family: var(--sans); font-size: 16px; letter-spacing: -.012em; }
+.answer { padding: 14px 15px; border-left: 3px solid var(--accent); border-radius: 0 9px 9px 0; background: var(--surface-2); color: var(--ink-2); font-size: 14px; line-height: 1.65; }
+.sme-handoff { display: grid; gap: 14px; padding: 17px; border: 1px solid color-mix(in srgb, var(--sme) 32%, var(--line)); border-radius: 13px; background: linear-gradient(145deg, var(--surface), var(--sme-soft)); }
+.sme-handoff-head { display: flex; gap: 11px; align-items: flex-start; }
+.sme-handoff-icon { width: 34px; height: 34px; display: grid; place-items: center; flex: none; border-radius: 10px; background: var(--sme); color: var(--surface); font-weight: 800; }
+.sme-handoff h3 { font-size: 15px; }
+.sme-handoff-copy { color: var(--muted); font-size: 13px; }
+.sme-start { display: grid; gap: 5px; padding: 11px 12px; border-radius: 9px; background: var(--surface); }
+.sme-start p { color: var(--ink-2); font-size: 13.5px; line-height: 1.55; }
+.sme-fields { list-style: none; display: grid; gap: 7px; margin: 0; padding: 0; }
+.sme-fields li { display: grid; grid-template-columns: 25px minmax(0, 1fr); gap: 9px; align-items: start; padding: 9px 10px; border: 1px solid var(--line); border-radius: 9px; background: var(--surface); color: var(--ink-2); font-size: 13px; }
+.sme-fields b { width: 23px; height: 23px; display: grid; place-items: center; border-radius: 7px; color: var(--sme); background: var(--sme-soft); font-size: 11px; }
+.exclusion-note { border-left: 3px solid var(--warn); padding: 8px 10px; border-radius: 0 8px 8px 0; background: var(--warn-soft); font-size: 13px; }
+.exclusion-note summary { cursor: pointer; color: var(--warn); font-weight: 700; }
+.exclusion-note p { margin-top: 7px; color: var(--ink-2); }
+.demo-pack { position: relative; overflow: hidden; border-color: color-mix(in srgb, var(--accent) 25%, var(--line)); }
+.demo-pack::after { content: ""; position: absolute; width: 120px; height: 120px; right: -55px; top: -55px; border-radius: 50%; background: var(--accent-soft); pointer-events: none; }
+.demo-pack > * { position: relative; z-index: 1; }
+.demo-pack-meta { display: flex; flex-wrap: wrap; gap: 6px; }
+.past-item { padding: 13px 14px; border-radius: 11px; background: var(--surface-2); }
+.past-item.cited { border-color: var(--sme); box-shadow: inset 3px 0 var(--sme); }
+.fact { padding: 10px; border-radius: 9px; }
+.fact:hover { background: var(--surface-2); }
+.pill { padding: 6px 9px; font-size: 10.5px; font-weight: 700; letter-spacing: .01em; }
+.chip2 { border-color: var(--line); border-radius: 7px; background: var(--surface-2); }
+.src { border-radius: 7px; }
+details.more { padding: 2px 0; }
+details.more summary { font-weight: 600; color: var(--ink-2); }
+.filters { gap: 7px; }
+.filters button { min-height: 34px; border-radius: 9px; }
+.empty { min-height: 110px; display: grid; place-content: center; text-align: center; }
+.bar { height: 7px; background: var(--surface-2); }
+.bar span { background: linear-gradient(90deg, #6465e6, #8c8df4); }
+.skeleton { min-height: 220px; border-radius: 16px; background: linear-gradient(100deg, var(--surface) 20%, var(--surface-2) 40%, var(--surface) 60%); background-size: 220% 100%; animation: shimmer 1.4s infinite; }
+.timeline { position: relative; display: grid; padding-left: 7px; }
+.memory-event { position: relative; display: grid; gap: 7px; padding: 4px 4px 20px 28px; }
+.hindsight-panel { display: grid; gap: 10px; border-left: 3px solid var(--accent); margin-block: 14px; }
+.scroll-x { overflow-x: auto; max-width: 100%; }
+svg.curve { width: 100%; min-width: 480px; height: auto; display: block; }
+.legend { display: flex; flex-wrap: wrap; gap: 14px; font-size: 12px; color: var(--muted); margin-top: 6px; }
+.legend i { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 6px; }
+.plain-table { border-collapse: collapse; width: 100%; font-size: 13px; font-variant-numeric: tabular-nums; }
+.plain-table th, .plain-table td { text-align: left; padding: 6px 10px; border-bottom: 1px solid var(--line); white-space: nowrap; }
+.plain-table thead th { color: var(--muted); font-weight: 650; font-size: 12px; }
+.cmp-grid { display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); margin-top: 10px; }
+.cmp-arm { display: grid; gap: 8px; align-content: start; padding: 12px; border: 1px solid var(--line); border-radius: 10px; }
+.cmp-answer { white-space: pre-wrap; line-height: 1.5; margin: 0; }
+.judge-panel { display: grid; gap: 10px; margin-top: 14px; border: 1px solid var(--line); }
+.judge-controls { align-items: end; gap: 16px; flex-wrap: wrap; }
+.judge-controls .field { display: grid; gap: 4px; font-size: 13px; font-weight: 600; color: var(--ink-2); }
+.judge-controls .check { display: flex; gap: 6px; align-items: center; font-size: 13px; color: var(--ink-2); max-width: 520px; }
+.judge-tally { display: flex; flex-wrap: wrap; gap: 8px; }
+.judge-q { display: grid; gap: 4px; padding-bottom: 8px; border-bottom: 1px solid var(--line); }
+.judge-q p { margin: 0; }
+.spot-check { display: grid; gap: 10px; margin-top: 8px; padding-top: 12px; border-top: 1px dashed var(--line-strong); }
+.spot-check input[type=text] { min-width: 220px; flex: 1; }
+.brief-text { line-height: 1.6; max-width: 78ch; }
+.markdown-content { display: grid; gap: 10px; color: var(--ink-2); }
+.markdown-content h3, .markdown-content h4 { margin: 7px 0 0; color: var(--ink); letter-spacing: -.012em; }
+.markdown-content h3 { font-size: 17px; }
+.markdown-content h4 { font-size: 14px; }
+.markdown-content p, .markdown-content ul, .markdown-content ol { margin: 0; }
+.markdown-content ul, .markdown-content ol { display: grid; gap: 7px; padding-left: 22px; }
+.markdown-content li { padding-left: 2px; }
+.markdown-content strong { color: var(--ink); font-weight: 700; }
+.markdown-content code { padding: 2px 5px; border-radius: 5px; background: var(--surface-2); font-size: .9em; }
+.lesson-evidence { display: grid; gap: 4px; margin-top: 6px; padding: 8px 10px; border-radius: 8px; background: var(--accent-soft); }
+.lesson-evidence ul { margin: 0; padding-left: 18px; font-size: 13px; }
+.memory-event:not(:last-child)::before { content: ""; position: absolute; left: 8px; top: 15px; bottom: -4px; width: 1px; background: var(--line); }
+.memory-event::after { content: ""; position: absolute; left: 3px; top: 8px; width: 11px; height: 11px; border: 3px solid var(--surface); border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 1px var(--accent); }
+.memory-event .event-detail { color: var(--ink-2); font-size: 13.5px; }
+.signal-flow { display: grid; gap: 12px; }
+.signal-step { display: grid; grid-template-columns: 32px 1fr; gap: 11px; align-items: start; }
+.signal-step b { width: 30px; height: 30px; display: grid; place-items: center; border-radius: 9px; color: var(--accent); background: var(--accent-soft); font-size: 12px; }
+.signal-step strong { display: block; font-size: 13px; }
+.signal-step span { color: var(--muted); font-size: 12px; }
+.project-hero { overflow: hidden; position: relative; }
+.project-hero::after { content: ""; position: absolute; width: 210px; height: 210px; right: -90px; top: -120px; border-radius: 50%; background: radial-gradient(circle, var(--accent-soft), transparent 70%); pointer-events: none; }
+.progress-copy { display: grid; gap: 6px; min-width: min(100%, 320px); }
+.progress-value { display: flex; justify-content: space-between; color: var(--muted); font-size: 11px; font-weight: 650; }
+.project-list .item { padding: 15px 13px; margin: 0 -9px; border-top-color: var(--line); border-radius: 10px; transition: background .15s; }
+.project-list .item:hover { background: var(--surface-2); }
+.project-list .item a { font-size: 14.5px; }
+@keyframes shimmer { to { background-position: -220% 0; } }
+@media (max-width: 820px) {
+  .app-shell { display: block; padding-bottom: 76px; }
+  .sidebar { position: fixed; inset: auto 0 0; width: 100%; height: 70px; padding: 8px 12px calc(8px + env(safe-area-inset-bottom)); background: color-mix(in srgb, var(--sidebar) 94%, transparent); backdrop-filter: blur(18px); border: 0; border-top: 1px solid rgba(255,255,255,.09); }
+  .brand-lockup, .nav-label, .sidebar-bottom { display: none; }
+  .nav { height: 100%; grid-template-columns: repeat(4, 1fr); gap: 4px; }
+  .nav a { min-height: 50px; justify-content: center; flex-direction: column; gap: 2px; padding: 4px 6px; font-size: 10px; }
+  .nav a:hover { transform: none; }
+  .nav a[aria-current="page"] { box-shadow: none; background: rgba(126,128,255,.2); }
+  .nav svg { width: 19px; height: 19px; }
+  .workspace-top { height: 58px; padding: 0 18px; }
+  .workspace-context { display: none; }
+  .mobile-brand { display: flex; align-items: center; gap: 8px; }
+  .mobile-brand .brand-mark { width: 30px; height: 30px; border-radius: 8px; }
+  .mobile-brand .brand-mark svg { width: 17px; height: 17px; }
+  main#view { padding: 24px 16px 45px; }
+  .page-head { align-items: flex-start; flex-direction: column; margin-bottom: 18px; }
+  .metric-grid { grid-template-columns: 1fr 1fr; }
+  .metric:last-child { grid-column: 1 / -1; }
+  .panel { padding: 17px; }
+  .alert { right: 16px; top: 70px; }
+}
+@media (max-width: 520px) {
+  .metric-grid { grid-template-columns: 1fr; }
+  .metric:last-child { grid-column: auto; }
+  .metric { min-height: 92px; }
+  .row.spread { align-items: flex-start; }
+  .req { padding: 18px 15px; }
+  .actions select { flex: 1 1 140px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .nav a, .btn, input, select, textarea { transition: none !important; }
+  .skeleton { animation: none; }
+}
+</style>
+</head>
+<body>
+<div class="app-shell">
+  <aside class="sidebar">
+    <a class="brand-lockup" href="#/projects" aria-label="RFP Memory home">
+      <span class="brand-mark"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3.5h7l4 4V20.5H7z" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M14 3.5v4h4M10 12h5M10 15.5h5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></span>
+      <span class="brand-copy"><strong>RFP Memory</strong><span>Outcome intelligence</span></span>
+    </a>
+    <nav class="nav" aria-label="Main">
+      <span class="nav-label">Workspace</span>
+      <a href="#/projects" id="nav-projects"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7.5h6l1.5 2H20v9.5H4z"/><path d="M4 7.5V5h6l1.5 2.5"/></svg>Projects</a>
+      <a href="#/library" id="nav-library"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4.5h11a2 2 0 0 1 2 2v13H7a2 2 0 0 1-2-2z"/><path d="M7 19.5a2 2 0 0 1 0-4h11M9 8h5"/></svg>Library</a>
+      <a href="#/memory" id="nav-memory"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5a3 3 0 0 1 6 0 3.5 3.5 0 0 1 3 5.3A3.5 3.5 0 0 1 16 17H8a3.5 3.5 0 0 1-2-6.7A3.5 3.5 0 0 1 9 5z"/><path d="M9 9h6M10 13h4"/></svg>Memory</a>
+      <a href="#/company" id="nav-company"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20V7l8-3 8 3v13"/><path d="M9 20v-5h6v5M8 10h2M14 10h2"/></svg>Company</a>
+    </nav>
+    <div class="sidebar-bottom">
+      <section class="system-card" aria-label="System health">
+        <div class="system-card-head"><span>System health</span><span>Runtime</span></div>
+        <div class="status" id="status" aria-live="polite"></div>
+      </section>
+      <div class="sidebar-foot"><span>RFP Memory</span><span>Local</span></div>
+    </div>
+  </aside>
+  <section class="workspace">
+    <header class="workspace-top">
+      <div class="mobile-brand"><span class="brand-mark"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3.5h7l4 4V20.5H7z" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M14 3.5v4h4M10 12h5M10 15.5h5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></span>RFP Memory</div>
+      <div class="workspace-context"><span class="live-badge"><span class="dot ok"></span>Outcome ranking</span><span>Drafts stay grounded in approved evidence</span></div>
+      <div class="top-actions">
+        <button class="model-btn" id="ws-btn" type="button" aria-haspopup="dialog" aria-expanded="false" aria-controls="ws-panel" title="Switch workspace">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16v12H4z"/><path d="M4 10h16"/></svg>
+          <span id="ws-btn-label">Workspace</span>
+        </button>
+        <div class="model-panel ws-panel" id="ws-panel" role="dialog" aria-labelledby="ws-panel-title" hidden>
+          <strong id="ws-panel-title">Workspaces</strong>
+          <p class="small muted">Each workspace has its own library, projects, company facts and Hindsight memory.</p>
+          <div class="ws-list" id="ws-list"></div>
+          <div class="row"><button class="btn small" id="ws-new" type="button">New workspace…</button></div>
+        </div>
+        <button class="model-btn" id="model-btn" type="button" aria-haspopup="dialog" aria-expanded="false" aria-controls="model-panel" title="Change the AI model">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v3M12 18v3M3 12h3M18 12h3M7 7h10v10H7z"/><path d="M10 10h4v4h-4z"/></svg>
+          <span id="model-btn-label">Model</span>
+        </button>
+        <div class="model-panel" id="model-panel" role="dialog" aria-labelledby="model-panel-title" hidden>
+          <strong id="model-panel-title">AI model</strong>
+          <p class="small muted" id="model-panel-source"></p>
+          <p class="model-health" id="model-health" hidden></p>
+          <label class="field" for="model-select">Model for new calls
+            <select id="model-select"></select>
+          </label>
+          <p class="small muted">Applies to every call made from now on: extraction, drafting and regenerating. A drafting job already running finishes with its current model.</p>
+          <p class="small model-msg" id="model-msg" role="status"></p>
+          <div class="row">
+            <button class="btn small primary" id="model-save" type="button">Use this model</button>
+            <button class="btn small" id="model-reset" type="button">Reset to .env</button>
+          </div>
+        </div>
+        <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Toggle color theme"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 15.5A8 8 0 0 1 8.5 4 8 8 0 1 0 20 15.5z"/></svg></button>
+      </div>
+    </header>
+    <div class="alert" id="alert" role="alert" hidden><strong id="alert-title"></strong><p id="alert-body"></p></div>
+    <main id="view"></main>
+  </section>
+</div>
+
+<script>
+/* ---------- helpers ---------- */
+const $ = (id) => document.getElementById(id);
+const savedTheme = localStorage.getItem("rfp-theme");
+if (savedTheme === "dark" || savedTheme === "light") document.documentElement.dataset.theme = savedTheme;
+$("theme-toggle").addEventListener("click", () => {
+  const next = document.documentElement.dataset.theme === "dark" ? "light" : "dark";
+  document.documentElement.dataset.theme = next;
+  localStorage.setItem("rfp-theme", next);
+});
+function el(tag, props = {}, ...children) {
+  const node = document.createElement(tag);
+  for (const [k, v] of Object.entries(props)) {
+    if (v === undefined || v === null || v === false) continue;
+    if (k === "class") node.className = v;
+    else if (k === "text") node.textContent = v;
+    else if (k === "value") node.value = v;
+    else if (k.startsWith("on")) node.addEventListener(k.slice(2), v);
+    else node.setAttribute(k, v === true ? "" : v);
+  }
+  for (const c of children.flat()) {
+    if (c === null || c === undefined || c === false) continue;
+    node.append(c instanceof Node ? c : document.createTextNode(String(c)));
+  }
+  return node;
+}
+
+// Hindsight mental models return Markdown. Render the small subset used by briefs and playbooks
+// with DOM nodes instead of innerHTML so external memory content can never inject markup or script.
+function markdownContent(source) {
+  const root = el("div", { class: "brief-text markdown-content" });
+  const lines = String(source || "").replace(/\r\n?/g, "\n").split("\n");
+  let list = null;
+  let listKind = null;
+  const endList = () => { list = null; listKind = null; };
+  const inline = (value) => {
+    const fragment = document.createDocumentFragment();
+    const pattern = /(\*\*([^*]+)\*\*|`([^`]+)`)/g;
+    let cursor = 0;
+    for (const match of value.matchAll(pattern)) {
+      if (match.index > cursor) fragment.append(document.createTextNode(value.slice(cursor, match.index)));
+      fragment.append(match[2] !== undefined ? el("strong", { text: match[2] }) : el("code", { text: match[3] }));
+      cursor = match.index + match[0].length;
+    }
+    if (cursor < value.length) fragment.append(document.createTextNode(value.slice(cursor)));
+    return fragment;
+  };
+  for (const raw of lines) {
+    const line = raw.trim();
+    if (!line) { endList(); continue; }
+    const heading = line.match(/^(#{1,4})\s+(.+)$/);
+    if (heading) {
+      endList();
+      const level = heading[1].length >= 3 ? "h4" : "h3";
+      root.append(el(level, {}, inline(heading[2])));
+      continue;
+    }
+    const bullet = line.match(/^[-*]\s*(.+)$/);
+    const numbered = line.match(/^\d+[.)]\s+(.+)$/);
+    if (bullet || numbered) {
+      const kind = numbered ? "ol" : "ul";
+      if (!list || listKind !== kind) {
+        list = el(kind);
+        listKind = kind;
+        root.append(list);
+      }
+      list.append(el("li", {}, inline((bullet || numbered)[1])));
+      continue;
+    }
+    endList();
+    root.append(el("p", {}, inline(line)));
+  }
+  return root;
+}
+async function api(path, options = {}) {
+  let response;
+  try { response = await fetch(path, options); }
+  catch { throw Object.assign(new Error("Can't reach the server. Is it still running?"), { code: "network" }); }
+  const body = await response.json().catch(() => null);
+  if (!response.ok) throw Object.assign(new Error(body?.error?.message || `HTTP ${response.status}`), { code: body?.error?.code });
+  return body;
+}
+const json = (method, body) => ({ method, headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
+let pendingNotice = null;
+function showError(e) {
+  $("alert").classList.remove("notice");
+  $("alert-title").textContent = e.code === "network" ? "Connection problem" : "That didn't work";
+  $("alert-body").textContent = e.message;
+  $("alert").hidden = false;
+}
+function clearError() {
+  $("alert").hidden = true;
+  $("alert").classList.remove("notice");
+  if (pendingNotice) { const [t, b] = pendingNotice; pendingNotice = null; showNotice(t, b, false); }
+}
+/* ---------- model problems ---------- */
+// error_info comes from backend/provider_errors.py: what happened, what to do, and whether
+// retrying or switching the model helps. Without it (not a model error) the raw message is shown.
+function openModelPanel(e) { e?.stopPropagation(); setModelPanel(true); }
+function problemNote(info, raw, { heading, extra } = {}) {
+  if (!info) return el("div", { class: "note c-bad" }, heading ? el("div", { class: "t", text: heading }) : null, raw || "");
+  const buttons = [
+    info.switch_model ? el("button", { class: "btn small primary", type: "button", text: "Choose another model", onclick: openModelPanel }) : null,
+    extra || null,
+  ].filter(Boolean);
+  return el("div", { class: `note problem ${info.blocking || !info.retry_helps ? "c-bad" : "c-warn"}` },
+    el("div", { class: "t", text: heading ? `${heading}: ${info.title}` : info.title }),
+    el("p", { class: "small", text: info.detail }),
+    el("p", { class: "small" }, el("b", { text: "What to do: " }), info.action),
+    buttons.length ? el("div", { class: "row" }, buttons) : null,
+    raw ? el("details", {}, el("summary", { text: "Error details" }), el("p", { text: raw })) : null);
+}
+let llmHealth = null;  // the current model's last outcome, from /v1/status
+function renderModelHealth() {
+  const failing = llmHealth?.state === "failing";
+  $("model-btn").classList.toggle("failing", failing);
+  const box = $("model-health");
+  box.hidden = !failing;
+  if (failing) box.replaceChildren(el("b", { text: `${llmHealth.explanation.title}. ` }), llmHealth.explanation.action);
+}
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+let pollToken = 0;  // a new navigation cancels old polling loops
+async function pollJob(jobId, onTick) {
+  const token = pollToken;
+  for (;;) {
+    const job = await api(`/v1/jobs/${jobId}`);
+    if (token !== pollToken) return null;
+    onTick?.(job);
+    if (job.status === "completed" || job.status === "failed" || job.status === "cancelled") return job;
+    await sleep(1000);
+  }
+}
+function fileDrop(id, accept, hint) {
+  const input = el("input", { type: "file", id, class: "vh", accept });
+  const title = el("b", { text: "Drop a file here, or choose one" });
+  const box = el("label", { class: "drop", for: id }, input, title, el("span", { class: "small muted", text: hint }));
+  const state = { file: null };
+  const set = (f) => { state.file = f || null; title.textContent = f ? f.name : "Drop a file here, or choose one"; box.dispatchEvent(new Event("filechange")); };
+  input.addEventListener("change", () => set(input.files[0]));
+  box.addEventListener("dragover", (e) => { e.preventDefault(); box.classList.add("over"); });
+  box.addEventListener("dragleave", () => box.classList.remove("over"));
+  box.addEventListener("drop", (e) => { e.preventDefault(); box.classList.remove("over"); set(e.dataTransfer?.files?.[0]); });
+  box.state = state; box.setFile = set;
+  return box;
+}
+async function sampleFile(name) {
+  const r = await fetch(`/v1/samples/${name}`);
+  if (!r.ok) throw new Error(`Sample ${name} couldn't be loaded.`);
+  const blob = await r.blob();
+  return new File([blob], name, { type: blob.type });
+}
+const STATE_PILL = {
+  extracting: ["Reading document", "c-info"], requirements_extracted: ["Check requirements", "c-warn"],
+  drafting: ["Drafting", "c-info"], in_review: ["In review", "c-warn"], approved: ["Ready to export", "c-ok"],
+  exported: ["Exported", "c-ok"], failed: ["Failed", "c-bad"],
+  uploaded: ["Uploaded", "c-muted"], extracted: ["Confirm answers", "c-warn"], confirmed: ["In library", "c-ok"],
+};
+const pill = (state) => { const [t, c] = STATE_PILL[state] || [state, "c-muted"]; return el("span", { class: `pill ${c}`, text: t }); };
+// Fresh rows serialise with "+00:00"; rows read back from SQLite are naive UTC.
+const when = (iso) => new Date(/(Z|[+-]\d\d:\d\d)$/.test(iso) ? iso : iso + "Z").toLocaleString(undefined, { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" });
+
+/* ---------- status ---------- */
+let statusFetchedAt = 0;
+async function loadStatus(force = false) {
+  if (!force && statusFetchedAt && Date.now() - statusFetchedAt < 60_000 && $("status").children.length) return;
+  statusFetchedAt = Date.now();
+  try {
+    const s = await api("/v1/status");
+    const h = s.hindsight;
+    const llmOk = s.llm_credentials === "env";
+    llmHealth = s.llm_health || null;
+    renderModelHealth();
+    const failing = llmHealth?.state === "failing";
+    let hsText, hsDot;
+    if (h.cloud && !h.api_key_set) { hsText = "Hindsight Cloud: add RFP_HINDSIGHT_API_KEY to .env"; hsDot = "bad"; }
+    else if (!h.healthy) { hsText = "Hindsight unreachable"; hsDot = "bad"; }
+    else if (h.extraction_mode === null) { hsText = "Hindsight: can't read the bank (check the key)"; hsDot = "bad"; }
+    else if (!h.baseline_ok) { hsText = `Hindsight answer bank uses "${h.extraction_mode}" extraction (it needs chunks)`; hsDot = "warn"; }
+    else { hsText = `${h.cloud ? "Hindsight Cloud" : "Hindsight"} · chunks`; hsDot = "ok"; }
+    $("status").replaceChildren(
+      failing
+        ? el("button", { class: "chip failing", type: "button", title: `${llmHealth.explanation.detail} ${llmHealth.explanation.action}`, onclick: openModelPanel },
+            el("span", { class: "dot bad" }), llmHealth.explanation.title.includes(s.model) ? llmHealth.explanation.title : `${s.model}: ${llmHealth.explanation.title}`)
+        : el("span", { class: "chip", title: llmOk ? "Model key found" : `Add ${s.key_variable} to .env` }, el("span", { class: `dot ${llmOk ? "ok" : "warn"}` }), s.model),
+      el("span", { class: "chip", title: h.url }, el("span", { class: `dot ${hsDot}` }), hsText),
+      el("span", { class: "chip", title: "Approved answers in the library (waiting to sync to Hindsight)" }, `${s.library.answers} answers${s.library.pending_sync ? ` · ${s.library.pending_sync} syncing` : ""}`),
+      s.lessons?.enabled ? el("a", { class: "chip", href: "#/memory", title: s.lessons.last_error ? `Last sync error: ${s.lessons.last_error}` : `Outcome and review lessons in Hindsight bank ${s.lessons.bank}` },
+        el("span", { class: `dot ${s.lessons.last_error ? "warn" : "ok"}` }), `Lessons${s.lessons.pending ? ` · ${s.lessons.pending} syncing` : ""}`) : "",
+    );
+  } catch {
+    statusFetchedAt = 0;
+    $("status").replaceChildren(el("span", { class: "chip" }, el("span", { class: "dot bad" }), "Server not reachable"));
+  }
+}
+
+/* ---------- stopping background jobs ---------- */
+function stopButton(jobId, label, hint) {
+  const btn = el("button", { class: "btn small danger", type: "button", text: label, title: hint });
+  btn.addEventListener("click", async () => {
+    if (btn.dataset.armed !== "1") { btn.dataset.armed = "1"; btn.textContent = "Confirm stop"; return; }
+    btn.disabled = true; btn.textContent = "Stopping…";
+    try { await api(`/v1/jobs/${jobId}/cancel`, { method: "POST" }); route(); }
+    catch (e) { showError(e); btn.disabled = false; btn.dataset.armed = ""; btn.textContent = label; }
+  });
+  return btn;
+}
+
+/* ---------- model picker ---------- */
+const MODEL_SOURCE = { ui: "Chosen here", env: "From RFP_MODEL in .env", default: "Provider default" };
+function renderModel(m) {
+  $("model-btn-label").textContent = m.current;
+  $("model-btn").title = `AI model: ${m.current} (${MODEL_SOURCE[m.source] || m.source}). Click to change.`;
+  $("model-panel-source").textContent = `Now using ${m.current} · ${MODEL_SOURCE[m.source] || m.source}`;
+  const select = $("model-select");
+  const ids = m.options.map((o) => o.id);
+  if (!ids.includes(m.current)) ids.unshift(m.current);
+  select.replaceChildren(...ids.map((id) => {
+    const o = m.options.find((x) => x.id === id);
+    const note = id === m.env_model ? " (.env)" : id === m.default ? " (default)" : "";
+    return el("option", { value: id, text: (o && o.label && o.label !== id ? `${o.label} · ${id}` : id) + note });
+  }));
+  select.value = m.current;
+  select.disabled = !m.options.length;
+  $("model-save").disabled = !m.options.length;
+  $("model-reset").disabled = m.source !== "ui";
+  const msg = $("model-msg");
+  msg.className = "small model-msg" + (m.list_error ? " bad" : "");
+  msg.textContent = m.list_error || "";
+}
+async function loadModels() {
+  try { renderModel(await api("/v1/models")); }
+  catch (e) { $("model-msg").className = "small model-msg bad"; $("model-msg").textContent = e.message; }
+}
+function setModelPanel(open) {
+  if (open) $("ws-panel").hidden = true;
+  $("model-panel").hidden = !open;
+  $("model-btn").setAttribute("aria-expanded", String(open));
+  if (open) { loadModels(); $("model-select").focus(); }
+}
+$("model-btn").addEventListener("click", (e) => { e.stopPropagation(); setModelPanel($("model-panel").hidden); });
+document.addEventListener("click", (e) => { if (!$("model-panel").hidden && !$("model-panel").contains(e.target)) setModelPanel(false); });
+document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("model-panel").hidden) { setModelPanel(false); $("model-btn").focus(); } });
+async function saveModel(model) {
+  const msg = $("model-msg");
+  $("model-save").disabled = $("model-reset").disabled = true;
+  try {
+    const m = await api("/v1/models", json("PUT", { model }));
+    renderModel(m);
+    msg.className = "small model-msg ok";
+    msg.textContent = `Saved. New calls will use ${m.current}.`;
+    await loadStatus(true);
+  } catch (e) {
+    msg.className = "small model-msg bad"; msg.textContent = e.message;
+    $("model-save").disabled = false;
+  }
+}
+$("model-save").addEventListener("click", () => saveModel($("model-select").value));
+$("model-reset").addEventListener("click", () => saveModel(null));
+api("/v1/models").then(renderModel).catch(() => {});
+
+/* ---------- workspaces: demo vs start from scratch ---------- */
+// Same engine, different starting memory. "main" is the data from before workspaces existed.
+const WS_KIND = { main: "Sample history", demo: "Demo", company: "Your company" };
+let workspace = null;  // the open workspace's summary, from /v1/workspace
+async function loadWorkspace() {
+  try { workspace = await api("/v1/workspace"); } catch { workspace = null; }
+  $("ws-btn-label").textContent = workspace?.name || "Workspace";
+  $("ws-btn").title = workspace ? `Workspace: ${workspace.name} (${WS_KIND[workspace.kind] || workspace.kind}). Click to switch.` : "Switch workspace";
+  return workspace;
+}
+function setWorkspacePanel(open) {
+  $("ws-panel").hidden = !open;
+  $("ws-btn").setAttribute("aria-expanded", String(open));
+  if (open) renderWorkspaceList().catch(showError);
+}
+async function renderWorkspaceList() {
+  const data = await api("/v1/workspaces");
+  const list = $("ws-list");
+  const deleteButtons = [];
+  // While one row's delete is armed or in flight, every other button in the panel is disabled —
+  // so a click meant for a just-removed row's old position can never land on a different row that
+  // shifted into it. The panel closes on success instead of re-rendering under the cursor.
+  const freeze = (except) => { for (const [b, w] of deleteButtons) if (b !== except) b.disabled = true; };
+  list.replaceChildren(...data.workspaces.map((w) => {
+    const btn = el("button", { class: `ws-item${w.active ? " active" : ""}`, type: "button", disabled: w.active },
+      el("span", {}, el("b", { text: w.name }), el("span", { class: "small muted", text: WS_KIND[w.kind] || w.kind })),
+      w.active ? el("span", { class: "pill c-ok", text: "Open" }) : "");
+    btn.addEventListener("click", async (e) => {
+      e.stopPropagation();
+      btn.disabled = true;
+      try { await api(`/v1/workspaces/${w.id}/activate`, { method: "POST" }); await afterWorkspaceSwitch("#/projects"); }
+      catch (err) { showError(err); btn.disabled = false; }
+    });
+    const row = el("div", { class: "ws-row" }, btn);
+    // Only a workspace that isn't open right now and isn't the original data can be removed.
+    if (!w.active && w.kind !== "main") {
+      const del = el("button", { class: "btn small danger", type: "button", text: "Delete",
+        title: `Permanently delete ${w.name}: its projects, library and Hindsight memory` });
+      deleteButtons.push([del, w]);
+      del.addEventListener("click", async (e) => {
+        e.stopPropagation();
+        if (del.dataset.armed !== "1") { del.dataset.armed = "1"; del.textContent = "Confirm"; freeze(del); return; }
+        del.disabled = true; del.textContent = "Deleting…";
+        try {
+          await api(`/v1/workspaces/${w.id}`, { method: "DELETE" });
+          setWorkspacePanel(false);  // don't re-render this list under the cursor; make them reopen it
+          showNotice("Workspace deleted", `${w.name} and its data are gone.`);
+        } catch (err) {
+          showError(err); del.disabled = false; del.dataset.armed = ""; del.textContent = "Delete";
+          for (const [b] of deleteButtons) b.disabled = false;
+        }
+      });
+      row.append(del);
+    }
+    return row;
+  }));
+}
+async function afterWorkspaceSwitch(hash) {
+  setWorkspacePanel(false);
+  statusFetchedAt = 0;
+  await loadWorkspace();
+  loadStatus(true);
+  if (location.hash === hash) route(); else location.hash = hash;
+}
+$("ws-btn").addEventListener("click", (e) => { e.stopPropagation(); setWorkspacePanel($("ws-panel").hidden); });
+$("ws-new").addEventListener("click", (e) => { e.stopPropagation(); setWorkspacePanel(false); location.hash = "#/start"; });
+document.addEventListener("click", (e) => { if (!$("ws-panel").hidden && !$("ws-panel").contains(e.target)) setWorkspacePanel(false); });
+document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("ws-panel").hidden) { setWorkspacePanel(false); $("ws-btn").focus(); } });
+
+// The two ways to start: a seeded demo, or an empty workspace for a real company.
+function startView(view) {
+  const demoBtn = el("button", { class: "btn primary", type: "button", text: "Open the demo workspace" });
+  demoBtn.addEventListener("click", async () => {
+    demoBtn.disabled = true; demoBtn.textContent = "Loading the demo history…";
+    try {
+      const made = await api("/v1/workspaces", json("POST", { kind: "demo" }));
+      const s = made.seeded;
+      await afterWorkspaceSwitch("#/projects");
+      showNotice("Demo workspace ready", `${s.company}: ${s.proposals} past proposals and ${s.answers} approved answers loaded, with their won/lost results. Hindsight is storing the answers and learning the lessons now; the Memory page fills in over the next minute or two. Start with the Ashford Community Bank RFP.`);
+    } catch (e) { showError(e); demoBtn.disabled = false; demoBtn.textContent = "Try again"; }
+  });
+  const name = el("input", { type: "text", id: "ws-company", placeholder: "Your company's name", autocomplete: "organization" });
+  const scratchBtn = el("button", { class: "btn primary", type: "button", text: "Create my workspace", disabled: true });
+  name.addEventListener("input", () => { scratchBtn.disabled = !name.value.trim(); });
+  scratchBtn.addEventListener("click", async () => {
+    scratchBtn.disabled = true; scratchBtn.textContent = "Creating…";
+    try {
+      await api("/v1/workspaces", json("POST", { kind: "company", name: name.value.trim() }));
+      await afterWorkspaceSwitch("#/company");
+    } catch (e) { showError(e); scratchBtn.disabled = false; scratchBtn.textContent = "Create my workspace"; }
+  });
+  view.replaceChildren(
+    el("div", { class: "page-head" }, el("div", { class: "page-head-copy" },
+      el("span", { class: "eyebrow", text: "New workspace" }),
+      el("h1", { class: "page-title", text: "How do you want to start?" }),
+      el("p", { class: "page-subtitle", text: "Same product either way. What differs is the starting memory: a demo arrives with a history to learn from, a real company builds its own from its first RFP." }))),
+    el("div", { class: "start-grid" },
+      el("section", { class: "panel raised start-card" },
+        el("span", { class: "eyebrow", text: "See it learn in minutes" }),
+        el("h2", { text: "Try the demo" }),
+        el("p", { text: "A fictional vendor, Larkspur Data, with 8 past proposals from 2023 to 2026: 4 won and 4 lost, with competing answers to the same questions." }),
+        el("ul", { class: "start-list" },
+          el("li", { text: "45 approved answers and their won/lost results are loaded, with no model calls." }),
+          el("li", { text: "Hindsight learns which answers won, so the vague answer from a lost bid ranks below the specific one from a win." }),
+          el("li", { text: "Two new RFPs are ready to draft, with an answer key to check against." })),
+        el("p", { class: "small muted", text: "Uses Hindsight to store the 45 answers and learn from their outcomes. Fictional data only." }),
+        el("div", { class: "row" }, demoBtn)),
+      el("section", { class: "panel raised start-card" },
+        el("span", { class: "eyebrow", text: "For a real company" }),
+        el("h2", { text: "Start from scratch" }),
+        el("p", { text: "An empty workspace with its own memory. Nothing from the demo is mixed in." }),
+        el("ol", { class: "start-list" },
+          el("li", { text: "Enter your company's official facts." }),
+          el("li", { text: "Import old proposals with their results, if you have them. Optional." }),
+          el("li", { text: "Upload your first RFP. What your facts and library can't support comes back as \"needs an expert\"." }),
+          el("li", { text: "Every answer you approve joins the library, and every outcome you record teaches Hindsight what wins." })),
+        el("label", { class: "field", for: "ws-company" }, "Company name", name),
+        el("div", { class: "row" }, scratchBtn))));
+}
+
+// The workspace's official facts. Drafts cite them as FACT-001, FACT-002... and they outrank past answers.
+async function companyView(view) {
+  const data = await api("/v1/company");
+  const head = el("div", { class: "page-head" }, el("div", { class: "page-head-copy" },
+    el("span", { class: "eyebrow", text: "Company" }),
+    el("h1", { class: "page-title", text: data.company || "Set up your company" }),
+    el("p", { class: "page-subtitle", text: "Your official, current facts. Drafts cite them, and where a past answer disagrees with a fact, the fact wins." })));
+  if (data.locked) {
+    view.replaceChildren(head, el("div", { class: "note c-info" }, el("div", { class: "t", text: "This is the bundled sample company" }),
+        "This bundled sample workspace is read-only. To use your own company, start a new workspace."),
+      el("div", { class: "row", style: "margin:12px 0" }, el("a", { class: "btn", href: "#/start", text: "Start a new workspace" })),
+      el("section", { class: "panel raised" }, el("div", { class: "fact-list" }, data.facts.map((f) =>
+        el("div", { class: "fact" }, el("code", { text: f.id }), el("span", {}, f.topic ? el("b", { text: `${f.topic}: ` }) : "", f.statement))))));
+    return;
+  }
+  const company = el("input", { type: "text", id: "co-name", value: data.company || workspace?.name || "" });
+  const rows = el("div", { class: "fact-rows" });
+  const addRow = (fact = {}) => {
+    const topic = el("input", { type: "text", placeholder: "Topic, e.g. Security", value: fact.topic || "", "aria-label": "Topic" });
+    const statement = el("textarea", { rows: 2, placeholder: "One checkable statement, e.g. We are ISO 27001 certified (certificate issued March 2026).", "aria-label": "Fact" });
+    statement.value = fact.statement || "";
+    const until = el("input", { type: "date", value: fact.valid_to || "", "aria-label": "Valid until", title: "Optional: the date this fact stops being true (e.g. a certificate's expiry)" });
+    const remove = el("button", { class: "btn small danger", type: "button", text: "Remove", "aria-label": "Remove this fact" });
+    const row = el("div", { class: "fact-row" }, el("code", { text: fact.id || "new" }), topic, statement, until, remove);
+    row.dataset.id = fact.id || "";
+    remove.addEventListener("click", () => row.remove());
+    rows.append(row);
+  };
+  (data.facts.length ? data.facts : [{}, {}, {}]).forEach(addRow);
+  const paste = el("textarea", { rows: 4, placeholder: "Paste facts, one per line. Optional topic before a colon, e.g.\nSecurity: We are ISO 27001 certified.\nSupport: Severity-1 incidents get a response within 30 minutes, 24/7.", "aria-label": "Paste facts" });
+  const addPasted = el("button", { class: "btn small", type: "button", text: "Add these lines as facts" });
+  addPasted.addEventListener("click", () => {
+    for (const line of paste.value.split(/\r?\n/).map((l) => l.trim()).filter(Boolean)) {
+      const m = line.match(/^([^:]{2,40}):\s+(.+)$/);
+      addRow(m ? { topic: m[1], statement: m[2] } : { statement: line });
+    }
+    paste.value = "";
+  });
+  // A fact-sheet JSON ({"company": ..., "facts": [{id, topic, statement, valid_to}]}, the same format as a
+  // project fact sheet) fills the form; nothing is saved until the person checks it and presses Save.
+  const jsonDrop = fileDrop("co-json", ".json,application/json", "A fact sheet .json: {\"company\": \"…\", \"facts\": [{\"topic\": \"…\", \"statement\": \"…\"}]}");
+  const jsonMsg = el("p", { class: "small", role: "status" });
+  jsonDrop.addEventListener("filechange", async () => {
+    const file = jsonDrop.state.file;
+    if (!file) return;
+    try {
+      const parsed = JSON.parse(await file.text());
+      const facts = Array.isArray(parsed) ? parsed : parsed.facts;
+      if (!Array.isArray(facts)) throw new Error("It needs a \"facts\" list.");
+      const usable = facts.filter((f) => f && typeof f.statement === "string" && f.statement.trim());
+      if (!usable.length) throw new Error("None of its facts has a \"statement\".");
+      for (const row of [...rows.children]) if (!row.children[2].value.trim()) row.remove();  // drop empty rows
+      usable.forEach((f) => addRow({ id: /^[A-Z]+-\d+$/.test(f.id || "") ? f.id : "", topic: f.topic || "", statement: f.statement.trim(), valid_to: f.valid_to || "" }));
+      if (!Array.isArray(parsed) && typeof parsed.company === "string" && parsed.company.trim()) company.value = parsed.company.trim();
+      jsonMsg.className = "small ok-text";
+      jsonMsg.textContent = `Loaded ${usable.length} facts from ${file.name}. Check them, then save.`;
+    } catch (e) {
+      jsonMsg.className = "small bad-text";
+      jsonMsg.textContent = `${file.name} couldn't be read as a fact sheet: ${e.message}`;
+    }
+    jsonDrop.setFile(null);
+  });
+  const save = el("button", { class: "btn primary", type: "button", text: "Save company facts" });
+  save.addEventListener("click", async () => {
+    const facts = [...rows.children].map((row) => {
+      const [, topic, statement, until] = row.children;
+      return { id: row.dataset.id || null, topic: topic.value, statement: statement.value, valid_to: until.value || null };
+    }).filter((f) => f.statement.trim());
+    save.disabled = true; save.textContent = "Saving…";
+    try {
+      await api("/v1/company", json("PUT", { company: company.value, facts }));
+      await loadWorkspace();
+      showNotice("Company facts saved", `${facts.length} facts. New drafts in this workspace cite them.`);
+      route();
+    } catch (e) { showError(e); save.disabled = false; save.textContent = "Save company facts"; }
+  });
+  view.replaceChildren(head,
+    el("section", { class: "panel raised stack" },
+      el("label", { class: "field", for: "co-name" }, "Company name", company),
+      el("div", {}, el("h2", { text: "Official facts" }),
+        el("p", { class: "small muted", text: "Short, checkable statements: certifications, hosting regions, support hours, headcount, integrations. Leave out anything you wouldn't put in a signed response. A fact with a \"valid until\" date stops being used after it." })),
+      rows,
+      el("div", { class: "row" }, el("button", { class: "btn small", type: "button", text: "Add a fact", onclick: () => addRow() })),
+      el("details", { class: "more" }, el("summary", { text: "Paste a list of facts" }), el("div", { class: "stack" }, paste, el("div", { class: "row" }, addPasted))),
+      el("details", { class: "more" }, el("summary", { text: "Import a fact sheet (.json)" }), el("div", { class: "stack" }, jsonDrop, jsonMsg)),
+      el("div", { class: "row" }, save)));
+}
+
+function showNotice(title, body, keep = true) {
+  if (keep) pendingNotice = [title, body];
+  $("alert-title").textContent = title;
+  $("alert-body").textContent = body;
+  $("alert").classList.add("notice");
+  $("alert").hidden = false;
+}
+
+// What an open workspace still needs before its first draft, and where to go next.
+function firstRunPanel(ws, projectCount) {
+  if (!ws || ws.kind === "main") return "";
+  const steps = [
+    [ws.company_set_up, "Company facts", ws.company_set_up ? "Set up." : "Drafts need your official facts first.", "#/company", ws.company_set_up ? "Edit" : "Add facts"],
+    [ws.past_proposals > 0, "Past proposals (optional)", ws.past_proposals ? `${ws.past_proposals} imported, ${ws.answers} approved answers.` : "Import old responses with their won/lost result to start with a library.", "#/library", "Import"],
+    [projectCount > 0, "First RFP", projectCount ? `${projectCount} project${projectCount === 1 ? "" : "s"}.` : "Upload it on the right. Anything your facts and library can't support comes back as \"needs an expert\".", null, null],
+  ];
+  if (ws.kind === "demo" || steps.every(([done]) => done)) return "";
+  return el("section", { class: "panel raised first-run" },
+    el("span", { class: "eyebrow", text: `${ws.name} · getting started` }),
+    el("h2", { text: "Build this workspace's memory" }),
+    el("ol", { class: "checklist" }, steps.map(([done, title, note, href, label]) => el("li", { class: done ? "done" : "" },
+      el("span", { class: `pill ${done ? "c-ok" : "c-muted"}`, text: done ? "Done" : "To do" }),
+      el("div", {}, el("b", { text: title }), el("p", { class: "small muted", text: note })),
+      href ? el("a", { class: "btn small", href, text: label }) : ""))),
+    el("p", { class: "small muted", text: "After that, each answer you approve joins the library and each outcome you record becomes a Hindsight lesson, so later RFPs start from what worked." }));
+}
+
+/* ---------- routing ---------- */
+async function route() {
+  pollToken++;
+  clearError();
+  const parts = (location.hash || "#/projects").slice(2).split("/");
+  for (const id of ["nav-projects", "nav-library", "nav-memory", "nav-company"]) $(id).removeAttribute("aria-current");
+  const view = $("view");
+  view.replaceChildren(el("div", { class: "skeleton", role: "status", "aria-label": "Loading workspace" }));
+  try {
+    if (parts[0] === "library") {
+      document.title = "Library · RFP Memory";
+      $("nav-library").setAttribute("aria-current", "page");
+      await (parts[1] ? proposalView(view, Number(parts[1])) : libraryView(view));
+    } else if (parts[0] === "company") {
+      document.title = "Company · RFP Memory";
+      $("nav-company").setAttribute("aria-current", "page");
+      await companyView(view);
+    } else if (parts[0] === "start") {
+      document.title = "New workspace · RFP Memory";
+      startView(view);
+    } else if (parts[0] === "memory") {
+      document.title = "Memory · RFP Memory";
+      $("nav-memory").setAttribute("aria-current", "page");
+      await memoryView(view);
+    } else {
+      document.title = parts[1] ? "Project · RFP Memory" : "Projects · RFP Memory";
+      $("nav-projects").setAttribute("aria-current", "page");
+      await (parts[1] ? projectView(view, Number(parts[1])) : projectsView(view));
+    }
+  } catch (e) { view.replaceChildren(); showError(e); }
+  loadStatus();
+}
+window.addEventListener("hashchange", route);
+
+function playbookPanel(initial) {
+  const box = el("section", { class: "panel raised hindsight-panel" });
+  const render = (data) => {
+    const pb = data && data.playbook;
+    const refresh = el("button", { class: "btn small", type: "button", text: pb ? "Refresh playbook" : "Build playbook",
+      title: "Asks Hindsight to consolidate every lesson (uses Hindsight credits)" });
+    refresh.addEventListener("click", async () => {
+      refresh.disabled = true; refresh.textContent = "Asking Hindsight…";
+      try { render(await api("/v1/memory/playbook/refresh", { method: "POST" })); }
+      catch (e) { showError(e); refresh.disabled = false; refresh.textContent = "Try again"; }
+    });
+    box.replaceChildren(
+      el("div", { class: "row spread" },
+        el("div", {}, el("span", { class: "eyebrow", text: "Hindsight mental model" }), el("h2", { text: "Playbook: what wins, what loses" })),
+        data && data.enabled === false ? el("span", { class: "pill c-muted", text: "Lessons off" }) : refresh),
+      pb && pb.content ? markdownContent(pb.content) :
+        el("p", { class: "small muted", text: "Not built yet. Hindsight will summarise every outcome, review and debrief it has learned into one playbook." }),
+      pb && pb.last_refreshed_at ? el("p", { class: "small muted", text: `Refreshed ${when(pb.last_refreshed_at)}${pb.is_stale ? " · newer lessons since then" : ""}` }) : "");
+  };
+  render(initial);
+  return box;
+}
+function lessonsPanel(data) {
+  const signal = { positive: "c-ok", negative: "c-bad", neutral: "c-muted" };
+  return el("section", { class: "panel raised" },
+    el("div", { class: "row spread" },
+      el("div", {}, el("span", { class: "eyebrow", text: "Hindsight lessons bank" }), el("h2", { text: "What Hindsight has learned" })),
+      el("span", { class: "pill c-info", text: `${data.total} lessons${data.pending ? ` · ${data.pending} syncing` : ""}` })),
+    el("p", { class: "small muted", text: "Each outcome, review and debrief becomes a lesson. Hindsight extracts facts and patterns from them, and they decide which past answers are offered next time." }),
+    data.lessons.length ? el("div", { class: "timeline" }, data.lessons.slice(0, 40).map((l) =>
+      el("article", { class: "memory-event" },
+        el("div", { class: "row spread" },
+          el("span", { class: `pill ${signal[l.signal] || "c-muted"}`, text: l.signal }),
+          el("time", { class: "small muted", datetime: l.happened_at, text: when(l.happened_at) })),
+        el("p", { class: "event-detail", text: l.text }),
+        el("div", { class: "meta" }, l.tags.filter((t) => !t.startsWith("signal:")).join(" · ") + (l.status === "retained" ? "" : " · waiting to sync"))))) :
+      el("p", { class: "empty", text: "No lessons yet. Import past proposals with their won/lost result, or review drafted answers." }));
+}
+/* ---------- learning curve (Memory page) ---------- */
+const svgEl = (tag, attrs = {}, ...kids) => {
+  const node = document.createElementNS("http://www.w3.org/2000/svg", tag);
+  for (const [k, v] of Object.entries(attrs)) node.setAttribute(k, v);
+  kids.forEach((k) => node.append(k));
+  return node;
+};
+const pct = (v) => (v === null || v === undefined ? "—" : `${Math.round(v * 100)}%`);
+
+function curveChart(points) {
+  const W = 640, H = 240, L = 44, R = 16, T = 16, B = 40;
+  const x = (i) => (points.length === 1 ? L + (W - L - R) / 2 : L + (i * (W - L - R)) / (points.length - 1));
+  const y = (v) => T + (1 - v) * (H - T - B);
+  const series = [
+    { key: "score", label: "Review score", color: "var(--accent)" },
+    { key: "accepted_rate", label: "Accepted as written", color: "var(--ok)" },
+    { key: "needs_sme_rate", label: "Needs an expert", color: "var(--warn)" },
+  ];
+  const svg = svgEl("svg", { viewBox: `0 0 ${W} ${H}`, role: "img", class: "curve",
+    "aria-label": "Review outcomes for each project, oldest to newest" });
+  for (const t of [0, 0.25, 0.5, 0.75, 1]) {
+    svg.append(svgEl("line", { x1: L, x2: W - R, y1: y(t), y2: y(t), stroke: "var(--line)", "stroke-width": 1 }));
+    const label = svgEl("text", { x: L - 8, y: y(t) + 4, "text-anchor": "end", "font-size": 11, fill: "var(--muted)" });
+    label.textContent = `${t * 100}%`;
+    svg.append(label);
+  }
+  points.forEach((p, i) => {
+    const label = svgEl("text", { x: x(i), y: H - 22, "text-anchor": "middle", "font-size": 11, fill: "var(--muted)" });
+    label.textContent = `#${i + 1}`;
+    svg.append(label);
+  });
+  for (const s of series) {
+    const known = points.map((p, i) => ({ v: p[s.key], i })).filter((d) => d.v !== null && d.v !== undefined);
+    if (known.length > 1) svg.append(svgEl("polyline", { points: known.map((d) => `${x(d.i)},${y(d.v)}`).join(" "), fill: "none", stroke: s.color, "stroke-width": 2.5 }));
+    for (const d of known) {
+      const dot = svgEl("circle", { cx: x(d.i), cy: y(d.v), r: 4.5, fill: s.color });
+      const tip = svgEl("title");
+      tip.textContent = `${points[d.i].name}: ${s.label} ${pct(d.v)} (${points[d.i].reviewed} reviewed)`;
+      dot.append(tip);
+      svg.append(dot);
+    }
+  }
+  const legend = el("div", { class: "legend" }, series.map((s) =>
+    el("span", {}, el("i", { style: `background:${s.color}` }), s.label)));
+  return el("div", {}, el("div", { class: "scroll-x" }, svg), legend);
+}
+
+function learningCurvePanel(data) {
+  const box = el("section", { class: "panel raised" },
+    el("span", { class: "eyebrow", text: "Learning curve" }),
+    el("h2", { text: "Are drafts getting better with experience?" }),
+    el("p", { class: "small muted", text: "Counted from what reviewers actually did with each project's drafts, oldest project first. Accepted as written is the strongest signal; a rejection the weakest." }));
+  const pts = data.projects;
+  if (!pts.length) {
+    box.append(el("p", { class: "empty", text: "No reviewed projects yet. Draft an RFP and accept, edit or reject its answers; each reviewed project adds a point here." }));
+    return box;
+  }
+  const first = pts[0], last = pts[pts.length - 1];
+  box.append(
+    pts.length > 1 ? el("div", { class: `note ${data.score_change >= 0 ? "c-ok" : "c-warn"}` },
+      el("div", { class: "t", text: `Review score ${pct(first.score)} → ${pct(last.score)} over ${pts.length} projects` }),
+      `Accepted as written went from ${pct(first.accepted_rate)} to ${pct(last.accepted_rate)}; needs-an-expert from ${pct(first.needs_sme_rate)} to ${pct(last.needs_sme_rate)}.`) : null,
+    curveChart(pts),
+    data.mixed_conditions ? el("div", { class: "note c-warn" }, el("div", { class: "t", text: "Conditions changed between projects" }),
+      "Some projects used a different retrieval mode or model, so part of any change may not come from memory. The last columns show which.") : null,
+    el("div", { class: "scroll-x" }, el("table", { class: "plain-table" },
+      el("thead", {}, el("tr", {}, ["#", "Project", "Reviewed", "As written", "Light edit", "Heavy edit", "Rejected", "Edit size", "Needs expert", "Unsupported", "Score", "Mode · model"].map((h) => el("th", { text: h })))),
+      el("tbody", {}, pts.map((p, i) => el("tr", {},
+        el("td", { text: i + 1 }),
+        el("td", {}, el("a", { href: `#/projects/${p.project_id}`, text: p.name })),
+        [p.reviewed, p.accepted, p.light_edit, p.heavy_edit, p.rejected, p.avg_edit_distance === null ? "—" : fmt(p.avg_edit_distance),
+         pct(p.needs_sme_rate), pct(p.unsupported_rate), pct(p.score), `${p.retrieval_modes.join("/") || "—"} · ${p.models.join("/") || "—"}`].map((v) => el("td", { text: v }))))))),
+    el("p", { class: "small muted", text: `Score = (${Object.entries(data.weights).map(([k, w]) => `${w}×${k.replace("_", " ")}`).join(" + ")}) ÷ reviewed. Light edit means 25% or less of the text changed. ${data.caveat}` }));
+  return box;
+}
+
+/* ---------- before / after (project page) ---------- */
+const ARM_LABEL = { none: "No memory", plain: "Before: no lessons", outcome: "Local signals", hindsight: "After: with lessons" };
+
+function historyPill(h) {
+  if (!h) return null;
+  if (h.won && !h.lost) return el("span", { class: "pill c-ok", text: "won proposal" });
+  if (h.lost && !h.won) return el("span", { class: "pill c-bad", text: "lost proposal" });
+  return el("span", { class: "pill c-muted", text: "mixed" });
+}
+
+function comparisonResult(c) {
+  const arms = c.arms;
+  const summaryRow = (label, key) => el("tr", {}, el("th", { text: label }), arms.map((a) => el("td", { text: c.summary[a][key] })));
+  const table = el("div", { class: "scroll-x" }, el("table", { class: "plain-table" },
+    el("thead", {}, el("tr", {}, [el("th"), ...arms.map((a) => el("th", { text: ARM_LABEL[a] || a }))])),
+    el("tbody", {},
+      summaryRow("Drafted", "drafted"), summaryRow("Cited answers from won proposals", "cited_answers_from_won_proposals"),
+      summaryRow("Cited answers from lost proposals", "cited_answers_from_lost_proposals"),
+      summaryRow("Needs an expert", "needs_sme"), summaryRow("Unsupported claims", "with_unsupported_claims"))));
+  const armBlock = (q, arm) => {
+    const a = q.arms[arm];
+    if (!a) return el("div", { class: "cmp-arm" }, el("b", { text: ARM_LABEL[arm] || arm }), el("p", { class: "small muted", text: "No draft." }));
+    return el("div", { class: "cmp-arm" },
+      el("b", { text: ARM_LABEL[arm] || arm }),
+      a.error ? problemNote(a.error_info, a.error) : el("p", { class: "cmp-answer", text: a.answer || "(needs an expert: no answer drafted)" }),
+      el("div", { class: "row" }, a.cited_answers.map((code) => {
+        const info = a.retrieved.find((r) => r.id === code);
+        return el("span", { class: "row" }, el("span", { class: "pill c-info", text: code }), historyPill(info?.history));
+      })),
+      arm === "hindsight" && a.retrieved.some((r) => r.lesson_evidence.length) ? el("div", { class: "lesson-evidence" },
+        el("span", { class: "eyebrow", text: "Why: what Hindsight remembered" }),
+        el("ul", {}, a.retrieved.filter((r) => r.lesson_evidence.length).slice(0, 2).map((r) =>
+          el("li", { text: `${r.id} (×${fmt(r.lessons)}): ${r.lesson_evidence[0]}` })))) : null);
+  };
+  const changed = c.questions.filter((q) => q.changed);
+  const same = c.questions.filter((q) => !q.changed);
+  const item = (q) => el("details", { class: "more" },
+    el("summary", { text: `${q.code}: ${q.question.slice(0, 110)}${q.changed ? "" : " (same answers offered)"}` }),
+    el("div", { class: "cmp-grid" }, arms.map((arm) => armBlock(q, arm))));
+  return el("div", { class: "stack" },
+    el("p", { class: "small muted", text: `${c.questions_changed} of ${c.questions.length} questions were offered different past answers. Held constant: ${c.controls.join("; ")}. Model: ${c.model || "—"}.` }),
+    c.carried_over ? el("p", { class: "small muted", text: `${c.carried_over} of ${c.total} drafts were carried over from run #${c.carried_over_from}, which was stopped before it finished; only the rest were drafted in this run.` }) : "",
+    c.warning ? el("div", { class: "note c-warn" }, c.warning) : null,
+    table,
+    changed.length ? el("h3", { text: "Questions where memory changed the draft" }) : el("p", { class: "small muted", text: "Memory offered the same past answers for every question, so nothing changed here." }),
+    changed.map(item),
+    same.length ? el("details", { class: "more" }, el("summary", { text: `${same.length} ${same.length === 1 ? "question" : "questions"} with no change` }), same.map(item)) : null);
+}
+
+function comparisonCard(p) {
+  const box = el("section", { class: "panel hindsight-panel" }, el("p", { class: "small muted", text: "Loading…" }));
+  const calls = p.requirements.length * 2;
+  const render = (data) => {
+    const c = data.comparison;
+    const run = el("button", { class: "btn small", type: "button", text: c ? "Run again" : "Compare with and without lessons",
+      title: `Drafts every question twice with the current model: ${calls} model calls. These drafts are kept apart and never reviewed or exported.` });
+    run.addEventListener("click", async () => {
+      run.disabled = true; run.textContent = "Starting…";
+      try {
+        const started = await api(`/v1/projects/${p.id}/comparison`, json("POST", {}));
+        box.replaceChildren(el("p", { class: "small muted", text: "Drafting both versions…" }));
+        await pollJob(started.job_id, (j) => { if (j.total) box.firstChild.textContent = `Drafting both versions… ${j.done} of ${j.total}`; });
+        loadStatus(true);
+        render(await api(`/v1/projects/${p.id}/comparison`));
+      } catch (e) { showError(e); run.disabled = false; run.textContent = "Try again"; }
+    });
+    const running = c && (c.status === "queued" || c.status === "running");
+    box.replaceChildren(
+      el("div", { class: "row spread" },
+        el("div", {}, el("span", { class: "eyebrow", text: "Before / after" }), el("h2", { text: "Does memory change the draft?" })),
+        running ? el("span", { class: "pill c-info", text: "Running" }) : run),
+      !c ? el("p", { class: "small muted", text: `Drafts each question twice with the same model, prompt and facts: once with plain search, once with Hindsight's lessons. Uses ${calls} model calls.` }) : "",
+      c && c.status === "completed" ? comparisonResult(c) : "",
+      c && c.status === "completed" ? judgePanel(p) : "",
+      c && c.status === "failed" ? problemNote(c.error_info, c.error || "The comparison failed.", { heading: "The comparison stopped" }) : "");
+  };
+  api(`/v1/projects/${p.id}/comparison`).then(render).catch(() => box.remove());
+  return box;
+}
+
+/* ---------- V4: judge model + human spot-check of the before/after drafts ---------- */
+const OUTCOME_LABEL = { hindsight: "With lessons better", plain: "No lessons better", tie: "Tie",
+  depends_on_order: "Depends on order", identical: "Identical", not_judged: "Not judged yet" };
+const OUTCOME_CLASS = { hindsight: "c-ok", plain: "c-bad", tie: "c-muted", depends_on_order: "c-warn", identical: "c-muted", not_judged: "c-muted" };
+const CRITERIA_LABEL = { accurate: "Accurate", answers_question: "Answers the question", specific: "Specific" };
+const ARM_SHORT = { plain: "no lessons", hindsight: "with lessons", tie: "tie" };
+
+// Suggest a judge that didn't write the drafts: a model grading its own writing tends to favour it.
+function suggestJudge(options, drafter) {
+  const ids = options.map((o) => o.id);
+  return ids.find((id) => id !== drafter && !/lite|preview|latest|omni|tts|image/.test(id)) || ids.find((id) => id !== drafter) || drafter;
+}
+
+function judgePanel(p) {
+  const box = el("section", { class: "panel judge-panel" }, el("p", { class: "small muted", text: "Loading the judge…" }));
+  let models = [];
+  const state = { model: null, orders: 2 };
+  const load = async () => {
+    const q = new URLSearchParams({ orders: String(state.orders) });
+    if (state.model) q.set("judge_model", state.model);
+    render(await api(`/v1/projects/${p.id}/comparison/judge?${q}`));
+  };
+  const render = (data) => {
+    const j = data.judge, plan = data.plan;
+    if (!j || !plan.comparison_job_id) { box.remove(); return; }
+    if (!state.model) {
+      state.model = j.last_run?.judge_model || suggestJudge(models, plan.drafting_model);
+      // The first answer described the server's default; ask again for the model actually selected.
+      if (state.model !== plan.judge_model) { load().catch(showError); return; }
+    }
+    const select = el("select", { "aria-label": "Judge model" },
+      [...new Set([state.model, ...models.map((o) => o.id)])].map((id) => el("option", { value: id, text: id + (id === plan.drafting_model ? " (wrote the drafts)" : "") })));
+    select.value = state.model;
+    select.addEventListener("change", () => { state.model = select.value; load().catch(showError); });
+    const both = el("input", { type: "checkbox", id: `judge-orders-${p.id}` });
+    both.checked = state.orders === 2;
+    both.addEventListener("change", () => { state.orders = both.checked ? 2 : 1; load().catch(showError); });
+    const running = j.last_run && ["queued", "running"].includes(j.last_run.status);
+    const run = el("button", { class: "btn small primary", type: "button", disabled: !plan.calls_needed || running,
+      text: plan.calls_needed ? `Judge ${plan.differing} pairs (${plan.calls_needed} calls)` : "All pairs judged" });
+    run.addEventListener("click", async () => {
+      run.disabled = true; run.textContent = "Starting…";
+      try {
+        const started = await api(`/v1/projects/${p.id}/comparison/judge`, json("POST", { judge_model: state.model, orders: state.orders }));
+        run.textContent = "Judging…";
+        await pollJob(started.job_id, (job) => { if (job.total) run.textContent = `Judging… ${job.done} of ${job.total}`; });
+        loadStatus(true);
+        await load();
+      } catch (e) { showError(e); run.disabled = false; run.textContent = "Try again"; }
+    });
+    const t = j.tally;
+    const judged = t.hindsight + t.plain + t.tie + t.depends_on_order;
+    const scores = j.mean_scores;
+    box.replaceChildren(
+      el("div", { class: "row spread" },
+        el("div", {}, el("span", { class: "eyebrow", text: "V4 · blind judge" }), el("h2", { text: "Which draft would you submit?" })),
+        run),
+      el("p", { class: "small muted", text: `A second model compares each question's two drafts without being told which used lessons. ${plan.differing} of ${plan.pairs} questions have different drafts${plan.identical ? `; the ${plan.identical === 1 ? "identical one counts" : `${plan.identical} identical ones count`} as a tie at no cost` : ""}.` }),
+      el("div", { class: "row judge-controls" },
+        el("label", { class: "field" }, "Judge model", select),
+        el("label", { class: "check", for: both.id }, both, " Judge each pair both ways round (recommended: judges favour whichever draft comes first)")),
+      plan.same_model_as_drafter ? el("div", { class: "note c-info" }, el("div", { class: "t", text: "This model wrote both drafts" }),
+        "A model can prefer its own writing, but both drafts in every pair come from it, so that favours neither side. A different judge model would give a more independent second opinion.") : "",
+      // The judge model is picked here, not with the top-bar model button, so the note says so.
+      j.last_run?.status === "failed" ? problemNote(j.last_run.error_info && { ...j.last_run.error_info, switch_model: false,
+        action: "Pick another judge model above and run the judge again, or wait for the quota to reset. Verdicts already made are kept; a different judge model is judged separately." },
+        j.last_run.error, { heading: "The judge stopped" }) : "",
+      j.last_run?.warning ? el("div", { class: "note c-warn" }, j.last_run.warning) : "",
+      judged ? el("div", { class: "judge-tally" },
+        ["hindsight", "plain", "tie", "depends_on_order", "identical", "not_judged"].filter((k) => t[k]).map((k) =>
+          el("span", { class: `pill ${OUTCOME_CLASS[k]}`, text: `${OUTCOME_LABEL[k]}: ${t[k]}` }))) : "",
+      judged ? el("div", { class: "scroll-x" }, el("table", { class: "plain-table" },
+        el("thead", {}, el("tr", {}, el("th", { text: "Mean judge score (1-5)" }), el("th", { text: ARM_LABEL.plain }), el("th", { text: ARM_LABEL.hindsight }))),
+        el("tbody", {}, Object.keys(CRITERIA_LABEL).map((c) => el("tr", {}, el("th", { text: CRITERIA_LABEL[c] }),
+          el("td", { text: scores.plain[c] ?? "—" }), el("td", { text: scores.hindsight[c] ?? "—" })))))) : "",
+      judged ? el("p", { class: "small muted", text: `Judged by ${j.served_models.join(", ") || j.judge_model} · prompt ${j.prompt_version} · ${j.verdicts} verdicts · ${j.tokens.input + j.tokens.output} tokens. Both orders agreed on ${j.order_consistency.agreed} of ${j.order_consistency.both_orders} pairs; a win counts only when they agree.${j.human_agreement.compared ? ` Your spot-check agrees with the judge on ${j.human_agreement.agreed} of ${j.human_agreement.compared}.` : ""}` }) : "",
+      judged ? el("details", { class: "more" }, el("summary", { text: "Verdict for each question" }),
+        el("div", { class: "stack" }, j.questions.filter((q) => q.verdicts?.length).map((q) => el("div", { class: "judge-q" },
+          el("div", { class: "row spread" }, el("b", { text: `${q.code}: ${q.question.slice(0, 100)}` }), el("span", { class: `pill ${OUTCOME_CLASS[q.outcome]}`, text: OUTCOME_LABEL[q.outcome] })),
+          q.verdicts.map((v) => el("p", { class: "small" }, el("b", { text: `${v.order === "plain_first" ? "No-lessons draft shown first" : "With-lessons draft shown first"}: ${ARM_SHORT[v.winner]}. ` }), v.reason)),
+          q.human ? el("p", { class: "small muted", text: `Your spot-check: ${ARM_SHORT[q.human]}` }) : "")))) : "",
+      spotCheckPanel(p));
+  };
+  api("/v1/models").then((m) => { models = m.options || []; }).catch(() => {}).finally(() => load().catch(() => box.remove()));
+  return box;
+}
+
+function spotCheckPanel(p) {
+  const box = el("div", { class: "spot-check" }, el("p", { class: "small muted", text: "Loading the spot-check…" }));
+  let skipped = new Set();
+  let justAnswered = null;
+  const render = (data) => {
+    const s = data.spot_check;
+    if (!s || !s.total) { box.replaceChildren(); return; }
+    const reveal = justAnswered && s.items.find((i) => i.requirement_id === justAnswered);
+    const next = s.items.find((i) => !i.answered && !skipped.has(i.requirement_id));
+    const header = el("div", { class: "row spread" },
+      el("div", {}, el("span", { class: "eyebrow", text: "Human spot-check" }), el("h3", { text: "Pick the better draft yourself, blind" })),
+      el("span", { class: "pill c-info", text: `${s.answered} of ${s.total} checked` }));
+    const parts = [header, el("p", { class: "small muted", text: "You see two drafts as A and B. After you choose, it shows which one used Hindsight's lessons and what the judge said. No model calls." })];
+    if (reveal?.reveal) {
+      parts.push(el("div", { class: "note c-info" }, el("div", { class: "t", text: `${reveal.code}: A was ${ARM_SHORT[reveal.reveal.A]}, B was ${ARM_SHORT[reveal.reveal.B]}` }),
+        `You picked ${ARM_SHORT[reveal.reveal.your_choice]}.`));
+    }
+    if (next) {
+      const note = el("input", { type: "text", placeholder: "Why (optional)", "aria-label": "Why" });
+      const choose = async (choice) => {
+        try {
+          justAnswered = next.requirement_id;
+          render(await api(`/v1/projects/${p.id}/comparison/spot-check`, json("POST", { requirement_id: next.requirement_id, choice, note: note.value })));
+        } catch (e) { showError(e); }
+      };
+      const side = (label) => el("div", { class: "cmp-arm" }, el("b", { text: `Draft ${label}` }),
+        el("p", { class: "cmp-answer", text: next[label].answer || "(No answer drafted: needs an expert.)" }),
+        el("span", { class: "small muted", text: `Cites: ${next[label].sources.join(", ") || "nothing"}` }));
+      parts.push(
+        el("p", {}, el("b", { text: `${next.code}: ` }), next.question, next.word_limit ? ` (max ${next.word_limit} words)` : ""),
+        el("div", { class: "cmp-grid" }, side("A"), side("B")),
+        el("div", { class: "row" },
+          el("button", { class: "btn small", type: "button", text: "A is better", onclick: () => choose("A") }),
+          el("button", { class: "btn small", type: "button", text: "B is better", onclick: () => choose("B") }),
+          el("button", { class: "btn small", type: "button", text: "Tie", onclick: () => choose("tie") }),
+          el("button", { class: "btn small", type: "button", text: "Skip", onclick: () => { skipped.add(next.requirement_id); justAnswered = null; render(data); } }),
+          note));
+    } else {
+      parts.push(el("p", { class: "small", text: skipped.size ? "You've skipped the rest." : "All pairs checked. Your picks are compared with the judge above." }));
+    }
+    box.replaceChildren(...parts);
+  };
+  api(`/v1/projects/${p.id}/comparison/spot-check`).then(render).catch(() => box.remove());
+  return box;
+}
+
+// What Hindsight has learned about this client and industry: a Reflect over the lessons bank,
+// cached per project so reopening the page costs nothing.
+function clientBriefCard(p) {
+  const box = el("section", { class: "panel hindsight-panel" }, el("p", { class: "small muted", text: "Loading the client brief…" }));
+  const who = [p.client, p.industry].filter(Boolean).join(" · ") || "this client";
+  const render = (data) => {
+    const brief = data.brief;
+    const make = el("button", { class: "btn small", type: "button", text: brief ? "Ask again" : "Ask Hindsight",
+      title: "Runs a Hindsight Reflect over past outcomes and reviews (uses Hindsight credits)" });
+    make.addEventListener("click", async () => {
+      make.disabled = true; make.textContent = "Reflecting…";
+      try { render(await api(`/v1/projects/${p.id}/brief`, { method: "POST" })); }
+      catch (e) { showError(e); make.disabled = false; make.textContent = "Try again"; }
+    });
+    box.replaceChildren(
+      el("div", { class: "row spread" },
+        el("div", {}, el("span", { class: "eyebrow", text: "Hindsight reflect" }), el("h2", { text: `What we've learned about ${who}` })),
+        data.enabled === false ? el("span", { class: "pill c-muted", text: "Lessons off" }) : make),
+      brief ? markdownContent(brief.text) :
+        el("p", { class: "small muted", text: "Hindsight can recall past wins, losses, reviewer rejections and client preferences for this client and industry, and turn them into a short brief before you review." }),
+      brief ? el("p", { class: "small muted", text: `Based on ${brief.based_on.length} memories · ${when(brief.created_at)} · for reviewers only; never sent to the drafting model` }) : "");
+  };
+  api(`/v1/projects/${p.id}/brief`).then(render).catch(() => box.remove());
+  return box;
+}
+async function memoryView(view) {
+  const [lessonList, playbook, curve] = await Promise.all([
+    api("/v1/memory/lessons").catch(() => ({ total: 0, pending: 0, lessons: [] })),
+    api("/v1/memory/playbook").catch(() => null),
+    api("/v1/memory/learning-curve").catch(() => ({ projects: [], weights: {}, caveat: "" })),
+  ]);
+  const learned = await api("/v1/memory/learned");
+  const answerSignals = learned.events.filter((event) => event.answer_id).length;
+  const projectSignals = new Set(learned.events.map((event) => event.project_id).filter(Boolean)).size;
+  view.replaceChildren(
+    el("div", { class: "page-head" },
+      el("div", { class: "page-head-copy" },
+        el("span", { class: "eyebrow", text: "Learning memory" }),
+        el("h1", { class: "page-title", text: "Memory you can inspect" }),
+        el("p", { class: "page-subtitle", text: "Every recommendation stays traceable to a review, client preference, outcome, debrief, or superseding decision." }))),
+    el("div", { class: "metric-grid" },
+      el("div", { class: "metric" }, el("span", { class: "metric-label", text: "Recorded signals" }), el("strong", { class: "metric-value", text: learned.events.length }), el("span", { class: "metric-note", text: "Visible and auditable" })),
+      el("div", { class: "metric" }, el("span", { class: "metric-label", text: "Answer signals" }), el("strong", { class: "metric-value", text: answerSignals }), el("span", { class: "metric-note", text: "Attributed to cited sources" })),
+      el("div", { class: "metric" }, el("span", { class: "metric-label", text: "Projects represented" }), el("strong", { class: "metric-value", text: projectSignals }), el("span", { class: "metric-note", text: "Across the learning loop" }))),
+    el("div", { class: "stack", style: "margin-bottom:16px" }, learningCurvePanel(curve), playbookPanel(playbook), lessonsPanel(lessonList)),
+    el("div", { class: "grid2" },
+      el("section", { class: "panel raised" },
+        el("div", { class: "row spread" }, el("h2", { text: "Recent learning" }), el("span", { class: "pill c-info", text: "Newest first" })),
+        learned.events.length ? el("div", { class: "timeline" }, learned.events.map((event) =>
+          el("article", { class: "memory-event" },
+            el("div", { class: "row spread" },
+              el("span", { class: "pill c-info", text: event.kind.replaceAll("_", " ") }),
+              el("time", { class: "small muted", datetime: event.created_at, text: when(event.created_at) })),
+            el("p", { class: "event-detail", text: event.detail }),
+            el("div", { class: "meta" }, [event.answer_id, event.project_id ? "Project " + event.project_id : null].filter(Boolean).join(" · "))))) :
+          el("p", { class: "empty", text: "No learning signals yet. Review a drafted answer to create the first one." })),
+      el("aside", { class: "stack sticky" },
+        el("section", { class: "panel" },
+          el("span", { class: "eyebrow", text: "How it works" }),
+          el("h2", { text: "From decision to better retrieval" }),
+          el("div", { class: "signal-flow" },
+            el("div", { class: "signal-step" }, el("b", { text: "1" }), el("div", {}, el("strong", { text: "You review" }), el("span", { text: "Accept, edit, rewrite, reject, and optionally explain why." }))),
+            el("div", { class: "signal-step" }, el("b", { text: "2" }), el("div", {}, el("strong", { text: "Signals are attributed" }), el("span", { text: "Only answers actually cited by the draft receive credit." }))),
+            el("div", { class: "signal-step" }, el("b", { text: "3" }), el("div", {}, el("strong", { text: "Ranking improves" }), el("span", { text: "Quality, freshness, client fit, and outcomes shape the next retrieval." }))))),
+        el("section", { class: "panel" },
+          el("h2", { text: "Trust boundary" }),
+          el("p", { class: "small muted", text: "Hindsight holds two banks: approved answer text, word for word, for search; and lessons about what won, lost and was changed, which decide ranking, client briefs and this playbook. SQLite keeps the exact audit record, and lessons never enter a draft: drafts cite only official facts and approved answers." })))));
+}
+
+/* ---------- library ---------- */
+async function importProposal(file, meta) {
+  const body = new FormData();
+  body.append("file", file);
+  for (const [k, v] of Object.entries(meta)) if (v) body.append(k, v);
+  return api("/v1/library", { method: "POST", body });
+}
+async function libraryView(view) {
+  const [proposals, answers] = await Promise.all([api("/v1/library/proposals"), api("/v1/library/answers")]);
+  const drop = fileDrop("past-file", ".pdf,.docx,.xlsx,.txt,.md", "A past proposal: PDF, Word, Excel, TXT or Markdown");
+  const client = el("input", { type: "text", id: "past-client", placeholder: "e.g. Northwind Bank" });
+  const industry = el("input", { type: "text", id: "past-industry", placeholder: "e.g. finance" });
+  const submitted = el("input", { type: "date", id: "past-date" });
+  const result = el("select", { id: "past-result" }, ["unknown", "won", "lost", "no_decision"].map((v) => el("option", { value: v, text: v.replace("_", " ") })));
+  const loss = el("input", { type: "text", id: "past-loss", placeholder: "e.g. price" });
+  const go = el("button", { class: "btn primary", type: "button", disabled: true, text: "Extract answers" });
+  drop.addEventListener("filechange", () => { go.disabled = !drop.state.file; });
+  go.addEventListener("click", async () => {
+    go.disabled = true;
+    try {
+      const p = await importProposal(drop.state.file, { client: client.value, industry: industry.value, submitted_on: submitted.value, result: result.value, loss_reason: loss.value });
+      location.hash = `#/library/${p.id}`;
+    } catch (e) { showError(e); go.disabled = false; }
+  });
+  const sampleBtn = el("button", { class: "btn", type: "button", text: "Load the sample library" });
+  sampleBtn.addEventListener("click", async () => {
+    sampleBtn.disabled = true; sampleBtn.textContent = "Importing 3 sample proposals…";
+    const samples = [
+      ["past_northwind_bank_2025.docx", { client: "Northwind Bank", industry: "finance", submitted_on: "2025-07-14", result: "won" }],
+      ["past_meridian_health_2026.docx", { client: "Meridian Health Partners", industry: "healthcare", submitted_on: "2026-02-03", result: "lost", loss_reason: "price" }],
+      ["past_cobalt_insurance_2025.docx", { client: "Cobalt Insurance", industry: "insurance", submitted_on: "2025-10-21", result: "won" }],
+    ];
+    try {
+      const loaded = new Set((await api("/v1/library/proposals")).map((p) => p.filename));
+      const todo = samples.filter(([name]) => !loaded.has(name));
+      if (!todo.length) throw new Error("The sample library is already loaded. Open each sample below to confirm its answers.");
+      for (const [name, meta] of todo) await importProposal(await sampleFile(name), meta);
+      route();
+    } catch (e) { showError(e); sampleBtn.disabled = false; sampleBtn.textContent = "Load the sample library"; }
+  });
+  const cyberBtn = el("button", { class: "btn primary", type: "button", text: "Add cybersecurity demo evidence",
+    title: "Adds one synthetic won proposal and 10 prepared answers. Uses no Gemini calls; answers and lessons sync to Hindsight." });
+  cyberBtn.addEventListener("click", async () => {
+    cyberBtn.disabled = true; cyberBtn.textContent = "Adding 10 prepared answers...";
+    try {
+      const report = await api("/v1/library/demo-packs/virtusa-cyber", { method: "POST" });
+      if (report.already_there) {
+        showNotice("Demo evidence already loaded", "The cybersecurity proposal and its 10 answers are already in this workspace.");
+      } else {
+        showNotice("Cybersecurity evidence added", "10 synthetic answers were added with no Gemini calls. Hindsight is syncing them now.");
+      }
+      route();
+    } catch (e) {
+      showError(e); cyberBtn.disabled = false; cyberBtn.textContent = "Add cybersecurity demo evidence";
+    }
+  });
+
+  const search = el("input", { type: "search", id: "lib-search", placeholder: "Search the library by meaning, e.g. 'user provisioning'" });
+  const list = el("div", { class: "list" });
+  const warning = el("p", { class: "small muted" });
+  const renderAnswers = (items) => {
+    list.replaceChildren(...(items.length ? items.map(answerItem) : [el("p", { class: "empty", text: "No answers yet. Import a past proposal and confirm its answers." })]));
+  };
+  renderAnswers(answers.answers);
+  let timer;
+  search.addEventListener("input", () => {
+    clearTimeout(timer);
+    timer = setTimeout(async () => {
+      try {
+        const r = await api(`/v1/library/answers${search.value.trim() ? `?query=${encodeURIComponent(search.value.trim())}&limit=20` : ""}`);
+        warning.textContent = r.warning || "";
+        renderAnswers(r.answers);
+      } catch (e) { showError(e); }
+    }, 300);
+  });
+
+  const wonProposals = proposals.filter((proposal) => proposal.result === "won").length;
+  const pendingImports = proposals.filter((proposal) => proposal.status === "extracted").length;
+  const libraryHead = el("div", { class: "page-head" },
+    el("div", { class: "page-head-copy" },
+      el("span", { class: "eyebrow", text: "Reusable knowledge" }),
+      el("h1", { class: "page-title", text: "Answer library" }),
+      el("p", { class: "page-subtitle", text: "Curate approved answers, attach business outcomes, and find the strongest evidence for the next proposal." })));
+  const libraryMetrics = el("div", { class: "metric-grid" },
+    el("div", { class: "metric" }, el("span", { class: "metric-label", text: "Approved answers" }), el("strong", { class: "metric-value", text: answers.answers.length }), el("span", { class: "metric-note", text: "Available for grounded drafting" })),
+    el("div", { class: "metric" }, el("span", { class: "metric-label", text: "Past proposals" }), el("strong", { class: "metric-value", text: proposals.length }), el("span", { class: "metric-note", text: wonProposals + " associated with wins" })),
+    el("div", { class: "metric" }, el("span", { class: "metric-label", text: "Needs confirmation" }), el("strong", { class: "metric-value", text: pendingImports }), el("span", { class: "metric-note", text: pendingImports ? "Review extracted pairs" : "Library is up to date" })));
+  view.replaceChildren(libraryHead, libraryMetrics, el("div", { class: "grid2" },
+    el("div", { class: "stack" },
+      el("section", { class: "panel raised" },
+        el("div", { class: "row spread" }, el("h2", { text: "Answer library" }), el("span", { class: "small muted", text: `${answers.answers.length} approved answers` })),
+        search, warning, list),
+    ),
+    el("div", { class: "stack sticky" },
+      el("section", { class: "panel demo-pack" },
+        el("span", { class: "eyebrow", text: "No company data yet?" }),
+        el("h2", { text: "Cybersecurity demo evidence" }),
+        el("p", { class: "small muted", text: "A clearly labelled synthetic won proposal covering architecture review, strategy, programme, roadmap, awareness training, payment-gateway assessment, pricing, references, personnel and delivery milestones." }),
+        el("div", { class: "demo-pack-meta" },
+          el("span", { class: "pill c-ok", text: "10 answers" }),
+          el("span", { class: "pill c-info", text: "0 Gemini calls" }),
+          el("span", { class: "pill c-sme", text: "Demo only" })),
+        cyberBtn,
+        el("p", { class: "small muted", text: "The prepared answers and outcome lessons still sync to Hindsight so memory retrieval can use them." })),
+      el("section", { class: "panel panel-accent" },
+        el("h2", { text: "Add a past proposal" }),
+        el("p", { class: "small muted", text: "Questions and answers are extracted, and you confirm each one before it joins the library." }),
+        drop,
+        el("div", { class: "fields" },
+          el("label", { class: "field", for: "past-client" }, "Client", client),
+          el("label", { class: "field", for: "past-industry" }, "Industry", industry),
+          el("label", { class: "field", for: "past-date" }, "Submitted", submitted),
+          el("label", { class: "field", for: "past-result" }, "Result", result),
+          el("label", { class: "field", for: "past-loss" }, "Loss reason", loss)),
+        el("div", { class: "row" }, go, !workspace || workspace.kind === "main" ? sampleBtn : "")),
+      el("section", { class: "panel" },
+        el("h2", { text: "Past proposals" }),
+        proposals.length ? el("div", { class: "list project-list" }, proposals.map((p) => el("div", { class: "item" },
+          el("a", { href: `#/library/${p.id}`, text: p.filename }),
+          el("div", { class: "meta" }, pill(p.status), p.client || "", p.result !== "unknown" ? p.result.replace("_", " ") : "", when(p.created_at))))) :
+          el("p", { class: "empty", text: "None yet." })),
+    )));
+}
+function answerItem(a) {
+  const del = el("button", { class: "btn small danger", type: "button", text: "Delete" });
+  del.addEventListener("click", async () => {
+    if (del.dataset.armed !== "1") { del.dataset.armed = "1"; del.textContent = "Confirm delete"; return; }
+    try { await api(`/v1/library/answers/${a.id}`, { method: "DELETE" }); route(); } catch (e) { showError(e); }
+  });
+  const sync = { retained: ["synced", "c-ok"], pending: ["syncing", "c-info"], pending_delete: ["removing", "c-warn"], deleted: ["removed", "c-muted"] }[a.hindsight_status] || [a.hindsight_status, "c-muted"];
+  // Which proposal (or project) this answer came from, and whether it won or lost — the reason
+  // outcome-aware ranking prefers it. Nothing shown when the result is unknown.
+  const outcome = a.outcome && el("span", {
+    class: `pill ${a.outcome.result === "won" ? "c-ok" : a.outcome.result === "lost" ? "c-bad" : "c-muted"}`,
+    title: a.outcome.loss_reason ? `Lost on ${a.outcome.loss_reason}` : "",
+    text: a.outcome.result === "lost" && a.outcome.loss_reason ? `lost · ${a.outcome.loss_reason}` : a.outcome.result,
+  });
+  return el("div", { class: "item" },
+    el("div", { class: "row spread" }, el("span", { class: "rid", text: a.id }), el("div", { class: "row" },
+      a.retrieval ? el("span", { class: "small mono muted", text: `#${a.retrieval.position} · ${fmt(a.retrieval.final ?? a.retrieval.semantic)}` }) : null,
+      outcome, el("span", { class: `pill ${sync[1]}`, title: a.hindsight_error || "", text: sync[0] }), del)),
+    el("p", { class: "question", style: "font-size:15px", text: a.question }),
+    el("p", { class: "answer small", text: a.answer }),
+    a.track_record ? el("p", { class: "small muted", text:
+      (a.track_record.accepted || 0) + " accepted · " +
+      (a.track_record.heavy_edits || 0) + " heavily edited · " +
+      (a.track_record.rejected || 0) + " rejected" +
+      (a.track_record.average_rating ? " · " + a.track_record.average_rating + "/5" : "") +
+      (a.track_record.suggested_supersede ? " · flagged outdated" : "") }) : null,
+    el("div", { class: "meta" }, [a.client, a.industry, a.source === "project" ? "from a reviewed project" : "from a past proposal"].filter(Boolean).join(" · ")));
+}
+const fmt = (n) => (n === null || n === undefined ? "—" : Number(n).toFixed(2));
+
+async function proposalView(view, id) {
+  const p = await api(`/v1/library/proposals/${id}`);
+  const header = el("div", { class: "row spread" },
+    el("div", {}, el("p", { class: "label", text: "Past proposal" }), el("h2", { text: p.filename })),
+    el("div", { class: "row" }, pill(p.status), el("a", { href: "#/library", class: "linkish", text: "Back to library" })));
+  const meta = el("p", { class: "small muted", text: [p.client, p.industry, p.submitted_on, p.result !== "unknown" ? p.result.replace("_", " ") : null, p.loss_reason ? `lost on ${p.loss_reason}` : null].filter(Boolean).join(" · ") });
+  const panel = el("section", { class: "panel raised" }, header, meta);
+  view.replaceChildren(panel);
+
+  if (p.status === "extracting" || p.status === "uploaded") {
+    const bar = el("div", { class: "bar" }, el("span", { style: "width:15%" }));
+    const text = el("p", { class: "small muted", text: "Extracting question-and-answer pairs…" });
+    panel.append(bar, text);
+    if (!p.job) return;
+    panel.append(el("div", { class: "row" }, stopButton(p.job.id, "Stop reading", "Stops now. You can discard the import or upload the file again.")));
+    const job = await pollJob(p.job.id);
+    if (job) { loadStatus(true); route(); }
+    return;
+  }
+  if (p.status === "extracted" || p.status === "failed") {
+    const discard = el("button", { class: "btn small danger", type: "button", text: "Discard this import" });
+    discard.addEventListener("click", async () => {
+      if (discard.dataset.armed !== "1") { discard.dataset.armed = "1"; discard.textContent = "Confirm discard"; return; }
+      try { await api(`/v1/library/proposals/${id}/discard`, { method: "POST" }); location.hash = "#/library"; } catch (e) { showError(e); }
+    });
+    header.lastChild.prepend(discard);
+  }
+  if (p.status === "failed") { panel.append(problemNote(p.error_info, p.error, { heading: "Extraction failed" })); return; }
+
+  const decisions = new Map(p.pairs.map((x) => [x.id, { decision: x.decision === "pending" ? "kept" : x.decision, question: x.question, answer: x.answer }]));
+  const editable = p.status === "extracted";
+  const rows = p.pairs.map((x) => {
+    const d = decisions.get(x.id);
+    const q = el("textarea", { rows: 2, disabled: !editable, "aria-label": `Question ${x.order}` }); q.value = x.question;
+    const a = el("textarea", { rows: 3, disabled: !editable, "aria-label": `Answer ${x.order}` }); a.value = x.answer;
+    const row = el("div", { class: "trow pairs" });
+    const keep = el("button", { type: "button", "aria-pressed": String(d.decision !== "dropped"), text: "Keep" });
+    const dropB = el("button", { type: "button", "aria-pressed": String(d.decision === "dropped"), text: "Drop" });
+    const setDecision = (v) => {
+      d.decision = v; row.classList.toggle("dropped", v === "dropped");
+      keep.setAttribute("aria-pressed", String(v !== "dropped")); dropB.setAttribute("aria-pressed", String(v === "dropped")); updateCount();
+    };
+    keep.addEventListener("click", () => setDecision(q.value !== x.question || a.value !== x.answer ? "edited" : "kept"));
+    dropB.addEventListener("click", () => setDecision("dropped"));
+    for (const t of [q, a]) t.addEventListener("input", () => { d.question = q.value; d.answer = a.value; if (d.decision !== "dropped") d.decision = (q.value !== x.question || a.value !== x.answer) ? "edited" : "kept"; });
+    row.append(el("span", { class: "rid", text: x.reference || `#${x.order}` }), q, a, editable ? el("div", { class: "seg" }, keep, dropB) : el("span", { class: "small muted", text: x.decision }));
+    if (d.decision === "dropped") row.classList.add("dropped");
+    return row;
+  });
+  const confirmBtn = el("button", { class: "btn primary", type: "button" });
+  const updateCount = () => { const n = [...decisions.values()].filter((d) => d.decision !== "dropped").length; confirmBtn.textContent = `Add ${n} answer${n === 1 ? "" : "s"} to the library`; };
+  updateCount();
+  confirmBtn.addEventListener("click", async () => {
+    confirmBtn.disabled = true;
+    try {
+      await api(`/v1/library/proposals/${id}/confirm`, json("POST", { pairs: [...decisions].map(([pid, d]) => ({ id: pid, decision: d.decision, question: d.question, answer: d.answer })) }));
+      location.hash = "#/library";
+    } catch (e) { showError(e); confirmBtn.disabled = false; }
+  });
+  panel.append(
+    editable ? el("p", { class: "small", text: "Check each pair. Edit anything that was extracted wrongly, and drop pairs that shouldn't be reused (pricing, one-off answers). Nothing joins the library until you confirm." }) :
+      el("p", { class: "small muted", text: "These answers are in the library." }),
+    el("div", { class: "table" }, rows),
+    editable ? el("div", { class: "row" }, confirmBtn) : null);
+}
+
+/* ---------- projects ---------- */
+async function projectsView(view) {
+  const [list, ws] = await Promise.all([api("/v1/projects"), loadWorkspace()]);
+  const drop = fileDrop("rfp-file", ".pdf,.docx,.xlsx,.txt,.md", "The buyer's RFP or questionnaire");
+  const factsDrop = fileDrop("project-facts", ".json", "Optional project fact sheet (.json); otherwise the workspace's company facts are used");
+  const name = el("input", { type: "text", id: "p-name", placeholder: "Defaults to the file name" });
+  const client = el("input", { type: "text", id: "p-client", placeholder: "e.g. Harborview Credit Union" });
+  const industry = el("input", { type: "text", id: "p-industry", placeholder: "e.g. finance" });
+  const go = el("button", { class: "btn primary", type: "button", disabled: true, text: "Start project" });
+  // Sample RFPs belong to the fictional company, so a real company's workspace offers none.
+  const SAMPLES = ws?.kind === "demo"
+    ? [["2026-12_ashford_community_bank_rfp.docx", "Try the Ashford RFP", { name: "Ashford Community Bank RFP", client: "Ashford Community Bank", industry: "finance" }],
+       ["2026-12_meadowgate_health_questionnaire.xlsx", "Try the Meadowgate questionnaire", { name: "Meadowgate Health security questionnaire", client: "Meadowgate Health Partners", industry: "healthcare" }]]
+    : ws?.kind === "company" ? []
+    : [["sample_rfp.docx", "Try the sample RFP", { name: "Harborview Credit Union RFP", client: "Harborview Credit Union", industry: "finance" }]];
+  const samples = SAMPLES.map(([file, label, meta]) => {
+    const b = el("button", { class: "btn", type: "button", text: label });
+    b.addEventListener("click", async () => { b.disabled = true; try { await start(await sampleFile(file), meta); } catch (e) { showError(e); b.disabled = false; } });
+    return b;
+  });
+  drop.addEventListener("filechange", () => { go.disabled = !drop.state.file; });
+  const start = async (file, meta, factFile = null) => {
+    const body = new FormData(); body.append("file", file);
+    if (factFile) body.append("fact_sheet", factFile);
+    for (const [k, v] of Object.entries(meta)) if (v) body.append(k, v);
+    const p = await api("/v1/projects", { method: "POST", body });
+    location.hash = `#/projects/${p.id}`;
+  };
+  go.addEventListener("click", async () => { go.disabled = true; try { await start(drop.state.file, { name: name.value, client: client.value, industry: industry.value }, factsDrop.state.file); } catch (e) { showError(e); go.disabled = false; } });
+
+  const activeProjects = list.filter((project) => !["approved", "exported", "failed"].includes(project.state)).length;
+  const readyProjects = list.filter((project) => ["approved", "exported"].includes(project.state)).length;
+  const totalRequirements = list.reduce((sum, project) => sum + project.requirement_count, 0);
+  const projectsHead = el("div", { class: "page-head" },
+    el("div", { class: "page-head-copy" },
+      el("span", { class: "eyebrow", text: "Proposal operations" }),
+      el("h1", { class: "page-title", text: "Turn RFPs into grounded drafts" }),
+      el("p", { class: "page-subtitle", text: "Extract every requirement, draft from approved evidence, review with your team, and feed outcomes back into memory." })));
+  const projectMetrics = el("div", { class: "metric-grid" },
+    el("div", { class: "metric" }, el("span", { class: "metric-label", text: "Total projects" }), el("strong", { class: "metric-value", text: list.length }), el("span", { class: "metric-note", text: "Across your proposal workspace" })),
+    el("div", { class: "metric" }, el("span", { class: "metric-label", text: "In progress" }), el("strong", { class: "metric-value", text: activeProjects }), el("span", { class: "metric-note", text: "Extracting, drafting, or reviewing" })),
+    el("div", { class: "metric" }, el("span", { class: "metric-label", text: "Ready to ship" }), el("strong", { class: "metric-value", text: readyProjects }), el("span", { class: "metric-note", text: totalRequirements + " requirements processed" })));
+  view.replaceChildren(projectsHead, firstRunPanel(ws, list.length), projectMetrics, el("div", { class: "grid2" },
+    el("section", { class: "panel raised" },
+      el("h2", { text: "Projects" }),
+      list.length ? el("div", { class: "list project-list" }, list.map((p) => el("div", { class: "item" },
+        el("a", { href: `#/projects/${p.id}`, text: p.name }),
+        el("div", { class: "meta" }, pill(p.state), p.client || "", `${p.requirement_count} requirements`, p.filename, when(p.created_at))))) :
+        el("div", { class: "empty" }, el("p", { text: "No projects yet." }), el("p", { class: "small", text:
+          ws?.kind === "demo" ? "The demo history is loaded. Start with the Ashford RFP on the right."
+          : ws?.kind === "company" ? "Upload your first RFP on the right."
+          : "Tip: build the library first (Library → Load the sample library), then start the sample RFP here." }))),
+    el("section", { class: "panel panel-accent sticky" },
+      el("h2", { text: "New project" }),
+      el("p", { class: "small muted", text: "Every question is extracted, drafted from your fact sheet and the most relevant approved past answers, then reviewed by you." }),
+      drop,
+      el("p", { class: "small muted", text: "Optional: upload this client's approved facts now, or add them from the project page before drafting." }),
+      factsDrop,
+      el("div", { class: "fields" },
+        el("label", { class: "field", for: "p-name" }, "Name", name),
+        el("label", { class: "field", for: "p-client" }, "Client", client),
+        el("label", { class: "field", for: "p-industry" }, "Industry", industry)),
+      el("div", { class: "row" }, go, ...samples))));
+}
+
+const CATS = [["all", "All"], ["todo", "To review"], ["final", "Final"], ["sme", "Needs SME"], ["check", "Check warnings"], ["failed", "Failed"]];
+let filter = "all";
+function category(r) {
+  const d = r.draft;
+  if (!d) return "todo";
+  if (d.status === "failed") return "failed";
+  if (d.status === "needs_sme") return "sme";
+  if (d.flags.length) return "check";
+  return "grounded";
+}
+function matches(r, f) {
+  if (f === "all") return true;
+  if (f === "final") return r.final;
+  if (f === "todo") return !r.final;
+  return category(r) === f;
+}
+
+function projectFactSheetUpload(projectId, currentName, onSaved) {
+  const drop = fileDrop("project-facts-" + projectId, ".json",
+    currentName ? "Replace " + currentName : "Upload a project fact sheet (.json)");
+  const save = el("button", { class: "btn small", type: "button", disabled: true,
+    text: currentName ? "Replace fact sheet" : "Use this fact sheet" });
+  drop.addEventListener("filechange", () => { save.disabled = !drop.state.file; });
+  save.addEventListener("click", async () => {
+    save.disabled = true;
+    save.textContent = "Saving...";
+    const body = new FormData();
+    body.append("file", drop.state.file);
+    try {
+      await api("/v1/projects/" + projectId + "/fact-sheet", { method: "PUT", body });
+      await onSaved();
+    } catch (e) {
+      showError(e);
+      save.disabled = false;
+      save.textContent = currentName ? "Replace fact sheet" : "Use this fact sheet";
+    }
+  });
+  return el("div", { class: "stack" },
+    el("p", { class: "small muted", text: currentName ? "Current project facts: " + currentName : "This project currently uses the default fact sheet." }),
+    drop,
+    el("div", { class: "row" }, save));
+}
+
+async function projectView(view, id) {
+  const p = await api(`/v1/projects/${id}`);
+  const facts = Object.fromEntries(p.facts.map((f) => [f.id, f]));
+  const header = el("section", { class: "panel raised project-hero" },
+    el("div", { class: "row spread" },
+      el("div", {}, el("p", { class: "eyebrow", text: "Active project" }), el("h1", { class: "page-title", text: p.name })),
+      el("div", { class: "row" }, pill(p.state), el("a", { href: "#/projects", class: "linkish", text: "All projects" }))),
+    el("p", { class: "small muted", text: [p.client, p.industry, p.filename, p.fact_sheet_filename ? "facts: " + p.fact_sheet_filename : "default fact sheet"].filter(Boolean).join(" · ") }));
+  view.replaceChildren(header);
+
+  if (p.state === "extracting" || p.state === "drafting") {
+    const bar = el("span", { style: "width:5%" });
+    const text = el("p", { class: "small muted", text: p.state === "extracting" ? "Reading the RFP and extracting its requirements…" : "Drafting answers…" });
+    header.append(el("div", { class: "bar" }, bar), text);
+    if (!p.job) return;
+    header.append(el("div", { class: "row" }, stopButton(p.job.id, p.state === "extracting" ? "Stop reading" : "Stop drafting",
+      p.state === "extracting" ? "Stops now. The uploaded RFP is kept and you can retry." : "Stops now. Drafts already written are kept.")));
+    const job = await pollJob(p.job.id, (j) => {
+      if (j.total) { bar.style.width = `${Math.max(5, (j.done / j.total) * 100)}%`; text.textContent = `Drafting answers… ${j.done} of ${j.total}`; }
+      if (j.status === "interrupted") text.textContent = "Interrupted by a server restart. Resuming…";
+    });
+    if (job) { loadStatus(true); route(); }
+    return;
+  }
+  if (p.state === "failed") {
+    const retry = el("button", { class: "btn primary", type: "button", text: "Retry extraction" });
+    retry.addEventListener("click", async () => {
+      retry.disabled = true;
+      retry.textContent = "Retrying...";
+      try {
+        await api("/v1/projects/" + id + "/retry", { method: "POST" });
+        await projectView(view, id);
+      } catch (e) {
+        showError(e);
+        retry.disabled = false;
+        retry.textContent = "Retry extraction";
+      }
+    });
+    header.append(
+      problemNote(p.error_info, p.error, { heading: "This project failed" }),
+      el("div", { class: "note c-ok" }, el("div", { class: "t", text: "Safe to retry" }), "Your uploaded RFP is still stored. Retrying only reruns requirement extraction."),
+      el("div", { class: "row" }, retry),
+      el("details", { class: "more" },
+        el("summary", { text: p.fact_sheet_filename ? "Replace the project fact sheet" : "Upload a fact sheet for this project" }),
+        projectFactSheetUpload(id, p.fact_sheet_filename, () => projectView(view, id))));
+    return;
+  }
+  if (p.state === "requirements_extracted") { header.after(clientBriefCard(p), comparisonCard(p)); requirementsEditor(header, p); return; }
+
+  // review
+  header.after(clientBriefCard(p), comparisonCard(p));
+  const s = p.stats;
+  // A job that stopped after an error every remaining call would repeat puts that first in its
+  // warning (backend StopOnBlocking.summary, which never contains "; "); the failure note below
+  // explains it, so only the other warnings are shown here.
+  const stoppedEarly = Boolean(p.job?.warning?.startsWith("Stopped early"));
+  const otherWarnings = stoppedEarly ? p.job.warning.split("; ").slice(1).join("; ") : p.job?.warning;
+  if (otherWarnings) header.append(el("div", { class: "note c-warn" }, el("div", { class: "t", text: "Drafted with a warning" }), otherWarnings));
+  const canExport = p.state === "approved" || p.state === "exported";
+  // Answers that need another drafting pass: never drafted (a stopped run) or failed (model or
+  // network error). Final answers are never touched.
+  const missing = p.requirements.filter((r) => !r.final && !r.draft).map((r) => r.id);
+  const failedIds = p.requirements.filter((r) => !r.final && r.draft && r.draft.status === "failed").map((r) => r.id);
+  const redo = [...failedIds, ...missing];
+  if (redo.length && !canExport) {
+    const plural = (n, one, many) => `${n} ${n === 1 ? one : many}`;
+    const more = el("button", { class: "btn small primary", type: "button",
+      text: failedIds.length ? `Redraft ${plural(redo.length, "answer", "answers")}` : `Draft the ${plural(redo.length, "missing answer", "missing answers")}` });
+    more.addEventListener("click", async () => {
+      more.disabled = true; more.textContent = "Starting…";
+      try { await api(`/v1/projects/${id}/draft`, json("POST", { requirement_ids: redo })); route(); }
+      catch (e) { showError(e); more.disabled = false; more.textContent = "Try again"; }
+    });
+    const parts = [failedIds.length ? plural(failedIds.length, "answer failed", "answers failed") : null,
+                   missing.length ? plural(missing.length, "has no draft yet", "have no draft yet") : null].filter(Boolean);
+    // Why they failed: the most common cause among the failed drafts, and which model they failed on.
+    const failedDrafts = p.requirements.filter((r) => failedIds.includes(r.id)).map((r) => r.draft);
+    const byReason = {};
+    for (const d of failedDrafts) if (d.error_info) (byReason[d.error_info.reason] ||= []).push(d);
+    const [, topDrafts] = Object.entries(byReason).sort((a, b) => b[1].length - a[1].length)[0] || [];
+    const info = topDrafts?.[0].error_info;
+    const current = $("model-btn-label").textContent;
+    const failedOn = [...new Set(failedDrafts.map((d) => d.model).filter(Boolean))];
+    const switched = failedOn.length > 0 && !failedOn.includes(current);
+    let advice = `Redraft them all in one background job with ${current}. Final answers aren't touched.`;
+    if (info && switched) advice = `They failed on ${failedOn.join(", ")}; you're now on ${current}, so Redraft will use ${current}. Final answers aren't touched.`;
+    else if (info && !info.retry_helps) advice = `Redrafting with ${current} will fail the same way. ${info.action}`;
+    else if (info) advice = `${info.action} Final answers aren't touched.`;
+    header.append(el("div", { class: `note problem ${failedIds.length ? "c-bad" : "c-warn"}` },
+      el("div", { class: "t", text: parts.join(" · ") }),
+      info ? el("p", { class: "small" }, el("b", { text: `${topDrafts.length === failedDrafts.length ? "Cause" : `Main cause (${topDrafts.length} of ${failedDrafts.length})`}: ` }),
+        `${info.title}. ${info.detail}`) : null,
+      stoppedEarly && missing.length ? el("p", { class: "small", text: `Drafting stopped at that error, so the other ${plural(missing.length, "question", "questions")} didn't spend calls on it.` }) : null,
+      el("p", { class: "small", text: advice }),
+      el("div", { class: "row" },
+        info?.switch_model && !switched ? el("button", { class: "btn small", type: "button", text: "Choose another model", onclick: openModelPanel }) : null,
+        more)));
+    if (info && !info.retry_helps && !switched) more.classList.remove("primary");  // switching is the step that helps
+  }
+  const needsSmeIds = p.requirements
+    .filter((r) => !r.final && r.draft?.status === "needs_sme")
+    .map((r) => r.id);
+  if (needsSmeIds.length && !canExport) {
+    const refreshSme = el("button", { class: "btn small", type: "button",
+      text: `Refresh ${needsSmeIds.length} SME draft${needsSmeIds.length === 1 ? "" : "s"}` });
+    refreshSme.addEventListener("click", async () => {
+      if (!confirm(`Regenerate ${needsSmeIds.length} answers using ${needsSmeIds.length} AI calls? Evidence gaps will become clearly marked SME completion templates.`)) return;
+      refreshSme.disabled = true; refreshSme.textContent = "Starting...";
+      try { await api(`/v1/projects/${id}/draft`, json("POST", { requirement_ids: needsSmeIds })); route(); }
+      catch (e) { showError(e); refreshSme.disabled = false; refreshSme.textContent = "Try again"; }
+    });
+    header.append(el("div", { class: "note c-sme" },
+      el("div", { class: "t", text: `${needsSmeIds.length} answers need subject-matter input` }),
+      el("p", { class: "small", text: "Refresh them after a facts or library update, or use Edit/Rewrite to complete the marked fields. Lost-proposal answers are learning signals, not drafting evidence." }),
+      el("div", { class: "row" }, refreshSme)));
+  }
+  const exportLink = (format, label, primary) => el("a", {
+    class: "btn small" + (primary && canExport ? " primary" : ""), href: canExport ? `/v1/projects/${id}/export?format=${format}` : null,
+    "aria-disabled": String(!canExport), title: canExport ? null : "Accept, edit or rewrite every answer first", text: label,
+    onclick: () => setTimeout(() => refreshKeepingScroll(id), 1500),  // the export marks the project exported
+  });
+  header.append(el("div", { class: "row spread" },
+    el("div", { class: "progress-copy" },
+      el("div", { class: "progress-value" },
+        el("span", { text: s.final + " of " + s.requirements + " answers final" }),
+        el("span", { text: s.requirements ? Math.round((s.final / s.requirements) * 100) + "%" : "0%" })),
+      el("div", { class: "bar" }, el("span", { style: "width:" + (s.requirements ? (s.final / s.requirements) * 100 : 0) + "%" })),
+      el("span", { class: "small muted", text: s.needs_sme + " need an SME · " + s.flagged + " flagged · " + s.failed + " failed" })),
+    el("div", { class: "row" }, exportLink("docx", "Export Word", true), p.file_kind === "xlsx" ? exportLink("xlsx", "Export Excel", false) : null)));
+
+  if (canExport) {
+    const result = el("select", {}, ["unknown", "won", "lost", "no_decision"].map((v) =>
+      el("option", { value: v, text: v.replace("_", " ") })));
+    result.value = p.outcome?.result || "unknown";
+    const loss = el("input", { type: "text", placeholder: "Loss reason, e.g. price or technical fit", value: p.outcome?.loss_reason || "" });
+    const saveOutcome = el("button", { class: "btn small", type: "button", text: "Save outcome" });
+    saveOutcome.addEventListener("click", async () => {
+      saveOutcome.disabled = true;
+      try {
+        await api("/v1/projects/" + id + "/outcome", json("PUT", { result: result.value, loss_reason: loss.value || null }));
+        await refreshKeepingScroll(id);
+      } catch (e) { showError(e); saveOutcome.disabled = false; }
+    });
+    const section = el("input", { type: "text", placeholder: "Debrief section (optional)" });
+    const score = el("select", {}, [["", "Score"], ["1", "1/5"], ["2", "2/5"], ["3", "3/5"], ["4", "4/5"], ["5", "5/5"]].map(([v, t]) => el("option", { value: v, text: t })));
+    const comment = el("input", { type: "text", placeholder: "Debrief comment" });
+    const addDebrief = el("button", { class: "btn small", type: "button", text: "Add debrief" });
+    addDebrief.addEventListener("click", async () => {
+      addDebrief.disabled = true;
+      try {
+        await api("/v1/projects/" + id + "/debrief", json("POST", { items: [{
+          section: section.value || null, score: score.value ? Number(score.value) : null, comment: comment.value || null,
+        }] }));
+        section.value = ""; score.value = ""; comment.value = ""; addDebrief.textContent = "Debrief saved";
+      } catch (e) { showError(e); addDebrief.disabled = false; }
+    });
+    header.append(el("details", { class: "more" },
+      el("summary", { text: "Record outcome or debrief" }),
+      el("div", { class: "fields", style: "margin-top:10px" },
+        el("label", { class: "field" }, "Result", result),
+        el("label", { class: "field" }, "Loss reason", loss)),
+      el("div", { class: "row" }, saveOutcome),
+      el("div", { class: "fields", style: "margin-top:10px" },
+        el("label", { class: "field" }, "Section", section),
+        el("label", { class: "field" }, "Score", score),
+        el("label", { class: "field" }, "Comment", comment)),
+      el("div", { class: "row" }, addDebrief)));
+  }
+
+  const rowsBox = el("div");
+  const filters = el("div", { class: "filters", role: "toolbar", "aria-label": "Filter" });
+  const renderRows = () => {
+    filters.replaceChildren(...CATS.map(([k, label]) => el("button", { type: "button", "aria-pressed": String(filter === k), onclick: () => { filter = k; renderRows(); } },
+      label, el("span", { class: "n", text: p.requirements.filter((r) => matches(r, k)).length }))));
+    const shown = p.requirements.filter((r) => matches(r, filter));
+    rowsBox.replaceChildren(...(shown.length ? shown.map((r) => reqCard(r, facts, id)) : [el("p", { class: "empty", text: "Nothing here." })]));
+  };
+  renderRows();
+  view.append(el("div", { class: "grid2", style: "margin-top:16px" },
+    el("section", { class: "sheet" }, el("div", { class: "sheet-head" }, filters), rowsBox),
+    el("aside", { class: "stack sticky" },
+      el("section", { class: "panel" },
+        el("h2", { text: "Fact sheet" }),
+        el("p", { class: "small muted", text: (p.company ? p.company + " · " : "") + (p.fact_sheet_filename || "default fact sheet") + ". Current official facts; when past answers disagree, these facts win." }),
+        el("ul", { class: "facts" }, p.facts.map((f) => el("li", { class: "fact", id: `fact-${f.id}` }, el("span", { class: "fid", text: f.id }), el("span", { class: "ft", text: f.statement }))))))));
+}
+
+function requirementsEditor(panel, p) {
+  const items = p.requirements.map((r) => ({ question: r.question, section: r.section, reference: r.reference, mandatory: r.mandatory, word_limit: r.word_limit }));
+  const table = el("div", { class: "table" });
+  const render = () => {
+    table.replaceChildren(...items.map((it, i) => {
+      const q = el("textarea", { rows: 2, "aria-label": `Question ${i + 1}` }); q.value = it.question; q.addEventListener("input", () => { it.question = q.value; });
+      const sec = el("input", { type: "text", "aria-label": "Section", value: it.section || "" }); sec.addEventListener("input", () => { it.section = sec.value; });
+      const mand = el("select", { "aria-label": "Mandatory" }, [["", "not stated"], ["true", "mandatory"], ["false", "optional"]].map(([v, t]) => el("option", { value: v, text: t })));
+      mand.value = it.mandatory === null || it.mandatory === undefined ? "" : String(it.mandatory);
+      mand.addEventListener("change", () => { it.mandatory = mand.value === "" ? null : mand.value === "true"; });
+      const lim = el("input", { type: "number", min: "1", "aria-label": "Word limit", placeholder: "words", value: it.word_limit ?? "" });
+      lim.addEventListener("input", () => { it.word_limit = lim.value ? Number(lim.value) : null; });
+      const del = el("button", { class: "btn small danger", type: "button", title: "Remove", text: "✕", onclick: () => { items.splice(i, 1); render(); } });
+      return el("div", { class: "trow reqs" }, el("span", { class: "rid", text: it.reference || `#${i + 1}` }), q, sec, mand, lim, del);
+    }));
+  };
+  render();
+  const add = el("button", { class: "btn small", type: "button", text: "Add a requirement", onclick: () => { items.push({ question: "", section: null, reference: null, mandatory: null, word_limit: null }); render(); } });
+  const reextract = el("button", { class: "btn small", type: "button", text: "Re-extract automatically" });
+  reextract.addEventListener("click", async () => {
+    if (!confirm("Replace this requirement list by analysing the uploaded RFP again? This uses one AI extraction call.")) return;
+    reextract.disabled = true;
+    reextract.textContent = "Re-extracting...";
+    try {
+      await api(`/v1/projects/${p.id}/retry`, { method: "POST" });
+      route();
+    } catch (e) {
+      showError(e);
+      reextract.disabled = false;
+      reextract.textContent = "Re-extract automatically";
+    }
+  });
+  const draftBtn = el("button", { class: "btn primary", type: "button", text: `Draft all answers` });
+  draftBtn.addEventListener("click", async () => {
+    draftBtn.disabled = true;
+    try {
+      await api(`/v1/projects/${p.id}/requirements`, json("PUT", { requirements: items }));
+      await api(`/v1/projects/${p.id}/draft`, json("POST", {}));
+      route();
+    } catch (e) { showError(e); draftBtn.disabled = false; }
+  });
+  panel.append(
+    el("details", { class: "more" },
+      el("summary", { text: p.fact_sheet_filename ? "Replace project fact sheet" : "Use a project-specific fact sheet" }),
+      projectFactSheetUpload(p.id, p.fact_sheet_filename, () => projectView($("view"), p.id))),
+    el("p", { class: "small", text: `${items.length} requirements were extracted. Fix, remove or add any before drafting; after drafting starts, the list is fixed.` }),
+    table, el("div", { class: "row" }, add, reextract, draftBtn));
+}
+
+function smeFieldsForRequirement(question, fallback = []) {
+  const text = (question || "").toLowerCase();
+  const has = (...terms) => terms.some((term) => new RegExp(`\\b${term.replace(/[.*+?^${}()|[\\]\\\\]/g, "\\$&")}\\b`).test(text));
+  if (has("personnel", "cv", "cvs", "curricula", "qualification", "qualifications", "team member")) return [
+    "proposed name, role, and availability",
+    "relevant qualifications, certifications, and years of experience",
+    "two comparable engagements and the person's responsibilities",
+  ];
+  if (has("experience", "reference", "references", "last 7", "past project", "past projects")) return [
+    "client and project name approved for disclosure",
+    "relevant scope, contract value, and delivery dates",
+    "measurable result and reference contact or verification route",
+  ];
+  if (has("methodology", "timeline", "milestone", "milestones", "team roles")) return [
+    "phases, activities, and decision gates",
+    "timeline, dependencies, and named delivery roles",
+    "deliverables, acceptance criteria, and payment milestones",
+  ];
+  return fallback;
+}
+
+function smeHandoff(d, r) {
+  const marker = "\n\nComplete with:\n";
+  const [opening, checklist = ""] = d.answer.split(marker);
+  const supportedMarker = "\n\nSupported starting point:\n";
+  const supported = opening.includes(supportedMarker) ? opening.split(supportedMarker)[1].trim() : "";
+  const storedFields = [...checklist.matchAll(/^- \[SME input required: (.+?)\]$/gm)].map((match) => match[1]);
+  const fields = smeFieldsForRequirement(r.question, storedFields);
+  return el("section", { class: "sme-handoff" },
+    el("div", { class: "sme-handoff-head" },
+      el("span", { class: "sme-handoff-icon", text: "!" }),
+      el("div", {},
+        el("h3", { text: "Company input required" }),
+        el("p", { class: "sme-handoff-copy", text: "The approved library does not contain enough evidence to finish this response safely." }))),
+    supported ? el("div", { class: "sme-start" },
+      el("span", { class: "eyebrow", text: "Grounded starting point" }),
+      el("p", { text: supported })) : null,
+    d.sme_question ? el("div", { class: "sme-start" },
+      el("span", { class: "eyebrow", text: "Question for the expert" }),
+      el("p", { text: d.sme_question })) : null,
+    fields.length ? el("ol", { class: "sme-fields" },
+      fields.map((field, index) => el("li", {}, el("b", { text: index + 1 }), el("span", { text: field })))) :
+      el("p", { class: "small muted", text: "Use Edit or Rewrite below to provide the missing approved response." }));
+}
+
+function retrievalWarning(note) {
+  if (!note?.startsWith("Kept lost-proposal answer(s)")) return el("div", { class: "note c-warn", text: note });
+  const count = new Set(note.match(/ANS-\d+/g) || []).size;
+  return el("details", { class: "exclusion-note" },
+    el("summary", { text: `${count || "Some"} lost-proposal answer${count === 1 ? "" : "s"} excluded` }),
+    el("p", { text: note }));
+}
+
+function reqCard(r, facts, projectId) {
+  const d = r.draft;
+  const cat = category(r);
+  const [badgeText, badgeClass] = r.final ? ["Final", "c-ok"] :
+    { grounded: ["Grounded", "c-ok"], check: ["Check warnings", "c-warn"], sme: ["Needs SME", "c-sme"], failed: ["Failed", "c-bad"], todo: ["No draft", "c-muted"] }[cat];
+  const badge = el("span", { class: `pill ${badgeClass}`, text: badgeText });
+  const body = el("div", { class: "req-body" },
+    el("div", { class: "req-top" }, el("span", { class: "section", text: r.section || "" }),
+      r.mandatory === true ? el("span", { class: "chip2", text: "Mandatory" }) : null,
+      r.word_limit ? el("span", { class: "chip2", text: `≤ ${r.word_limit} words` }) : null, badge),
+    el("p", { class: "question", text: r.question }));
+  if (!d) return el("article", { class: "req" }, el("div", { class: "req-ref" }, el("span", { class: "rid", text: r.code })), body);
+  const hasSmeTemplate = d.flags.includes("sme_template");
+
+  if (r.final) {
+    const last = d.reviews[d.reviews.length - 1];
+    body.append(el("span", { class: "final-label", text: `Final (${last.action}${last.edit_distance ? `, ${Math.round(last.edit_distance * 100)}% changed` : ""})` }), el("p", { class: "answer", text: r.final_text }));
+  } else if (d.status === "failed") {
+    body.append(problemNote(d.error_info, d.error, { heading: "Drafting failed" }));
+  } else if (d.answer && hasSmeTemplate) {
+    body.append(smeHandoff(d, r));
+  } else if (d.answer) {
+    body.append(el("p", { class: "answer", text: d.answer }));
+  }
+  if (!r.final && d.answer) {
+    const pct = r.word_limit ? Math.min(100, (d.word_count / r.word_limit) * 100) : null;
+    body.append(el("div", { class: "row small" },
+      r.word_limit ? el("span", { class: `meter${d.word_count > r.word_limit ? " over" : ""}` }, el("span", { class: "track" }, el("span", { class: "fill", style: `width:${pct}%` })), el("span", { class: "mono", text: `${d.word_count} / ${r.word_limit} words` })) :
+        el("span", { class: "mono muted", text: `${d.word_count} words` }),
+      d.version > 1 ? el("span", { class: "muted", text: `version ${d.version}` }) : null));
+  }
+  const visibleFlags = d.flags.filter((flag) => flag !== "sme_template");
+  if (!r.final && visibleFlags.length) {
+    const texts = { unsupported_claims: "Contains statements no source supports:", evidence_unsupported: "The evidence checker found a claim that its cited source does not support.", evidence_partial: "The evidence checker found a claim that is only partially supported.", invalid_citation: `Cites sources it wasn't given: ${d.invalid_citations.join(", ") || "a claim cites nothing"}`, over_word_limit: "Over the word limit", no_claims: "Cites no sources, so nothing can be verified", empty_answer: "No answer was produced", sme_template: "Contains marked SME placeholders. Replace every placeholder before approval." };
+    body.append(el("div", { class: "note c-warn" }, el("div", { class: "t", text: "Check before using" }),
+      el("ul", {}, visibleFlags.map((f) => el("li", {}, texts[f] || f, f === "unsupported_claims" ? el("ul", {}, d.unsupported_claims.map((u) => el("li", { text: u }))) : null)))));
+  }
+  if (!r.final && d.status === "needs_sme" && !hasSmeTemplate) body.append(el("div", { class: "note c-sme" }, el("div", { class: "t", text: "Question for a subject-matter expert" }), d.sme_question || ""));
+  if (d.retrieval_warning) body.append(retrievalWarning(d.retrieval_warning));
+
+  const cited = new Set(d.sources);
+  if (d.sources.length || d.invalid_citations.length) {
+    body.append(el("div", { class: "sources" }, "Sources",
+      d.sources.map((s) => s.startsWith("ANS-") ?
+        el("button", { type: "button", class: "src ans", title: "Past answer: see below", text: s, onclick: (e) => { const det = e.target.closest(".req-body").querySelector("details.more"); if (det) det.open = true; } }) :
+        el("button", { type: "button", class: "src fact", title: facts[s]?.statement || "", text: s, onclick: () => flashFact(s) })),
+      d.invalid_citations.map((s) => el("span", { class: "src bad", text: s }))));
+  }
+  if (d.retrieved.length) {
+    body.append(el("details", { class: "more" },
+      el("summary", { text: `Past answers retrieved for this question (${d.retrieved.length})` }),
+      el("div", { class: "past" }, d.retrieved.map((x) => el("div", { class: `past-item${cited.has(x.id) ? " cited" : ""}` },
+        el("div", { class: "row spread small" },
+          el("span", { class: "mono" }, `#${x.position} `, el("b", { text: x.id }), x.client ? ` · ${x.client}` : "", x.live ? "" : " · no longer in the library"),
+          el("span", { class: "mono muted", text:
+            (cited.has(x.id) ? "cited · " : "") +
+            (x.outcome_score !== null && x.outcome_score !== undefined ? "outcome " + fmt(x.outcome_score) : "relevance " + fmt(x.final ?? x.semantic)) })),
+        x.question ? el("span", { class: "q", text: x.question }) : null,
+        x.answer ? el("span", { text: x.answer }) : null,
+        x.reasons?.length ? el("span", { class: "small muted", text: x.reasons.join(" · ") }) : null,
+        x.lesson_evidence?.length ? el("div", { class: "lesson-evidence" },
+          el("span", { class: "eyebrow", text: `Hindsight remembers · ×${fmt(x.lessons)}` }),
+          el("ul", {}, x.lesson_evidence.map((t) => el("li", { text: t })))) : null)))));
+  }
+  body.append(actionsFor(r, d, projectId));
+  return el("article", { class: "req", id: `req-${r.id}` },
+    el("div", { class: "req-ref" }, el("span", { class: "rid", text: r.code }), r.reference ? el("span", { class: "mono small muted", text: `ref ${r.reference}` }) : null), body);
+}
+
+function actionsFor(r, d, projectId) {
+  const box = el("div", { class: "editor" });
+  const buttons = el("div", { class: "actions" });
+  const hasSmeTemplate = d.flags.includes("sme_template");
+  const editableAnswer = () => {
+    if (!hasSmeTemplate) return d.answer || "";
+    const marker = "\n\nComplete with:\n";
+    const [opening, checklist = ""] = (d.answer || "").split(marker);
+    const stored = [...checklist.matchAll(/^- \[SME input required: (.+?)\]$/gm)].map((match) => match[1]);
+    const fields = smeFieldsForRequirement(r.question, stored);
+    return `${opening}${marker}${fields.map((field) => `- [SME input required: ${field}]`).join("\n")}`;
+  };
+  const reason = el("select", { "aria-label": "Feedback reason" },
+    [["", "Reason (optional)"], ["outdated", "Outdated"], ["wrong_product", "Wrong product"],
+      ["too_long", "Too long"], ["too_short", "Too short"], ["too_vague", "Too vague"], ["incorrect", "Incorrect"],
+      ["client_specific", "Client-specific"], ["tone", "Tone"], ["other", "Other"]]
+      .map(([v, t]) => el("option", { value: v, text: t })));
+  const rating = el("select", { "aria-label": "Answer rating" },
+    [["", "Rating (optional)"], ["1", "1/5"], ["2", "2/5"], ["3", "3/5"], ["4", "4/5"], ["5", "5/5"]]
+      .map(([v, t]) => el("option", { value: v, text: t })));
+  const feedback = el("div", { class: "actions" }, reason, rating);
+  const review = async (action, text) => {
+    try { await api("/v1/requirements/" + r.id + "/review", json("POST", {
+      action, final_text: text, reason_tags: reason.value ? [reason.value] : [],
+      rating: rating.value ? Number(rating.value) : null,
+    })); await refreshKeepingScroll(projectId); }
+    catch (e) { showError(e); }
+  };
+  const openEditor = (label, initial, onSave) => {
+    const t = el("textarea", { rows: 5 }); t.value = initial;
+    const save = el("button", { class: "btn small primary", type: "button", text: label });
+    const cancel = el("button", { class: "btn small", type: "button", text: "Cancel", onclick: () => { box.replaceChildren(feedback, buttons); } });
+    save.addEventListener("click", () => { save.disabled = true; onSave(t.value); });
+    box.replaceChildren(t, el("div", { class: "actions" }, save, cancel));
+    t.focus();
+  };
+  if (d.answer && d.status !== "failed" && !hasSmeTemplate) buttons.append(el("button", { class: "btn small primary", type: "button", text: r.final ? "Accept draft instead" : "Accept", onclick: () => review("accepted") }));
+  buttons.append(
+    el("button", { class: "btn small", type: "button", text: "Edit", onclick: () => openEditor("Save edit", r.final_text || editableAnswer(), (v) => review("edited", v)) }),
+    el("button", { class: "btn small", type: "button", text: "Rewrite", onclick: () => openEditor("Save rewrite", "", (v) => review("rewritten", v)) }),
+    el("button", { class: "btn small", type: "button", text: "Regenerate…", onclick: () => {
+      const input = el("input", { type: "text", placeholder: "Optional instructions, e.g. 'shorter, lead with SAML'" });
+      const go = el("button", { class: "btn small primary", type: "button", text: "Regenerate" });
+      go.addEventListener("click", async () => {
+        go.disabled = true; go.textContent = "Regenerating…";
+        try { await api(`/v1/requirements/${r.id}/regenerate`, json("POST", { instructions: input.value })); await refreshKeepingScroll(projectId); }
+        catch (e) { showError(e); go.disabled = false; go.textContent = "Regenerate"; }
+      });
+      box.replaceChildren(input, el("div", { class: "actions" }, go, el("button", { class: "btn small", type: "button", text: "Cancel", onclick: () => box.replaceChildren(feedback, buttons) })));
+      input.focus();
+    } }),
+    el("button", { class: "btn small danger", type: "button", text: "Reject",
+      title: r.final ? "Reopens this answer and removes it from the library" : "Not usable; write or regenerate another", onclick: () => review("rejected") }));
+  box.append(feedback, buttons);
+  return box;
+}
+async function refreshKeepingScroll(projectId) {
+  const y = window.scrollY;
+  await projectView($("view"), projectId);
+  window.scrollTo(0, y);
+  loadStatus();
+}
+function flashFact(id) {
+  const node = $(`fact-${id}`);
+  if (!node) return;
+  node.scrollIntoView({ block: "nearest", behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
+  node.classList.add("flash"); setTimeout(() => node.classList.remove("flash"), 1600);
+}
+
+loadWorkspace().finally(route);
+setInterval(loadStatus, 60000);
+</script>
+</body>
+</html>

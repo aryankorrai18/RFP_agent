@@ -1,0 +1,131 @@
+{
+  "company": "Virtusa",
+  "facts": [
+    {
+      "id": "FACT-001",
+      "topic": "Company / Profile",
+      "statement": "Virtusa describes itself as a global product and platform engineering services company that combines strategy, design and engineering with deep industry expertise.",
+      "valid_from": "2026-09-29",
+      "valid_to": null
+    },
+    {
+      "id": "FACT-002",
+      "topic": "Company / Headquarters",
+      "statement": "Virtusa Corporation is a global information technology services company headquartered in Massachusetts, with offices in North America, Europe and Asia.",
+      "valid_from": "2026-09-29",
+      "valid_to": null
+    },
+    {
+      "id": "FACT-003",
+      "topic": "Company / Scale",
+      "statement": "Virtusa's careers site reports more than 30,000 employees across more than 25 countries.",
+      "valid_from": "2026-09-29",
+      "valid_to": "2027-09-29"
+    },
+    {
+      "id": "FACT-004",
+      "topic": "Services",
+      "statement": "Virtusa groups its services into Consult and Design, Engineer and Automate, and Analyze and Optimize.",
+      "valid_from": "2026-09-29",
+      "valid_to": null
+    },
+    {
+      "id": "FACT-005",
+      "topic": "Industries",
+      "statement": "Virtusa lists industry offerings for banking and financial services, communications, consumer packaged goods, healthcare, life sciences, information services, insurance, independent software vendors, manufacturing, media and entertainment, retail, transport and logistics, and travel and hospitality.",
+      "valid_from": "2026-09-29",
+      "valid_to": null
+    },
+    {
+      "id": "FACT-006",
+      "topic": "Security / Certifications",
+      "statement": "Virtusa's published security governance material lists ISO 27001:2022, SOC 1 and SOC 2 among its certifications and audits.",
+      "valid_from": "2026-09-29",
+      "valid_to": "2027-03-31"
+    },
+    {
+      "id": "FACT-007",
+      "topic": "Security / Frameworks",
+      "statement": "Virtusa states that its information security management system draws on ISO 27001, HITRUST, CIS Benchmarks, NIST and client-specific security requirements; its published certifications and audits also list PCI DSS.",
+      "valid_from": "2026-09-29",
+      "valid_to": "2027-03-31"
+    },
+    {
+      "id": "FACT-008",
+      "topic": "Privacy / Governance",
+      "statement": "Virtusa states that its global privacy program is led by a Data Protection Officer supported by a privacy management team and a cross-functional privacy working group.",
+      "valid_from": "2026-09-29",
+      "valid_to": "2027-03-31"
+    },
+    {
+      "id": "FACT-009",
+      "topic": "Privacy / Certifications",
+      "statement": "Virtusa's published privacy material identifies an ISO 27701:2019 Privacy Information Management System certification and a TRUSTe Enterprise Privacy certificate from TrustArc.",
+      "valid_from": "2026-09-29",
+      "valid_to": "2027-03-31"
+    },
+    {
+      "id": "FACT-010",
+      "topic": "Resilience / Management systems",
+      "statement": "Virtusa's published corporate responsibility material identifies certifications for ISO 22301:2019 business continuity, ISO 14001:2015 environmental management and ISO 45001:2018 occupational health and safety.",
+      "valid_from": "2026-09-29",
+      "valid_to": "2027-03-31"
+    },
+    {
+      "id": "FACT-011",
+      "topic": "Cloud / Microsoft",
+      "statement": "Virtusa is a Microsoft Solutions Partner and describes itself as a qualified Azure Migration Program partner.",
+      "valid_from": "2026-09-29",
+      "valid_to": "2027-09-29"
+    },
+    {
+      "id": "FACT-012",
+      "topic": "Cloud / Microsoft",
+      "statement": "Virtusa's published Azure offerings include cloud migration, cloud-native solutions, business continuity, Azure DevOps, and security and compliance services.",
+      "valid_from": "2026-09-29",
+      "valid_to": "2027-09-29"
+    },
+    {
+      "id": "FACT-013",
+      "topic": "Cloud / Google",
+      "statement": "Virtusa and Google Cloud describe a partnership focused on modernizing, engineering and optimizing enterprise ecosystems, including legacy modernization, cloud migration, data modernization and governance.",
+      "valid_from": "2026-09-29",
+      "valid_to": "2027-09-29"
+    },
+    {
+      "id": "FACT-014",
+      "topic": "Cloud / Google",
+      "statement": "Virtusa's Google Cloud page reports more than 523 Google Cloud practitioners, more than 225 Google Cloud certifications and 15 Google Cloud expertise badges.",
+      "valid_from": "2026-09-29",
+      "valid_to": "2027-09-29"
+    },
+    {
+      "id": "FACT-015",
+      "topic": "Cloud / AWS",
+      "statement": "Virtusa describes itself as an AWS Partner Network Premier Consulting Partner with a Strategic Collaboration Agreement with AWS and AWS competencies in Life Sciences, DevOps and Migration.",
+      "valid_from": "2026-09-29",
+      "valid_to": "2027-09-29"
+    },
+    {
+      "id": "FACT-016",
+      "topic": "Cloud / Managed services",
+      "statement": "Virtusa's managed cloud service material lists provisioning, operations, monitoring, security, performance management, identity management, DevOps, cost optimization, backup and disaster recovery, and hybrid and multi-cloud among its service capabilities.",
+      "valid_from": "2026-09-29",
+      "valid_to": "2027-09-29"
+    },
+    {
+      "id": "FACT-017",
+      "topic": "Cloud / Support",
+      "statement": "Virtusa's managed cloud service material states that its support team operates round the clock for cloud availability, resilience, performance, security and cost optimization.",
+      "valid_from": "2026-09-29",
+      "valid_to": "2027-09-29"
+    },
+    {
+      "id": "FACT-018",
+      "topic": "AI and Data",
+      "statement": "Virtusa's 2024-2025 sustainability report identifies generative AI services and a Global AI Lab, also called the AI and Data Lab, powered by Virtusa Helio platform-based advisory and engineering services.",
+      "valid_from": "2026-09-29",
+      "valid_to": "2027-03-31"
+    }
+  ]
+}

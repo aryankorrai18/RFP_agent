@@ -1,0 +1,105 @@
+{
+  "workspace": "larkspur-data-demo",
+  "checks": {
+    "scim": [
+      {
+        "position": 1,
+        "id": "ANS-0028",
+        "client": "Pinecrest Federal Savings",
+        "lessons": 0.9866,
+        "policy": "gated",
+        "answer": "Larkspur supports automatic provisioning and de-provisioning through SCIM 2.0 with Okta an"
+      },
+      {
+        "position": 2,
+        "id": "ANS-0003",
+        "client": "Brightwater Credit Union",
+        "lessons": 0.3487,
+        "policy": "gated",
+        "answer": "User accounts are created by administrators in the Larkspur console, individually or by CS"
+      },
+      {
+        "position": 3,
+        "id": "ANS-0029",
+        "client": "Pinecrest Federal Savings",
+        "lessons": 1.5757,
+        "policy": "gated",
+        "answer": "Yes. Multi-factor authentication is mandatory for every administrative account. Administra"
+      },
+      {
+        "position": 4,
+        "id": "ANS-0043",
+        "client": "Tidewell Regional Health",
+        "lessons": 1.4356,
+        "policy": "gated",
+        "answer": "A typical implementation takes 6 to 8 weeks in four phases: discovery (weeks 1-2), configu"
+      },
+      {
+        "position": 5,
+        "id": "ANS-0020",
+        "client": "Kestrel Savings Bank",
+        "lessons": 1.0,
+        "policy": "gated",
+        "answer": "Yes. Multi-factor authentication is mandatory for every administrative account. Administra"
+      },
+      {
+        "position": 6,
+        "id": "ANS-0044",
+        "client": "Tidewell Regional Health",
+        "lessons": 1.5833,
+        "policy": "gated",
+        "answer": "Audit logs of user and administrator activity are retained for 12 months and can be export"
+      }
+    ],
+    "pen_test": [
+      {
+        "position": 1,
+        "id": "ANS-0040",
+        "client": "Tidewell Regional Health",
+        "lessons": 1.9545,
+        "policy": "gated",
+        "answer": "Ironbridge Security, an independent CREST-accredited firm, performs a full penetration tes"
+      },
+      {
+        "position": 2,
+        "id": "ANS-0018",
+        "client": "Kestrel Savings Bank",
+        "lessons": 1.7738,
+        "policy": "gated",
+        "answer": "Ironbridge Security, an independent CREST-accredited firm, performs a full penetration tes"
+      },
+      {
+        "position": 3,
+        "id": "ANS-0011",
+        "client": "St. Aurelia Health System",
+        "lessons": 1.7179,
+        "policy": "gated",
+        "answer": "Ironbridge Security, an independent CREST-accredited firm, performs a full penetration tes"
+      },
+      {
+        "position": 4,
+        "id": "ANS-0023",
+        "client": "Corvid Logistics",
+        "lessons": 0.7917,
+        "policy": "gated",
+        "answer": "We perform regular security testing of our platform and take security very seriously."
+      },
+      {
+        "position": 5,
+        "id": "ANS-0043",
+        "client": "Tidewell Regional Health",
+        "lessons": 1.0,
+        "policy": "gated",
+        "answer": "A typical implementation takes 6 to 8 weeks in four phases: discovery (weeks 1-2), configu"
+      },
+      {
+        "position": 6,
+        "id": "ANS-0037",
+        "client": "Everlake Insurance Group",
+        "lessons": 1.0,
+        "policy": "gated",
+        "answer": "A typical implementation takes 6 to 8 weeks in four phases: discovery (weeks 1-2), configu"
+      }
+    ]
+  }
+}

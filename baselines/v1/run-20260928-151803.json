@@ -1,0 +1,778 @@
+{
+  "protocol": "V1 baseline (V1_TECHNICAL_DESIGN.md §11)",
+  "created": "2026-09-28T15:18:03",
+  "config": {
+    "provider": "gemini",
+    "model": "gemini-3.5-flash-lite",
+    "prompt_version": "v1.0",
+    "hindsight": {
+      "url": "https://api.hindsight.vectorize.io",
+      "bank": "rfp-library",
+      "extraction_mode": "chunks"
+    },
+    "retrieval_top_k": 3,
+    "library_answers": 15
+  },
+  "summary": {
+    "run": 1,
+    "project_id": 1,
+    "seconds": 147.8,
+    "requirements": 20,
+    "grounded": 16,
+    "check": 0,
+    "needs_sme": 4,
+    "failed": 0,
+    "no_draft": 0,
+    "drafts_citing_past_answers": 7,
+    "invalid_citations": 0,
+    "retrieval_warnings": 0,
+    "job_warning": null
+  },
+  "requirements": [
+    {
+      "code": "REQ-001",
+      "reference": "2.1",
+      "question": "Provide an overview of your company, including year founded, number of employees and office locations. (Maximum 150 words)",
+      "category": "grounded",
+      "answer": "Larkspur Data was founded in 2019 and provides a cloud customer-data platform for regulated industries. We have approximately 240 employees across offices in Denver, USA and Dublin, Ireland.",
+      "sources": [
+        "FACT-001",
+        "FACT-002"
+      ],
+      "flags": [],
+      "invalid_citations": [],
+      "unsupported_claims": [],
+      "sme_question": null,
+      "word_count": 28,
+      "retrieved": [
+        {
+          "id": "ANS-0010",
+          "position": 1,
+          "final": 0.0011135141545753242,
+          "question": "Tell us about your organisation."
+        },
+        {
+          "id": "ANS-0009",
+          "position": 2,
+          "final": 0.00012951900378046144,
+          "question": "Explain your data handling at contract termination."
+        },
+        {
+          "id": "ANS-0011",
+          "position": 3,
+          "final": 0.00011165417493642346,
+          "question": "Which single sign-on standards and identity providers do you support?"
+        }
+      ],
+      "retrieval_warning": null,
+      "error": null
+    },
+    {
+      "code": "REQ-002",
+      "reference": "2.2",
+      "question": "Provide three customer references from financial-services organisations, with contact details.",
+      "category": "needs_sme",
+      "answer": "",
+      "sources": [],
+      "flags": [],
+      "invalid_citations": [],
+      "unsupported_claims": [],
+      "sme_question": "Can we provide three customer references from financial-services organisations, along with their contact details?",
+      "word_count": 0,
+      "retrieved": [
+        {
+          "id": "ANS-0010",
+          "position": 1,
+          "final": 0.0010258991902723923,
+          "question": "Tell us about your organisation."
+        },
+        {
+          "id": "ANS-0002",
+          "position": 2,
+          "final": 0.0001422471471578818,
+          "question": "When and how can we reach support?"
+        },
+        {
+          "id": "ANS-0011",
+          "position": 3,
+          "final": 9.930838933782932e-05,
+          "question": "Which single sign-on standards and identity providers do you support?"
+        }
+      ],
+      "retrieval_warning": null,
+      "error": null
+    },
+    {
+      "code": "REQ-003",
+      "reference": "3.1",
+      "question": "MANDATORY: Describe how your solution supports single sign-on with our identity provider (Microsoft Entra ID) via SAML 2.0. (Maximum 100 words)",
+      "category": "grounded",
+      "answer": "We support single sign-on via SAML 2.0 and have tested this integration with Microsoft Entra ID.",
+      "sources": [
+        "FACT-003"
+      ],
+      "flags": [],
+      "invalid_citations": [],
+      "unsupported_claims": [],
+      "sme_question": null,
+      "word_count": 16,
+      "retrieved": [
+        {
+          "id": "ANS-0011",
+          "position": 1,
+          "final": 1.0661920253874544,
+          "question": "Which single sign-on standards and identity providers do you support?"
+        },
+        {
+          "id": "ANS-0012",
+          "position": 2,
+          "final": 0.010803965808527664,
+          "question": "Describe how user accounts are created and removed automatically."
+        },
+        {
+          "id": "ANS-0006",
+          "position": 3,
+          "final": 0.0006916619843687554,
+          "question": "Is multi-factor authentication required for administrators?"
+        }
+      ],
+      "retrieval_warning": null,
+      "error": null
+    },
+    {
+      "code": "REQ-004",
+      "reference": "3.2",
+      "question": "MANDATORY: Does your solution support automatic user provisioning and de-provisioning via SCIM 2.0?",
+      "category": "grounded",
+      "answer": "Yes. We support automatic user provisioning and de-provisioning through SCIM 2.0 with Okta and Microsoft Entra ID. Deactivating a user in the identity provider removes their Larkspur access within minutes.",
+      "sources": [
+        "ANS-0012"
+      ],
+      "flags": [],
+      "invalid_citations": [],
+      "unsupported_claims": [],
+      "sme_question": null,
+      "word_count": 30,
+      "retrieved": [
+        {
+          "id": "ANS-0012",
+          "position": 1,
+          "final": 1.0994952750052274,
+          "question": "Describe how user accounts are created and removed automatically."
+        },
+        {
+          "id": "ANS-0014",
+          "position": 2,
+          "final": 6.667446121663508e-05,
+          "question": "Outline your onboarding methodology."
+        },
+        {
+          "id": "ANS-0001",
+          "position": 3,
+          "final": 4.238180301169349e-05,
+          "question": "What availability do you guarantee, and what happens if you miss it?"
+        }
+      ],
+      "retrieval_warning": null,
+      "error": null
+    },
+    {
+      "code": "REQ-005",
+      "reference": "3.3",
+      "question": "Describe how customer data is encrypted at rest and in transit.",
+      "category": "grounded",
+      "answer": "Customer data is encrypted at rest with AES-256 using keys managed in AWS KMS, and all data in transit is encrypted with TLS 1.2 or higher.",
+      "sources": [
+        "FACT-005",
+        "ANS-0013",
+        "FACT-006"
+      ],
+      "flags": [],
+      "invalid_citations": [],
+      "unsupported_claims": [],
+      "sme_question": null,
+      "word_count": 26,
+      "retrieved": [
+        {
+          "id": "ANS-0013",
+          "position": 1,
+          "final": 1.0964129782314274,
+          "question": "How do you protect customer data cryptographically?"
+        },
+        {
+          "id": "ANS-0003",
+          "position": 2,
+          "final": 1.0916966209700136,
+          "question": "Is data encrypted?"
+        },
+        {
+          "id": "ANS-0004",
+          "position": 3,
+          "final": 0.04287254994076767,
+          "question": "Describe backup and recovery."
+        }
+      ],
+      "retrieval_warning": null,
+      "error": null
+    },
+    {
+      "code": "REQ-006",
+      "reference": "3.4",
+      "question": "Provide your most recent SOC 2 Type II report or describe your current certifications.",
+      "category": "grounded",
+      "answer": "We hold a SOC 2 Type II report covering the period from 1 April 2025 to 31 March 2026, which is available to prospective customers under NDA. Additionally, we are certified to ISO/IEC 27001:2022, and the certificate was issued in October 2025.",
+      "sources": [
+        "FACT-007",
+        "FACT-008"
+      ],
+      "flags": [],
+      "invalid_citations": [],
+      "unsupported_claims": [],
+      "sme_question": null,
+      "word_count": 42,
+      "retrieved": [
+        {
+          "id": "ANS-0006",
+          "position": 1,
+          "final": 0.0004590470324827103,
+          "question": "Is multi-factor authentication required for administrators?"
+        },
+        {
+          "id": "ANS-0005",
+          "position": 2,
+          "final": 0.000401975911849985,
+          "question": "Who performs penetration testing of your service, and how often?"
+        },
+        {
+          "id": "ANS-0011",
+          "position": 3,
+          "final": 0.0001650061318659823,
+          "question": "Which single sign-on standards and identity providers do you support?"
+        }
+      ],
+      "retrieval_warning": null,
+      "error": null
+    },
+    {
+      "code": "REQ-007",
+      "reference": "3.5",
+      "question": "How often is your platform penetration tested, and by whom?",
+      "category": "grounded",
+      "answer": "Our platform is penetration tested by an independent third party at least once a year. An executive summary of the latest test is available under NDA.",
+      "sources": [
+        "FACT-009"
+      ],
+      "flags": [],
+      "invalid_citations": [],
+      "unsupported_claims": [],
+      "sme_question": null,
+      "word_count": 26,
+      "retrieved": [
+        {
+          "id": "ANS-0005",
+          "position": 1,
+          "final": 1.0993645750470147,
+          "question": "Who performs penetration testing of your service, and how often?"
+        },
+        {
+          "id": "ANS-0014",
+          "position": 2,
+          "final": 0.005271545224185545,
+          "question": "Outline your onboarding methodology."
+        },
+        {
+          "id": "ANS-0002",
+          "position": 3,
+          "final": 0.00041150488858321513,
+          "question": "When and how can we reach support?"
+        }
+      ],
+      "retrieval_warning": null,
+      "error": null
+    },
+    {
+      "code": "REQ-008",
+      "reference": "4.1",
+      "question": "MANDATORY: Where will our data be stored? Confirm whether data can be kept within the European Union.",
+      "category": "grounded",
+      "answer": "Yes, data can be kept within the European Union. Customer data can be hosted entirely within the EU in our AWS Frankfurt region (eu-central-1), and data, backups and logs remain in the EU. We are hosted on AWS, where customers choose a US region (us-east-1) or an EU region (eu-central-1, Frankfurt), with customer data staying in the chosen region.",
+      "sources": [
+        "ANS-0008",
+        "FACT-011"
+      ],
+      "flags": [],
+      "invalid_citations": [],
+      "unsupported_claims": [],
+      "sme_question": null,
+      "word_count": 59,
+      "retrieved": [
+        {
+          "id": "ANS-0008",
+          "position": 1,
+          "final": 0.6406091026763434,
+          "question": "Can all patient-related data remain within the European Union?"
+        },
+        {
+          "id": "ANS-0009",
+          "position": 2,
+          "final": 0.0006916619386211224,
+          "question": "Explain your data handling at contract termination."
+        },
+        {
+          "id": "ANS-0003",
+          "position": 3,
+          "final": 0.000670394728712306,
+          "question": "Is data encrypted?"
+        }
+      ],
+      "retrieval_warning": null,
+      "error": null
+    },
+    {
+      "code": "REQ-009",
+      "reference": "4.2",
+      "question": "Describe your backup and disaster-recovery arrangements, including RPO and RTO.",
+      "category": "grounded",
+      "answer": "Customer data is backed up daily, and backups are encrypted and retained for 35 days, with a copy stored in a second region within the same geography. Our disaster-recovery objectives are a recovery point objective (RPO) of 1 hour and a recovery time objective (RTO) of 4 hours; the plan is tested annually.",
+      "sources": [
+        "FACT-012",
+        "FACT-013"
+      ],
+      "flags": [],
+      "invalid_citations": [],
+      "unsupported_claims": [],
+      "sme_question": null,
+      "word_count": 53,
+      "retrieved": [
+        {
+          "id": "ANS-0004",
+          "position": 1,
+          "final": 1.0848241606641076,
+          "question": "Describe backup and recovery."
+        },
+        {
+          "id": "ANS-0009",
+          "position": 2,
+          "final": 0.0005262677787907288,
+          "question": "Explain your data handling at contract termination."
+        },
+        {
+          "id": "ANS-0008",
+          "position": 3,
+          "final": 0.0001367983616115008,
+          "question": "Can all patient-related data remain within the European Union?"
+        }
+      ],
+      "retrieval_warning": null,
+      "error": null
+    },
+    {
+      "code": "REQ-010",
+      "reference": "4.3",
+      "question": "What happens to our data when the contract ends?",
+      "category": "grounded",
+      "answer": "When the contract ends, we delete customer data within 30 days, and customers can request a full data export before deletion.",
+      "sources": [
+        "FACT-014"
+      ],
+      "flags": [],
+      "invalid_citations": [],
+      "unsupported_claims": [],
+      "sme_question": null,
+      "word_count": 21,
+      "retrieved": [
+        {
+          "id": "ANS-0009",
+          "position": 1,
+          "final": 1.098385913347251,
+          "question": "Explain your data handling at contract termination."
+        },
+        {
+          "id": "ANS-0001",
+          "position": 2,
+          "final": 0.00322844422647308,
+          "question": "What availability do you guarantee, and what happens if you miss it?"
+        },
+        {
+          "id": "ANS-0004",
+          "position": 3,
+          "final": 0.0017922381514073864,
+          "question": "Describe backup and recovery."
+        }
+      ],
+      "retrieval_warning": null,
+      "error": null
+    },
+    {
+      "code": "REQ-011",
+      "reference": "5.1",
+      "question": "State your uptime commitment and what remedies apply if it is not met.",
+      "category": "needs_sme",
+      "answer": "We commit to 99.9% monthly uptime for the production platform, with service credits if it is missed.",
+      "sources": [
+        "FACT-017"
+      ],
+      "flags": [],
+      "invalid_citations": [],
+      "unsupported_claims": [],
+      "sme_question": "Please confirm the specific service credit percentages and commercial terms applicable when the uptime commitment is not met.",
+      "word_count": 17,
+      "retrieved": [
+        {
+          "id": "ANS-0001",
+          "position": 1,
+          "final": 0.0035172326511368314,
+          "question": "What availability do you guarantee, and what happens if you miss it?"
+        },
+        {
+          "id": "ANS-0009",
+          "position": 2,
+          "final": 5.570914151724013e-05,
+          "question": "Explain your data handling at contract termination."
+        },
+        {
+          "id": "ANS-0002",
+          "position": 3,
+          "final": 5.0329261772794256e-05,
+          "question": "When and how can we reach support?"
+        }
+      ],
+      "retrieval_warning": null,
+      "error": null
+    },
+    {
+      "code": "REQ-012",
+      "reference": "5.2",
+      "question": "Describe your support hours and channels, including for critical incidents.",
+      "category": "grounded",
+      "answer": "Support is available 24/7 for severity-1 incidents and during business hours (Monday to Friday, 8am to 6pm in the customer's region) for other issues, via a support portal and email.",
+      "sources": [
+        "FACT-018",
+        "ANS-0002"
+      ],
+      "flags": [],
+      "invalid_citations": [],
+      "unsupported_claims": [],
+      "sme_question": null,
+      "word_count": 30,
+      "retrieved": [
+        {
+          "id": "ANS-0002",
+          "position": 1,
+          "final": 0.07164024250681396,
+          "question": "When and how can we reach support?"
+        },
+        {
+          "id": "ANS-0004",
+          "position": 2,
+          "final": 0.002575472633364802,
+          "question": "Describe backup and recovery."
+        },
+        {
+          "id": "ANS-0011",
+          "position": 3,
+          "final": 0.00011610144474765684,
+          "question": "Which single sign-on standards and identity providers do you support?"
+        }
+      ],
+      "retrieval_warning": null,
+      "error": null
+    },
+    {
+      "code": "REQ-013",
+      "reference": "5.3",
+      "question": "Describe your implementation approach and a typical timeline. (Maximum 120 words)",
+      "category": "grounded",
+      "answer": "A typical implementation takes 6 to 8 weeks and is led by a dedicated Larkspur implementation manager. Implementation follows four phases: discovery (weeks 1-2), configuration and data connection (weeks 3-5), user acceptance testing (week 6), and go-live with hypercare (weeks 7-8).",
+      "sources": [
+        "FACT-019",
+        "ANS-0014"
+      ],
+      "flags": [],
+      "invalid_citations": [],
+      "unsupported_claims": [],
+      "sme_question": null,
+      "word_count": 41,
+      "retrieved": [
+        {
+          "id": "ANS-0014",
+          "position": 1,
+          "final": 0.017296373579606363,
+          "question": "Outline your onboarding methodology."
+        },
+        {
+          "id": "ANS-0009",
+          "position": 2,
+          "final": 0.00024194850227527814,
+          "question": "Explain your data handling at contract termination."
+        },
+        {
+          "id": "ANS-0004",
+          "position": 3,
+          "final": 7.674111256562622e-05,
+          "question": "Describe backup and recovery."
+        }
+      ],
+      "retrieval_warning": null,
+      "error": null
+    },
+    {
+      "code": "REQ-014",
+      "reference": "6.1",
+      "question": "Describe the APIs and prebuilt connectors your platform provides.",
+      "category": "grounded",
+      "answer": "We provide a documented REST API and prebuilt connectors for Snowflake, Google BigQuery, Amazon S3 and Salesforce.",
+      "sources": [
+        "FACT-020",
+        "ANS-0015"
+      ],
+      "flags": [],
+      "invalid_citations": [],
+      "unsupported_claims": [],
+      "sme_question": null,
+      "word_count": 17,
+      "retrieved": [
+        {
+          "id": "ANS-0015",
+          "position": 1,
+          "final": 1.0600067723482212,
+          "question": "What integration options does the platform offer?"
+        },
+        {
+          "id": "ANS-0010",
+          "position": 2,
+          "final": 0.014545090922176243,
+          "question": "Tell us about your organisation."
+        },
+        {
+          "id": "ANS-0005",
+          "position": 3,
+          "final": 0.0011178674894447833,
+          "question": "Who performs penetration testing of your service, and how often?"
+        }
+      ],
+      "retrieval_warning": null,
+      "error": null
+    },
+    {
+      "code": "REQ-015",
+      "reference": "6.2",
+      "question": "Can your platform ingest real-time transaction events from our core banking system (Jack Henry Symitar)?",
+      "category": "needs_sme",
+      "answer": "We ingest data in batches through our connectors and the REST API, on schedules as frequent as every 15 minutes.",
+      "sources": [
+        "FACT-021"
+      ],
+      "flags": [],
+      "invalid_citations": [],
+      "unsupported_claims": [],
+      "sme_question": "Does Larkspur support real-time ingestion and prebuilt or custom integration with Jack Henry Symitar?",
+      "word_count": 20,
+      "retrieved": [
+        {
+          "id": "ANS-0005",
+          "position": 1,
+          "final": 0.000192906767786073,
+          "question": "Who performs penetration testing of your service, and how often?"
+        },
+        {
+          "id": "ANS-0010",
+          "position": 2,
+          "final": 9.042199594056465e-05,
+          "question": "Tell us about your organisation."
+        },
+        {
+          "id": "ANS-0015",
+          "position": 3,
+          "final": 5.112179304077044e-05,
+          "question": "What integration options does the platform offer?"
+        }
+      ],
+      "retrieval_warning": null,
+      "error": null
+    },
+    {
+      "code": "REQ-016",
+      "reference": "7.1",
+      "question": "Provide a three-year pricing proposal, including implementation fees.",
+      "category": "needs_sme",
+      "answer": "",
+      "sources": [],
+      "flags": [],
+      "invalid_citations": [],
+      "unsupported_claims": [],
+      "sme_question": "What is the three-year pricing proposal and implementation fee structure for this deployment?",
+      "word_count": 0,
+      "retrieved": [
+        {
+          "id": "ANS-0014",
+          "position": 1,
+          "final": 0.0006397127957165324,
+          "question": "Outline your onboarding methodology."
+        },
+        {
+          "id": "ANS-0015",
+          "position": 2,
+          "final": 4.4415648530245525e-05,
+          "question": "What integration options does the platform offer?"
+        },
+        {
+          "id": "ANS-0001",
+          "position": 3,
+          "final": 4.238178892000186e-05,
+          "question": "What availability do you guarantee, and what happens if you miss it?"
+        }
+      ],
+      "retrieval_warning": null,
+      "error": null
+    },
+    {
+      "code": "REQ-017",
+      "reference": "8.1",
+      "question": "The solution must provide role-based access control.",
+      "category": "grounded",
+      "answer": "Compliant. We provide role-based access control with built-in roles (Admin, Editor, Analyst, Viewer) and customer-defined custom roles.",
+      "sources": [
+        "FACT-004"
+      ],
+      "flags": [],
+      "invalid_citations": [],
+      "unsupported_claims": [],
+      "sme_question": null,
+      "word_count": 17,
+      "retrieved": [
+        {
+          "id": "ANS-0006",
+          "position": 1,
+          "final": 0.00024384567714158306,
+          "question": "Is multi-factor authentication required for administrators?"
+        },
+        {
+          "id": "ANS-0014",
+          "position": 2,
+          "final": 0.00018843882906604498,
+          "question": "Outline your onboarding methodology."
+        },
+        {
+          "id": "ANS-0012",
+          "position": 3,
+          "final": 0.00016118427609050891,
+          "question": "Describe how user accounts are created and removed automatically."
+        }
+      ],
+      "retrieval_warning": null,
+      "error": null
+    },
+    {
+      "code": "REQ-018",
+      "reference": "8.2",
+      "question": "Audit logs must be retained for at least 12 months.",
+      "category": "grounded",
+      "answer": "Compliant. We record audit logs of user and administrator actions and retain them for 12 months.",
+      "sources": [
+        "FACT-010"
+      ],
+      "flags": [],
+      "invalid_citations": [],
+      "unsupported_claims": [],
+      "sme_question": null,
+      "word_count": 16,
+      "retrieved": [
+        {
+          "id": "ANS-0007",
+          "position": 1,
+          "final": 1.0972038301486167,
+          "question": "How long are audit logs kept?"
+        },
+        {
+          "id": "ANS-0008",
+          "position": 2,
+          "final": 0.000670394522317897,
+          "question": "Can all patient-related data remain within the European Union?"
+        },
+        {
+          "id": "ANS-0004",
+          "position": 3,
+          "final": 0.00024384567219855365,
+          "question": "Describe backup and recovery."
+        }
+      ],
+      "retrieval_warning": null,
+      "error": null
+    },
+    {
+      "code": "REQ-019",
+      "reference": "8.3",
+      "question": "Multi-factor authentication must be enforced for all administrative access.",
+      "category": "grounded",
+      "answer": "Compliant. Multi-factor authentication is enforced for all administrative accounts. Administrators sign in through SSO with MFA required by the identity provider, or with Larkspur's built-in TOTP MFA.",
+      "sources": [
+        "ANS-0006"
+      ],
+      "flags": [],
+      "invalid_citations": [],
+      "unsupported_claims": [],
+      "sme_question": null,
+      "word_count": 27,
+      "retrieved": [
+        {
+          "id": "ANS-0006",
+          "position": 1,
+          "final": 1.0990275590162644,
+          "question": "Is multi-factor authentication required for administrators?"
+        },
+        {
+          "id": "ANS-0003",
+          "position": 2,
+          "final": 0.0010420388157509172,
+          "question": "Is data encrypted?"
+        },
+        {
+          "id": "ANS-0013",
+          "position": 3,
+          "final": 0.0003717770129422842,
+          "question": "How do you protect customer data cryptographically?"
+        }
+      ],
+      "retrieval_warning": null,
+      "error": null
+    },
+    {
+      "code": "REQ-020",
+      "reference": "8.4",
+      "question": "The vendor must notify us of any confirmed security breach within 72 hours.",
+      "category": "grounded",
+      "answer": "Compliant. We notify affected customers of a confirmed security breach involving their data within 72 hours of confirmation.",
+      "sources": [
+        "FACT-016"
+      ],
+      "flags": [],
+      "invalid_citations": [],
+      "unsupported_claims": [],
+      "sme_question": null,
+      "word_count": 18,
+      "retrieved": [
+        {
+          "id": "ANS-0009",
+          "position": 1,
+          "final": 0.0001855178341623819,
+          "question": "Explain your data handling at contract termination."
+        },
+        {
+          "id": "ANS-0002",
+          "position": 2,
+          "final": 0.00010166314280718377,
+          "question": "When and how can we reach support?"
+        },
+        {
+          "id": "ANS-0003",
+          "position": 3,
+          "final": 5.8840399163970065e-05,
+          "question": "Is data encrypted?"
+        }
+      ],
+      "retrieval_warning": null,
+      "error": null
+    }
+  ]
+}

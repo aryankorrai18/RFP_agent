@@ -1,0 +1,14 @@
+{
+  "pack": "Virtusa cybersecurity demo evidence",
+  "disclosure": "All client, engagement, personnel, pricing and outcome details are synthetic and must not be represented as real Virtusa experience.",
+  "proposals": [
+    {
+      "file": "2026-08_harbor_shield_cybersecurity_won.md",
+      "client": "Harbor Shield Authority (synthetic)",
+      "industry": "cybersecurity",
+      "submitted_on": "2026-08-20",
+      "result": "won",
+      "loss_reason": null
+    }
+  ]
+}
