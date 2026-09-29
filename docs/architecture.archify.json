@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "RFP Memory Assistant",
+    "quality_profile": "showcase",
+    "output": "architecture.html"
+  },
+  "components": [
+    { "id": "browser", "type": "frontend", "label": "Browser", "sublabel": "frontend/app.html", "pos": [40, 40], "size": [200, 64] },
+    { "id": "api", "type": "backend", "label": "FastAPI", "sublabel": "/v1 API", "pos": [500, 40], "size": [170, 64] },
+    { "id": "providers", "type": "external", "label": "Model Providers", "sublabel": "Gemini · Anthropic · Groq", "pos": [1100, 40], "size": [200, 64] },
+    { "id": "retrieval", "type": "backend", "label": "Retrieval", "sublabel": "recall + SQLite validate", "pos": [500, 260], "size": [170, 64] },
+    { "id": "ranking", "type": "backend", "label": "Ranking", "sublabel": "relevance → lessons/freshness", "pos": [1100, 260], "size": [200, 64] },
+    { "id": "hindsight_answers", "type": "database", "label": "Hindsight", "sublabel": "answer bank — approved text", "pos": [40, 470], "size": [200, 64] },
+    { "id": "sqlite", "type": "database", "label": "SQLite", "sublabel": "system of record", "pos": [820, 470], "size": [170, 64] },
+    { "id": "hindsight_lessons", "type": "database", "label": "Hindsight", "sublabel": "lessons bank — reviews & outcomes", "pos": [1100, 470], "size": [200, 64] }
+  ],
+  "boundaries": [
+    { "kind": "region", "label": "Workspace (per company): own SQLite db + own pair of Hindsight banks", "wraps": ["hindsight_answers", "sqlite", "hindsight_lessons"] }
+  ],
+  "connections": [
+    { "id": "browser-api", "from": "browser", "to": "api", "label": "HTTPS /v1", "variant": "emphasis" },
+    { "id": "api-providers", "from": "api", "to": "providers", "label": "extract · draft · judge" },
+    { "id": "api-retrieval", "from": "api", "to": "retrieval", "label": "search answer bank", "labelDy": 24 },
+    { "id": "retrieval-hindsight-answers", "from": "retrieval", "to": "hindsight_answers", "label": "recall (semantic)" },
+    { "id": "retrieval-sqlite-validate", "from": "retrieval", "to": "sqlite", "label": "revalidate, drop dead/deleted", "variant": "dashed" },
+    { "id": "retrieval-ranking", "from": "retrieval", "to": "ranking", "label": "relevance-grouped candidates", "labelDy": -31 },
+    { "id": "ranking-sqlite-signals", "from": "ranking", "to": "sqlite", "label": "outcome, freshness, client/industry", "variant": "dashed" },
+    { "id": "ranking-api", "from": "ranking", "to": "api", "label": "ranked answers" },
+    { "id": "sqlite-lessons-sync", "from": "sqlite", "to": "hindsight_lessons", "label": "sync as lessons", "variant": "dashed", "labelAt": [1070, 560] },
+    { "id": "lessons-ranking", "from": "hindsight_lessons", "to": "ranking", "label": "re-rank only — never enters the drafting prompt", "fromSide": "top", "toSide": "bottom" }
+  ],
+  "cards": [
+    { "dot": "cyan", "title": "Runtime flow", "items": ["Extract requirements, recall candidates, validate every hit against SQLite", "Rank: relevance first, then lessons/freshness reorder within a group", "Draft from the fact sheet + selected answers, then grounding checks and human review"] },
+    { "dot": "emerald", "title": "Memory", "items": ["Answer bank: semantic recall over approved answer text", "Lessons bank: experience from reviews and outcomes — steers selection, never enters the drafting prompt"] },
+    { "dot": "violet", "title": "Isolation", "items": ["Every workspace owns its own SQLite db, fact sheet, and pair of Hindsight banks — no cross-company leakage"] }
+  ]
+}
+

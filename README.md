@@ -15,19 +15,11 @@ RFP Memory Assistant turns buyer RFPs and questionnaires into grounded, reviewab
 
 ## Architecture
 
-```text
-Browser (frontend/app.html)
-        |
-FastAPI (backend/main.py and backend/v1/api.py)
-        |
-        +-- SQLite: exact application and audit data
-        +-- Hindsight: answer search and learned lessons
-        +-- Gemini / Anthropic / Groq: extraction, drafting, and optional judging
-```
+![Architecture diagram](docs/architecture.png)
 
-SQLite is the source of truth. Hindsight holds searchable copies of approved answers and outcome lessons; every retrieved answer is checked against SQLite before drafting. Lessons affect ranking but are never used as uncited proposal facts.
+SQLite is the source of truth. Hindsight holds two banks per workspace: an answer bank for semantic recall over approved answer text, and a lessons bank built from review and outcome experience. Every answer Hindsight recalls is re-checked against SQLite before drafting, and lessons only ever re-rank which approved answers get used — they never enter the drafting prompt.
 
-See [Architecture](docs/ARCHITECTURE.md) and [How Hindsight is used](docs/HOW_HINDSIGHT_IS_USED.md) for details.
+Open [docs/architecture.html](docs/architecture.html) for the interactive version (pan/zoom, theme toggle, relationship tracing). See [Architecture](docs/ARCHITECTURE.md) and [How Hindsight is used](docs/HOW_HINDSIGHT_IS_USED.md) for the full write-up.
 
 ## Requirements
 
