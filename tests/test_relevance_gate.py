@@ -6,8 +6,8 @@ from __future__ import annotations
 import asyncio
 import random
 
-from backend.v1.ranking import Scored, order_candidates
-from backend.v1.retrieval import retrieve
+from rfp_assistant.api.v1.ranking import Scored, order_candidates
+from rfp_assistant.api.v1.retrieval import retrieve
 from tests.test_hindsight_lessons import library_with_competing_answers
 from tests.v1_fakes import FakeLessons, FakeV1LLM, make_context, pair
 

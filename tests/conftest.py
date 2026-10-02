@@ -9,8 +9,8 @@ from datetime import date
 import docx
 import pytest
 
-from backend.config import Settings
-from backend.schemas import DraftClaimOut, DraftResult, ExtractedRequirement, Fact, FactSheet
+from rfp_assistant.config import Settings
+from rfp_assistant.schemas import DraftClaimOut, DraftResult, ExtractedRequirement, Fact, FactSheet
 
 
 def requirement(question: str, **kwargs) -> ExtractedRequirement:

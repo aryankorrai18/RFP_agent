@@ -659,7 +659,7 @@ function clearError() {
   if (pendingNotice) { const [t, b] = pendingNotice; pendingNotice = null; showNotice(t, b, false); }
 }
 /* ---------- model problems ---------- */
-// error_info comes from backend/provider_errors.py: what happened, what to do, and whether
+// error_info comes from src/rfp_assistant/providers/errors.py: what happened, what to do, and whether
 // retrying or switching the model helps. Without it (not a model error) the raw message is shown.
 function openModelPanel(e) { e?.stopPropagation(); setModelPanel(true); }
 function problemNote(info, raw, { heading, extra } = {}) {

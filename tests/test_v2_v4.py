@@ -6,7 +6,7 @@ from datetime import UTC, datetime
 
 import pytest
 
-from backend.v1.db import (
+from rfp_assistant.api.v1.db import (
     Answer,
     AnswerStats,
     ClientPreference,
@@ -16,10 +16,10 @@ from backend.v1.db import (
     RequirementRow,
     Review,
 )
-from backend.v1.evidence import check_claim
-from backend.v1.learning import apply_review_signals
-from backend.v1.outcomes import outcome_credit, record_outcome, supersede_answer
-from backend.v1.ranking import quality_score, rank_factors
+from rfp_assistant.api.v1.evidence import check_claim
+from rfp_assistant.api.v1.learning import apply_review_signals
+from rfp_assistant.api.v1.outcomes import outcome_credit, record_outcome, supersede_answer
+from rfp_assistant.api.v1.ranking import quality_score, rank_factors
 from tests.v1_fakes import FakeV1LLM, make_context
 
 

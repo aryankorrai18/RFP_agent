@@ -4,8 +4,8 @@ from __future__ import annotations
 
 import json
 
-from backend.config import ROOT
-from backend.parser import parse_document
+from rfp_assistant.config import ROOT
+from rfp_assistant.parsing.parser import parse_document
 
 CORPUS = ROOT / "samples" / "corpus_v2"
 

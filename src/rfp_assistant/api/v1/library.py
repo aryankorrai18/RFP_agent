@@ -14,9 +14,9 @@ from typing import TYPE_CHECKING
 
 from sqlalchemy import delete, select
 
-from ..llm import LLMError
-from ..parser import ParseError, parse_document
-from ..core import PipelineError
+from ...providers.base import LLMError
+from ...parsing.parser import ParseError, parse_document
+from ...errors import PipelineError
 from .db import Answer, AnswerStats, Database, Document, Job, Pair, PastProposal, parse_answer_code
 from .jobs import JobFailed, JobRunner
 from .outcomes import outcome_credit

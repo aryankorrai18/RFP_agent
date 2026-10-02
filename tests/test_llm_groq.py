@@ -9,14 +9,15 @@ from dataclasses import replace
 import httpx
 import pytest
 
-import backend.llm_groq as groq_module
-from backend import config, model_choice
-from backend.config import Settings
-from backend.llm import LLMError
-from backend.llm_groq import GroqLLM
-from backend.parser import ParsedDocument
-from backend.provider_errors import reason_of
-from backend.schemas import Fact, Requirement
+import rfp_assistant.providers.groq as groq_module
+from rfp_assistant import config
+from rfp_assistant.providers import model_choice
+from rfp_assistant.config import Settings
+from rfp_assistant.providers.base import LLMError
+from rfp_assistant.providers.groq import GroqLLM
+from rfp_assistant.parsing.parser import ParsedDocument
+from rfp_assistant.providers.errors import reason_of
+from rfp_assistant.schemas import Fact, Requirement
 
 SETTINGS = replace(Settings(), provider="groq", model="llama-3.3-70b-versatile")
 DOC = ParsedDocument(filename="rfp.txt", kind="text", text="3.1 Do you support SSO?")

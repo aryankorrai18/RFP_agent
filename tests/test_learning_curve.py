@@ -9,11 +9,11 @@ import pytest
 from fastapi.testclient import TestClient
 from sqlalchemy import select
 
-from backend.main import app
-from backend.core import PipelineError
-from backend.v1 import experiment, projects
-from backend.v1.curve import WEIGHTS, learning_curve, review_bucket
-from backend.v1.db import ComparisonDraft
+from rfp_assistant.main import app
+from rfp_assistant.errors import PipelineError
+from rfp_assistant.api.v1 import experiment, projects
+from rfp_assistant.api.v1.curve import WEIGHTS, learning_curve, review_bucket
+from rfp_assistant.api.v1.db import ComparisonDraft
 from tests.conftest import docx_bytes
 from tests.test_hindsight_lessons import QUERY, library_with_competing_answers
 from tests.v1_fakes import FakeLessons, FakeV1LLM, make_context, req
@@ -30,7 +30,7 @@ async def draft_project(ctx, project_id):
     job = projects.start_drafting(ctx, project_id)
     await ctx.jobs.wait(job.id)
     with ctx.db.session() as session:
-        from backend.v1.db import RequirementRow
+        from rfp_assistant.api.v1.db import RequirementRow
 
         return session.scalars(select(RequirementRow.id).where(RequirementRow.project_id == project_id)).all()
 
@@ -126,7 +126,7 @@ def test_before_after_changes_only_the_memory_state(tmp_path):
     assert plain["retrieved"][0]["lesson_evidence"] == []
 
     with ctx.db.session() as session:
-        from backend.v1.db import DraftRow
+        from rfp_assistant.api.v1.db import DraftRow
 
         assert session.scalars(select(DraftRow)).all() == []  # comparison drafts are never review drafts
         assert len(session.scalars(select(ComparisonDraft)).all()) == 2
@@ -134,7 +134,7 @@ def test_before_after_changes_only_the_memory_state(tmp_path):
 
 def _stop_partway(ctx, job_id, drop):
     """Make a finished comparison look like one the user stopped with `drop` drafts still missing."""
-    from backend.v1.db import Job
+    from rfp_assistant.api.v1.db import Job
 
     with ctx.db.session() as session:
         rows = session.scalars(select(ComparisonDraft).where(ComparisonDraft.job_id == job_id)).all()
@@ -195,7 +195,7 @@ def test_running_again_after_a_finished_comparison_drafts_everything_fresh(tmp_p
 
 
 def test_a_stopped_run_under_other_conditions_is_not_reused(tmp_path):
-    from backend.v1.db import Job
+    from rfp_assistant.api.v1.db import Job
 
     llm = FakeV1LLM(requirements=[req(QUERY), req("Do you support SSO?")])
     ctx = make_context(tmp_path, llm, lessons=FakeLessons())

@@ -17,7 +17,7 @@ from dataclasses import dataclass, field
 from threading import Lock
 from typing import Any
 
-from .config import PROVIDER_KEY_VARS
+from ..config import PROVIDER_KEY_VARS
 
 REASONS = (
     "quota_exhausted",  # daily quota or credit used up: retrying won't help until it resets

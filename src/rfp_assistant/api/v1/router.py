@@ -11,11 +11,11 @@ from fastapi.responses import Response
 from pydantic import BaseModel
 from sqlalchemy import func, select
 
-from .. import workspaces
-from ..config import PROVIDER_KEY_VARS, ROOT, has_key
-from ..provider_errors import explain_message, provider_health
-from ..schemas import FACT_ID_PATTERN, FactOut
-from ..core import PipelineError, load_fact_sheet
+from ... import workspaces
+from ...config import PROVIDER_KEY_VARS, ROOT, has_key
+from ...providers.errors import explain_message, provider_health
+from ...schemas import FACT_ID_PATTERN, FactOut
+from ...errors import PipelineError, load_fact_sheet
 from . import demo, library, outcomes, projects
 from .context import V1Context
 from .db import (
@@ -24,7 +24,7 @@ from .db import (
 )
 from .export import FinalAnswer, export_docx, export_xlsx
 from . import experiment, judge
-from ..model_choice import MODEL_NAME
+from ...providers.model_choice import MODEL_NAME
 from .curve import learning_curve
 from .lessons import brief_query, brief_tags, pending_lessons
 from .memory import MemoryUnavailable

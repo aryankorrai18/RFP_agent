@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import pytest
 
-from backend.config import Settings, resolve_provider
+from rfp_assistant.config import Settings, resolve_provider
 
 KEYS = ("ANTHROPIC_API_KEY", "ANTHROPIC_AUTH_TOKEN", "GEMINI_API_KEY", "GOOGLE_API_KEY", "RFP_LLM_PROVIDER",
         "RFP_MODEL", "RFP_DRAFT_CONCURRENCY")
@@ -46,7 +46,7 @@ def test_unknown_provider_is_rejected():
 
 
 def test_env_file_is_reread_and_blank_values_never_erase_keys(tmp_path, monkeypatch):
-    from backend import main
+    from rfp_assistant import main
 
     env_file = tmp_path / ".env"
     monkeypatch.setattr(main, "ENV_FILE", env_file)

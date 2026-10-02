@@ -11,14 +11,14 @@ import pytest
 from fastapi.testclient import TestClient
 from sqlalchemy import select
 
-import backend.main as main
-from backend import workspaces
-from backend.config import ROOT, Settings
-from backend.llm import LLMError
-from backend.core import PipelineError
-from backend.v1 import demo, experiment, library, projects
-from backend.v1.context import V1Context
-from backend.v1.db import AnswerStats, ComparisonDraft, Database, Lesson, Pair
+import rfp_assistant.main as main
+from rfp_assistant import workspaces
+from rfp_assistant.config import ROOT, Settings
+from rfp_assistant.providers.base import LLMError
+from rfp_assistant.errors import PipelineError
+from rfp_assistant.api.v1 import demo, experiment, library, projects
+from rfp_assistant.api.v1.context import V1Context
+from rfp_assistant.api.v1.db import AnswerStats, ComparisonDraft, Database, Lesson, Pair
 from tests.conftest import docx_bytes
 from tests.test_hindsight_lessons import QUERY, library_with_competing_answers
 from tests.v1_fakes import FakeLessons, FakeMemory, FakeV1LLM, make_context, req
@@ -271,6 +271,6 @@ def test_editing_requirements_after_a_comparison_clears_it(tmp_path):
 
 
 def test_too_vague_is_a_review_reason(tmp_path):
-    from backend.v1.learning import validate_feedback
+    from rfp_assistant.api.v1.learning import validate_feedback
 
     assert validate_feedback(["too_vague"], None) == ["too_vague"]

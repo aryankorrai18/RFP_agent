@@ -7,7 +7,7 @@ from datetime import date
 
 from sqlalchemy import select
 
-from ..core import PipelineError
+from ...errors import PipelineError
 from .db import (
     Answer,
     AnswerStats,

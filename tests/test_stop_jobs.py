@@ -8,9 +8,9 @@ from dataclasses import dataclass, field
 
 import pytest
 
-from backend.core import PipelineError
-from backend.v1 import library, projects
-from backend.v1.db import DraftRow, Job, PastProposal, Project
+from rfp_assistant.errors import PipelineError
+from rfp_assistant.api.v1 import library, projects
+from rfp_assistant.api.v1.db import DraftRow, Job, PastProposal, Project
 from tests.conftest import docx_bytes
 from tests.v1_fakes import FakeV1LLM, make_context, pair, req
 

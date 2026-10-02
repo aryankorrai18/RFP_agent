@@ -7,10 +7,10 @@ from dataclasses import replace
 import pytest
 from fastapi.testclient import TestClient
 
-import backend.main as main
-from backend import model_choice
-from backend.config import Settings
-from backend.model_choice import ModelOption, apply_choice, model_source, write_choice
+import rfp_assistant.main as main
+from rfp_assistant.providers import model_choice
+from rfp_assistant.config import Settings
+from rfp_assistant.providers.model_choice import ModelOption, apply_choice, model_source, write_choice
 
 BASE = replace(Settings(), provider="gemini", model="gemini-3.5-flash-lite")
 OPTIONS = [ModelOption("gemini-3.5-flash-lite", "Gemini 3.5 Flash-Lite"), ModelOption("gemini-3.8-flash", "Gemini 3.8 Flash")]

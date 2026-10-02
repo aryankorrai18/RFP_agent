@@ -9,11 +9,11 @@ import pytest
 from fastapi.testclient import TestClient
 from sqlalchemy import select
 
-from backend.llm import LLMError
-from backend.main import app
-from backend.core import PipelineError
-from backend.v1 import experiment, judge, projects
-from backend.v1.db import Job, JudgeVerdict
+from rfp_assistant.providers.base import LLMError
+from rfp_assistant.main import app
+from rfp_assistant.errors import PipelineError
+from rfp_assistant.api.v1 import experiment, judge, projects
+from rfp_assistant.api.v1.db import Job, JudgeVerdict
 from tests.conftest import docx_bytes
 from tests.test_hindsight_lessons import QUERY, library_with_competing_answers
 from tests.v1_fakes import FakeLessons, FakeV1LLM, cite_first_past_answer, draft_text, make_context, req, verdict

@@ -9,13 +9,13 @@ import pytest
 from fastapi.testclient import TestClient
 from sqlalchemy import select
 
-from backend.llm import LLMError, MonitoredLLM
-from backend.main import app
-from backend.provider_errors import (
+from rfp_assistant.providers.base import LLMError, MonitoredLLM
+from rfp_assistant.main import app
+from rfp_assistant.providers.errors import (
     BLOCKING, REASONS, StopOnBlocking, explain, explain_message, provider_health, reason_of,
 )
-from backend.v1 import experiment, projects
-from backend.v1.db import DraftRow, Job
+from rfp_assistant.api.v1 import experiment, projects
+from rfp_assistant.api.v1.db import DraftRow, Job
 from tests.conftest import docx_bytes
 from tests.test_hindsight_lessons import QUERY, library_with_competing_answers
 from tests.v1_fakes import FakeLessons, FakeV1LLM, cite_first_past_answer, make_context, req

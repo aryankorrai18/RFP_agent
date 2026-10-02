@@ -11,7 +11,7 @@ import time
 from dataclasses import dataclass, replace
 from pathlib import Path
 
-from .config import DEFAULT_MODEL, ROOT, Settings, has_key
+from ..config import DEFAULT_MODEL, ROOT, Settings, has_key
 
 CHOICE_FILE_ENV = "RFP_MODEL_CHOICE_FILE"
 MODEL_NAME = re.compile(r"^[a-z0-9][a-z0-9._/\-]{1,80}$")
@@ -124,7 +124,7 @@ async def list_models(provider: str) -> tuple[list[ModelOption], str | None]:
 
 
 async def _list_groq() -> tuple[list[ModelOption], str | None]:
-    from .llm_groq import list_groq_models
+    from .groq import list_groq_models
 
     if not has_key("groq"):
         return [], "No Groq key found, so the model list can't be loaded."

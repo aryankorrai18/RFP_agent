@@ -8,8 +8,8 @@ import logging
 from collections.abc import Callable
 from dataclasses import dataclass, field
 
-from ..config import Settings
-from ..llm import LLM
+from ...config import Settings
+from ...providers.base import LLM
 from .db import Database
 from .jobs import JobRunner
 from .lessons import HindsightLessons, LessonSyncReport, LessonsMemory, sync_lessons

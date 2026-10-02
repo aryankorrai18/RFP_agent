@@ -18,16 +18,16 @@ from starlette.exceptions import HTTPException as StarletteHTTPException
 
 from . import workspaces
 from .config import PROVIDER_KEY_VARS, ROOT, Settings, has_key
-from .llm import LLM, ClaudeLLM, MonitoredLLM
-from .llm_gemini import GeminiLLM
-from .llm_groq import GroqLLM
-from .model_choice import (
+from .providers.base import LLM, ClaudeLLM, MonitoredLLM
+from .providers.gemini import GeminiLLM
+from .providers.groq import GroqLLM
+from .providers.model_choice import (
     MODEL_NAME, apply_choice, default_model, list_models, model_source, refresh, write_choice,
 )
-from .parser import ParseError
-from .core import PipelineError
-from .v1.api import router as v1_router
-from .v1.context import build_context
+from .parsing.parser import ParseError
+from .errors import PipelineError
+from .api.v1.router import router as v1_router
+from .api.v1.context import build_context
 
 ENV_FILE = ROOT / ".env"
 
@@ -254,7 +254,7 @@ async def list_workspaces() -> dict:
 async def create_workspace(body: WorkspaceIn) -> dict:
     """Start a new workspace and switch to it. kind=demo seeds a fictional company's history (no
     model calls; Hindsight stores the seeded answers and lessons); kind=company starts empty."""
-    from .v1 import demo
+    from .api.v1 import demo
 
     name = (body.name or "").strip() or ("Larkspur Data (demo)" if body.kind == "demo" else "")
     try:

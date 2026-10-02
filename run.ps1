@@ -26,4 +26,4 @@ if (-not (Test-Path ".env")) {
 Write-Host "Open http://127.0.0.1:$Port   (Ctrl+C to stop)"
 # No --reload: it can hang on Windows. The app re-reads .env on every request, so a key
 # saved there works immediately; restart only after changing code.
-& $python -m uvicorn backend.main:app --port $Port
+& $python -m uvicorn rfp_assistant.main:app --app-dir src --port $Port

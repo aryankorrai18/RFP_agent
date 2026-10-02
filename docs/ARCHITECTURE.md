@@ -24,17 +24,17 @@
 
 | Module | Responsibility |
 |---|---|
-| `backend/main.py` | Application lifecycle, workspaces, model selection, security headers |
-| `backend/v1/api.py` | HTTP contracts and response models |
-| `backend/v1/projects.py` | Requirement extraction, drafting, review, and project state |
-| `backend/v1/library.py` | Past-proposal import and approved answer library |
-| `backend/v1/retrieval.py` | Hindsight recall and SQLite validation |
-| `backend/v1/ranking.py` | Relevance-aware outcome ranking |
-| `backend/v1/learning.py` | Review signals and client preferences |
-| `backend/v1/outcomes.py` | Win/loss credit, debriefs, and superseding |
-| `backend/v1/lessons.py` | Hindsight lesson storage and recall |
-| `backend/v1/experiment.py` | Before/after memory comparison |
-| `backend/v1/judge.py` | Blind model judge and human spot-check |
+| `src/rfp_assistant/main.py` | Application lifecycle, workspaces, model selection, security headers |
+| `src/rfp_assistant/api/v1/router.py` | HTTP contracts and response models |
+| `src/rfp_assistant/api/v1/projects.py` | Requirement extraction, drafting, review, and project state |
+| `src/rfp_assistant/api/v1/library.py` | Past-proposal import and approved answer library |
+| `src/rfp_assistant/api/v1/retrieval.py` | Hindsight recall and SQLite validation |
+| `src/rfp_assistant/api/v1/ranking.py` | Relevance-aware outcome ranking |
+| `src/rfp_assistant/api/v1/learning.py` | Review signals and client preferences |
+| `src/rfp_assistant/api/v1/outcomes.py` | Win/loss credit, debriefs, and superseding |
+| `src/rfp_assistant/api/v1/lessons.py` | Hindsight lesson storage and recall |
+| `src/rfp_assistant/api/v1/experiment.py` | Before/after memory comparison |
+| `src/rfp_assistant/api/v1/judge.py` | Blind model judge and human spot-check |
 | `frontend/app.html` | Production browser interface |
 
 ## Workspace isolation

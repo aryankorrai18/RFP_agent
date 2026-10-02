@@ -27,11 +27,11 @@ from typing import TYPE_CHECKING, Any
 
 from sqlalchemy import select, update
 
-from ..llm import LLMError
-from ..prompts import render_fact_sheet
-from ..provider_errors import StopOnBlocking, explain_message
-from ..schemas import JudgeResult
-from ..core import PipelineError
+from ...providers.base import LLMError
+from ...providers.prompts import render_fact_sheet
+from ...providers.errors import StopOnBlocking, explain_message
+from ...schemas import JudgeResult
+from ...errors import PipelineError
 from .db import Answer, ComparisonDraft, HumanVerdict, Job, JudgeVerdict, RequirementRow
 from .jobs import JobFailed
 

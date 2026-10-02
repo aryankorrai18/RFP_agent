@@ -3,10 +3,10 @@ from __future__ import annotations
 import json
 from datetime import date
 
-from backend.config import ROOT
-from backend.prompts import drafting_system, drafting_user_message, extraction_content
-from backend.parser import ParsedDocument, parse_document
-from backend.schemas import Fact, FactSheet, Requirement
+from rfp_assistant.config import ROOT
+from rfp_assistant.providers.prompts import drafting_system, drafting_user_message, extraction_content
+from rfp_assistant.parsing.parser import ParsedDocument, parse_document
+from rfp_assistant.schemas import Fact, FactSheet, Requirement
 
 
 def test_drafting_system_prompt_is_byte_identical_across_requirements():
@@ -30,7 +30,7 @@ def test_document_text_is_wrapped_as_data():
 
 
 def test_production_extraction_audits_scope_and_scored_response_sections():
-    from backend import prompts
+    from rfp_assistant.providers import prompts
 
     text = prompts.EXTRACTION_SYSTEM
     assert prompts.EXTRACTION_PROMPT_VERSION == "v2.0"
@@ -65,8 +65,8 @@ def test_sample_documents_parse():
 
 
 def test_draft_prompt_adds_past_answers_and_reviewer_instructions():
-    from backend import prompts
-    from backend.schemas import PastAnswer
+    from rfp_assistant.providers import prompts
+    from rfp_assistant.schemas import PastAnswer
 
     req = Requirement(id="REQ-001", section=None, question="SSO?", mandatory=None, word_limit=None, reference=None)
     empty = prompts.drafting_user_message(req, [])
@@ -81,7 +81,7 @@ def test_draft_prompt_adds_past_answers_and_reviewer_instructions():
 def test_versioned_production_prompts_are_unchanged():
     import hashlib
 
-    from backend import prompts
+    from rfp_assistant.providers import prompts
 
     sha = lambda s: hashlib.sha256(s.encode()).hexdigest()[:16]  # noqa: E731
     assert prompts.DRAFT_PROMPT_VERSION == "v1.0"

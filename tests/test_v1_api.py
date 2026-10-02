@@ -10,8 +10,8 @@ import docx
 import pytest
 from fastapi.testclient import TestClient
 
-from backend.main import app
-from backend.llm import LLMError
+from rfp_assistant.main import app
+from rfp_assistant.providers.base import LLMError
 from tests.conftest import docx_bytes
 from tests.v1_fakes import FakeMemory, FakeV1LLM, make_context, pair, req
 
@@ -210,8 +210,8 @@ def test_errors_use_the_standard_shape(v1_client):
 
 def test_interrupted_jobs_resume_on_startup(tmp_path):
     """A job left 'running' by a dead process is resumed when the app starts."""
-    from backend.v1 import projects
-    from backend.v1.db import Job, Project
+    from rfp_assistant.api.v1 import projects
+    from rfp_assistant.api.v1.db import Job, Project
 
     llm = FakeV1LLM(requirements=[req("Q1?"), req("Q2?")])
     ctx = make_context(tmp_path, llm)

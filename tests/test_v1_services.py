@@ -10,14 +10,14 @@ import openpyxl
 import pytest
 from sqlalchemy import select
 
-from backend.llm import LLMError
-from backend.schemas import DraftClaimOut, DraftResult
-from backend.core import PipelineError
-from backend.v1 import library, projects
-from backend.v1.db import Answer, DraftRow, Job, Pair, PastProposal, Project, RequirementRow
-from backend.v1.export import FinalAnswer, export_docx, export_xlsx
-from backend.v1.retrieval import retrieve
-from backend.v1.sync import touch
+from rfp_assistant.providers.base import LLMError
+from rfp_assistant.schemas import DraftClaimOut, DraftResult
+from rfp_assistant.errors import PipelineError
+from rfp_assistant.api.v1 import library, projects
+from rfp_assistant.api.v1.db import Answer, DraftRow, Job, Pair, PastProposal, Project, RequirementRow
+from rfp_assistant.api.v1.export import FinalAnswer, export_docx, export_xlsx
+from rfp_assistant.api.v1.retrieval import retrieve
+from rfp_assistant.api.v1.sync import touch
 from tests.conftest import docx_bytes
 from tests.v1_fakes import FakeMemory, FakeV1LLM, make_context, pair, req
 

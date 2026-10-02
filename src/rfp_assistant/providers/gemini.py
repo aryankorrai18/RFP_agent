@@ -1,6 +1,6 @@
 """Google Gemini adapter for extraction, drafting, pair import, and judging.
 
-Same contract as ClaudeLLM in llm.py: returns LLMResult, raises LLMError. Differences:
+Same contract as ClaudeLLM in base.py: returns LLMResult, raises LLMError. Differences:
 - Structured output uses `response_json_schema` and is validated here with Pydantic.
 - Effort maps to Gemini's `thinking_level` (low / medium / high).
 - 429 and 5xx responses are retried with exponential backoff inside the SDK, because the free
@@ -20,11 +20,11 @@ from google.genai import errors, types
 from pydantic import BaseModel, ValidationError
 
 from . import prompts
-from .config import Settings, has_key
-from .llm import JUDGE_MAX_TOKENS, MALFORMED_ATTEMPTS, LLMError, LLMResult, TokenUsage
-from .provider_errors import PHRASE, quota_is_hard
-from .parser import ParsedDocument
-from .schemas import DraftResult, ExtractionResult, Fact, JudgeResult, PairsResult, PastAnswer, Requirement
+from ..config import Settings, has_key
+from .base import JUDGE_MAX_TOKENS, MALFORMED_ATTEMPTS, LLMError, LLMResult, TokenUsage
+from .errors import PHRASE, quota_is_hard
+from ..parsing.parser import ParsedDocument
+from ..schemas import DraftResult, ExtractionResult, Fact, JudgeResult, PairsResult, PastAnswer, Requirement
 
 T = TypeVar("T", bound=BaseModel)
 

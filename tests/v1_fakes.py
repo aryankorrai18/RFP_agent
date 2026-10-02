@@ -6,10 +6,10 @@ import re
 from collections.abc import Callable
 from dataclasses import dataclass, field, replace
 
-from backend.config import Settings
-from backend.llm import LLMError, LLMResult, TokenUsage
-from backend.parser import ParsedDocument
-from backend.schemas import (
+from rfp_assistant.config import Settings
+from rfp_assistant.providers.base import LLMError, LLMResult, TokenUsage
+from rfp_assistant.parsing.parser import ParsedDocument
+from rfp_assistant.schemas import (
     DraftClaimOut,
     DraftResult,
     ExtractedPair,
@@ -22,10 +22,10 @@ from backend.schemas import (
     PastAnswer,
     Requirement,
 )
-from backend.v1.context import V1Context
-from backend.v1.db import Database
-from backend.v1.lessons import Brief, LessonHit
-from backend.v1.memory import MemoryItem, MemoryUnavailable, RecallHit
+from rfp_assistant.api.v1.context import V1Context
+from rfp_assistant.api.v1.db import Database
+from rfp_assistant.api.v1.lessons import Brief, LessonHit
+from rfp_assistant.api.v1.memory import MemoryItem, MemoryUnavailable, RecallHit
 
 WORD = re.compile(r"[a-z0-9]+")
 STOP = {"the", "a", "an", "and", "or", "of", "to", "in", "for", "do", "you", "your", "is", "are", "we", "our", "with", "how", "what", "via"}

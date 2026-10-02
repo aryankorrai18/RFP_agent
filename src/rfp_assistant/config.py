@@ -6,13 +6,13 @@ import os
 from dataclasses import dataclass, field
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parent.parent
+ROOT = Path(__file__).resolve().parent.parent.parent
 
 EFFORT_LEVELS = ("low", "medium", "high", "xhigh", "max")
 
 PROVIDERS = ("anthropic", "gemini", "groq")
 RETRIEVAL_MODES = ("none", "plain", "outcome", "hindsight")
-RELEVANCE_POLICIES = ("rank", "gated")  # see backend/v1/ranking.py
+RELEVANCE_POLICIES = ("rank", "gated")  # see rfp_assistant/api/v1/ranking.py
 # Environment variables each provider's SDK reads its key from.
 PROVIDER_KEY_VARS = {
     "anthropic": ("ANTHROPIC_API_KEY", "ANTHROPIC_AUTH_TOKEN"),

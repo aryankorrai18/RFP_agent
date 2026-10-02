@@ -50,7 +50,7 @@ class JobRunner:
     def cancel(self, job_id: int) -> Job:
         """Stop a queued or running job at its next await (e.g. mid model call). Work already
         committed is kept; the job's cancel handler moves its target to an actionable state."""
-        from ..core import PipelineError
+        from ...errors import PipelineError
 
         with self.ctx.db.session() as session:
             job = session.get(Job, job_id)

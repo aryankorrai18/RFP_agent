@@ -12,7 +12,7 @@ from datetime import date
 
 from sqlalchemy import select
 
-from ..schemas import PastAnswer
+from ...schemas import PastAnswer
 from .db import Answer, AnswerStats, Database, PastProposal, ProjectOutcome, parse_answer_code
 from .lessons import AnswerLessons, LessonsMemory, answer_signals, answer_tag
 from .memory import Memory, MemoryUnavailable, RecallHit

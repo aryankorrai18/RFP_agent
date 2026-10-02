@@ -60,7 +60,7 @@ powershell -ExecutionPolicy Bypass -File .\run.ps1
 Or start it manually:
 
 ```powershell
-.\.venv\Scripts\python.exe -m uvicorn backend.main:app --host 127.0.0.1 --port 8001
+.\.venv\Scripts\python.exe -m uvicorn rfp_assistant.main:app --app-dir src --host 127.0.0.1 --port 8001
 ```
 
 Open <http://127.0.0.1:8001>.
@@ -88,13 +88,16 @@ All automated tests use fake model and Hindsight clients, so they consume no pro
 ## Repository layout
 
 ```text
-backend/
+src/rfp_assistant/
   main.py              FastAPI entry point, workspaces, model selection
-  core.py              shared errors and fact-sheet loading
-  parser.py            PDF, Word, Excel, text, and Markdown parsing
-  prompts.py           versioned extraction and drafting prompts
-  llm*.py              Anthropic, Gemini, and Groq adapters
-  v1/                  library, projects, memory, learning, judging, export
+  config.py            Settings, environment, and repo-root resolution
+  errors.py            shared errors and fact-sheet loading
+  schemas.py           request/response and domain DTOs
+  grounding.py         citation and evidence rules
+  workspaces.py        per-company workspace registry
+  parsing/             PDF, Word, Excel, text, and Markdown parsing
+  providers/           Anthropic, Gemini, and Groq adapters, prompts, model choice
+  api/v1/               routes, projects, library, memory, learning, judging, export
 frontend/
   app.html              production single-page application
 samples/
@@ -104,6 +107,7 @@ tests/                  offline unit and integration tests
 docs/                   architecture, memory, and demo documentation
 data/
   fact_sheet.json       bundled fictional sample facts
+pyproject.toml           project metadata and pytest configuration
 ```
 
 ## Data and security

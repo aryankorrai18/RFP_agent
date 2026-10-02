@@ -11,12 +11,12 @@ import httpx
 import pytest
 from google.genai import errors, types
 
-from backend.config import Settings
-from backend.llm import LLMError
-from backend.llm_gemini import GeminiLLM, json_schema_for
-from backend.parser import ParsedDocument
-from backend.provider_errors import reason_of
-from backend.schemas import DraftResult, ExtractionResult, Fact, Requirement
+from rfp_assistant.config import Settings
+from rfp_assistant.providers.base import LLMError
+from rfp_assistant.providers.gemini import GeminiLLM, json_schema_for
+from rfp_assistant.parsing.parser import ParsedDocument
+from rfp_assistant.providers.errors import reason_of
+from rfp_assistant.schemas import DraftResult, ExtractionResult, Fact, Requirement
 
 SETTINGS = replace(Settings(), provider="gemini", model="gemini-3.5-flash-lite")
 DOC = ParsedDocument(filename="rfp.txt", kind="text", text="3.1 Do you support SSO?")
@@ -198,7 +198,7 @@ def test_missing_key_is_an_auth_error(monkeypatch):
 
 
 def test_gemini_pair_extraction_and_v1_drafting():
-    from backend.schemas import PastAnswer
+    from rfp_assistant.schemas import PastAnswer
 
     pairs_json = json.dumps({"pairs": [{"section": None, "reference": "3.1", "question": "SSO?", "answer": "SAML 2.0."}]})
     llm, models = llm_with(response(pairs_json), response(DRAFT_JSON))

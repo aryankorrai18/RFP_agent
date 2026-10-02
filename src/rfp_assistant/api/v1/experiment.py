@@ -16,12 +16,12 @@ from typing import TYPE_CHECKING, Any
 from sqlalchemy import func, select, update
 from sqlalchemy.exc import IntegrityError
 
-from ..config import RETRIEVAL_MODES
-from ..grounding import evaluate_draft
-from ..llm import LLMError
-from ..provider_errors import StopOnBlocking, explain_message
-from ..schemas import Requirement
-from ..core import PipelineError
+from ...config import RETRIEVAL_MODES
+from ...grounding import evaluate_draft
+from ...providers.base import LLMError
+from ...providers.errors import StopOnBlocking, explain_message
+from ...schemas import Requirement
+from ...errors import PipelineError
 from .db import Answer, ComparisonDraft, Job, Lesson, Project, RequirementRow
 from .evidence import check_claims
 from .jobs import JobFailed

@@ -6,7 +6,7 @@ import docx
 import openpyxl
 import pytest
 
-from backend.parser import MIN_PDF_TEXT_CHARS, ParseError, parse_document
+from rfp_assistant.parsing.parser import MIN_PDF_TEXT_CHARS, ParseError, parse_document
 from tests.pdf_helpers import blank_pdf, text_pdf
 
 LIMIT = 400_000

@@ -15,8 +15,8 @@ import shutil
 from datetime import date
 from typing import TYPE_CHECKING, Any
 
-from ..config import ROOT
-from ..core import PipelineError
+from ...config import ROOT
+from ...errors import PipelineError
 from . import library
 
 if TYPE_CHECKING:

@@ -1,7 +1,7 @@
 from __future__ import annotations
 
-from backend.grounding import count_words, evaluate_draft
-from backend.schemas import DraftClaimOut, DraftResult, Requirement
+from rfp_assistant.grounding import count_words, evaluate_draft
+from rfp_assistant.schemas import DraftClaimOut, DraftResult, Requirement
 
 LIVE = {"FACT-001", "FACT-002"}
 

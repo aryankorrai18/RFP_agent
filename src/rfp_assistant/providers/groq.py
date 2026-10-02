@@ -19,12 +19,12 @@ import httpx
 from pydantic import BaseModel, ValidationError
 
 from . import prompts
-from .config import PROVIDER_KEY_VARS, Settings
-from .llm import JUDGE_MAX_TOKENS, MALFORMED_ATTEMPTS, LLMError, LLMResult, TokenUsage
-from .llm_gemini import json_schema_for
-from .provider_errors import PHRASE, quota_is_hard
-from .parser import ParsedDocument
-from .schemas import DraftResult, ExtractionResult, Fact, JudgeResult, PairsResult, PastAnswer, Requirement
+from ..config import PROVIDER_KEY_VARS, Settings
+from .base import JUDGE_MAX_TOKENS, MALFORMED_ATTEMPTS, LLMError, LLMResult, TokenUsage
+from .gemini import json_schema_for
+from .errors import PHRASE, quota_is_hard
+from ..parsing.parser import ParsedDocument
+from ..schemas import DraftResult, ExtractionResult, Fact, JudgeResult, PairsResult, PastAnswer, Requirement
 
 T = TypeVar("T", bound=BaseModel)
 

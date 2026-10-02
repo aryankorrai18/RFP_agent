@@ -10,11 +10,11 @@ import httpx2
 import pytest
 from pydantic import ValidationError
 
-from backend.config import Settings
-from backend.llm import FALLBACK_BETA, ClaudeLLM, LLMError
-from backend.parser import ParsedDocument
-from backend.provider_errors import reason_of
-from backend.schemas import DraftResult, ExtractionResult, Fact, Requirement
+from rfp_assistant.config import Settings
+from rfp_assistant.providers.base import FALLBACK_BETA, ClaudeLLM, LLMError
+from rfp_assistant.parsing.parser import ParsedDocument
+from rfp_assistant.providers.errors import reason_of
+from rfp_assistant.schemas import DraftResult, ExtractionResult, Fact, Requirement
 
 DOC = ParsedDocument(filename="rfp.txt", kind="text", text="3.1 Do you support SSO?")
 FACTS = [Fact(id="FACT-001", topic="SSO", statement="We support SAML 2.0 SSO.")]
@@ -169,7 +169,7 @@ def test_unrelated_type_errors_are_not_swallowed():
 
 
 def test_pair_extraction_request_shape():
-    from backend.schemas import PairsResult
+    from rfp_assistant.schemas import PairsResult
 
     llm, messages = llm_with(response(PairsResult(pairs=[])))
     asyncio.run(llm.extract_pairs(DOC))
@@ -180,7 +180,7 @@ def test_pair_extraction_request_shape():
 
 
 def test_draft_with_past_answers_uses_v1_rules():
-    from backend.schemas import PastAnswer
+    from rfp_assistant.schemas import PastAnswer
 
     llm, messages = llm_with(response(DraftResult(answer="", claims=[], unsupported_claims=[], needs_sme=True, sme_question="?")))
     asyncio.run(llm.draft_answer("Test Co", FACTS, REQ, [PastAnswer(id="ANS-0001", question="q", answer="a")], "Shorter"))

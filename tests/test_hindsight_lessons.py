@@ -9,11 +9,11 @@ from datetime import date
 from fastapi.testclient import TestClient
 from sqlalchemy import select
 
-from backend.main import app
-from backend.v1 import library, projects
-from backend.v1.db import Lesson, Pair
-from backend.v1.lessons import AnswerLessons, LessonHit, answer_signals, collect_lessons
-from backend.v1.retrieval import retrieve
+from rfp_assistant.main import app
+from rfp_assistant.api.v1 import library, projects
+from rfp_assistant.api.v1.db import Lesson, Pair
+from rfp_assistant.api.v1.lessons import AnswerLessons, LessonHit, answer_signals, collect_lessons
+from rfp_assistant.api.v1.retrieval import retrieve
 from tests.conftest import docx_bytes
 from tests.v1_fakes import FakeLessons, FakeV1LLM, make_context, pair, req
 
@@ -146,7 +146,7 @@ def test_a_rejected_review_becomes_a_negative_lesson(tmp_path):
         draft_job = projects.start_drafting(ctx, project.id)
         await ctx.jobs.wait(draft_job.id)
         with ctx.db.session() as s:
-            from backend.v1.db import Project
+            from rfp_assistant.api.v1.db import Project
 
             requirement = s.get(Project, project.id).requirements[0]
             cited = requirement.drafts[-1].sources
@@ -165,7 +165,7 @@ def test_rejecting_a_facts_only_draft_as_too_vague_is_still_learned(tmp_path):
     """Found live: the drafter answered from the fact sheet and ignored the specific past answers, so
     rejecting it created no lesson at all. Now it becomes a lesson about the question and client,
     and "too vague" becomes a drafting preference for that client."""
-    from backend.schemas import DraftClaimOut, DraftResult
+    from rfp_assistant.schemas import DraftClaimOut, DraftResult
 
     def facts_only(requirement, past, instructions):
         return DraftResult(answer="An independent third party tests the platform every year.",
@@ -184,7 +184,7 @@ def test_rejecting_a_facts_only_draft_as_too_vague_is_still_learned(tmp_path):
         await ctx.jobs.wait(job.id)
         await ctx.jobs.wait(projects.start_drafting(ctx, project.id).id)
         with ctx.db.session() as session:
-            from backend.v1.db import Project
+            from rfp_assistant.api.v1.db import Project
 
             requirement = session.get(Project, project.id).requirements[0]
             offered = [r["id"] for r in requirement.drafts[-1].retrieved]

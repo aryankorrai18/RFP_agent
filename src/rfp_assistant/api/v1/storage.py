@@ -6,8 +6,8 @@ import hashlib
 from pathlib import PurePath
 from typing import TYPE_CHECKING
 
-from ..parser import SUPPORTED_EXTENSIONS
-from ..core import PipelineError
+from ...parsing.parser import SUPPORTED_EXTENSIONS
+from ...errors import PipelineError
 from .db import Document
 
 if TYPE_CHECKING:

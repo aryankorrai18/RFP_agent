@@ -4,8 +4,8 @@ from __future__ import annotations
 
 import base64
 
-from .parser import ParsedDocument
-from .schemas import Fact, PastAnswer, Requirement
+from ..parsing.parser import ParsedDocument
+from ..schemas import Fact, PastAnswer, Requirement
 
 DRAFT_PROMPT_VERSION = "v1.0"
 

@@ -1,0 +1,10 @@
+[project]
+name = "rfp-memory-assistant"
+version = "0.1.0"
+description = "RFP Memory Assistant: grounded, reviewable proposal drafting with outcome-aware memory."
+requires-python = ">=3.10"
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
+addopts = "-q"
