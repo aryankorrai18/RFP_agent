@@ -1,0 +1,22 @@
+# Secrets: never committed. Each app has a .env.example to copy instead.
+.env
+**/.env
+
+# Runtime data: databases, uploads, workspaces, memory state, backups and logs
+.run/
+backups/
+agent-hub/data/
+deal-intelligence/data/
+rfp-v0/data/*
+!rfp-v0/data/fact_sheet.json
+rfp-v0/runs/
+
+# Python and tooling
+.venv/
+.hindsight-venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.pytest_tmp*/
+node_modules/
+*.log

@@ -1,4 +1,4 @@
-"""Fixes for what the Aiden.AI pilot found (pilot/issues.csv, 2026-10-08): a deal's industry and size from the notes or
+"""Fixes for what the Aiden.AI pilot found (2026-10-08): a deal's industry and size from the notes or
 plain words, completing them later, a loose reply to the hub's own question, deal events in the activity log, the
 administrator's welcome, and quote marks around a pasted answer."""
 

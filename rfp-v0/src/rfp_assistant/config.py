@@ -129,7 +129,7 @@ class Settings:
     retrieval_relevance_min_share: float = 0.01
     # How Hindsight's candidates are ordered: "semantic" sorts them by Hindsight's own semantic score; "hindsight" keeps the
     # order Hindsight returns. The 2026-10-08 pilot found Hindsight's fused order buried the right answer (1 of 6 in the
-    # top 3) while its semantic score ranked it first (6 of 6); see pilot/issues.csv.
+    # top 3) while its semantic score ranked it first (6 of 6).
     recall_order: str = "semantic"
     evidence_check: bool = True
 
