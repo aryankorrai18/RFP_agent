@@ -56,6 +56,13 @@ def _float_env(name: str, default: float) -> float:
     return value
 
 
+def _recall_order_env() -> str:
+    value = os.environ.get("RFP_RECALL_ORDER", "semantic").strip().lower() or "semantic"
+    if value not in ("semantic", "hindsight"):
+        raise ValueError(f"RFP_RECALL_ORDER must be semantic or hindsight, got {value!r}")
+    return value
+
+
 def _relevance_env() -> str:
     value = os.environ.get("RFP_RETRIEVAL_RELEVANCE", "gated").strip().lower() or "gated"
     if value not in RELEVANCE_POLICIES:
@@ -120,6 +127,10 @@ class Settings:
     # them ("gated"). "rank" is the V2 pre-fix rule, kept to reproduce the earlier results.
     retrieval_relevance: str = "gated"
     retrieval_relevance_min_share: float = 0.01
+    # How Hindsight's candidates are ordered: "semantic" sorts them by Hindsight's own semantic score; "hindsight" keeps the
+    # order Hindsight returns. The 2026-10-08 pilot found Hindsight's fused order buried the right answer (1 of 6 in the
+    # top 3) while its semantic score ranked it first (6 of 6); see pilot/issues.csv.
+    recall_order: str = "semantic"
     evidence_check: bool = True
 
     @property
@@ -153,6 +164,7 @@ class Settings:
             retrieval_top_k=_int_env("RFP_RETRIEVAL_TOP_K", cls.retrieval_top_k),
             retrieval_mode=retrieval_mode,
             retrieval_relevance=_relevance_env(),
+            recall_order=_recall_order_env(),
             retrieval_relevance_min_share=_float_env("RFP_RETRIEVAL_RELEVANCE_MIN_SHARE", cls.retrieval_relevance_min_share),
             retrieval_freshness_half_life_days=_int_env(
                 "RFP_RETRIEVAL_FRESHNESS_HALF_LIFE_DAYS", cls.retrieval_freshness_half_life_days

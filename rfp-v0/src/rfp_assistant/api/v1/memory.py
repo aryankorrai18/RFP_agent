@@ -92,9 +92,10 @@ class HindsightMemory:
     """Works with a local server (default, http://127.0.0.1:8888) or Hindsight Cloud (set
     RFP_HINDSIGHT_URL and RFP_HINDSIGHT_API_KEY). The API surface is the same."""
 
-    def __init__(self, base_url: str, bank: str, api_key: str | None = None, timeout: float = 30.0):
+    def __init__(self, base_url: str, bank: str, api_key: str | None = None, timeout: float = 30.0, order: str = "semantic"):
         self.base_url = base_url
         self.bank = bank
+        self.order = order  # "semantic": by Hindsight's semantic score; "hindsight": as returned
         self._api_key = api_key or None
         self.timeout = timeout
         self._client: Hindsight | None = None
@@ -169,27 +170,25 @@ class HindsightMemory:
         except _CONNECTION_ERRORS as exc:
             raise MemoryUnavailable(f"Hindsight is not reachable at {self.base_url}") from exc
 
-        hits: list[RecallHit] = []
-        seen: set[str] = set()
+        found: dict[str, dict] = {}
         for result in response.results or []:
             code = (result.metadata or {}).get("answer_id") or result.document_id
-            if not code or code in seen:  # a long answer can come back as several chunks
+            if not code:
                 continue
-            seen.add(code)
             scores = result.scores
-            hits.append(
-                RecallHit(
-                    answer_code=code,
-                    rank=len(hits) + 1,
-                    final=getattr(scores, "final", None),
-                    semantic=getattr(scores, "semantic", None),
-                    reranker=getattr(scores, "reranker", None),
-                    keyword=getattr(scores, "keyword", None),
-                )
-            )
-            if len(hits) >= limit:
-                break
-        return hits
+            semantic = getattr(scores, "semantic", None)
+            if code in found:  # a long answer can come back as several chunks: keep its best semantic score
+                if semantic is not None and (found[code]["semantic"] is None or semantic > found[code]["semantic"]):
+                    found[code]["semantic"] = semantic
+                continue
+            found[code] = {"code": code, "order": len(found), "final": getattr(scores, "final", None), "semantic": semantic,
+                           "reranker": getattr(scores, "reranker", None), "keyword": getattr(scores, "keyword", None)}
+        rows = list(found.values())
+        if self.order == "semantic" and rows and all(r["semantic"] is not None for r in rows):
+            # Hindsight's fused order can bury the closest answer; its semantic score ranks it (2026-10-08 pilot).
+            rows.sort(key=lambda r: (-r["semantic"], r["order"]))
+        return [RecallHit(answer_code=r["code"], rank=i + 1, final=r["final"], semantic=r["semantic"], reranker=r["reranker"],
+                          keyword=r["keyword"]) for i, r in enumerate(rows[:limit])]
 
     async def healthy(self) -> bool:
         try:

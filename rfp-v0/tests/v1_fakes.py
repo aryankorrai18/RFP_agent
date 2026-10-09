@@ -18,6 +18,7 @@ from rfp_assistant.schemas import (
     Fact,
     JudgeResult,
     JudgeScores,
+    LibraryAnswerResult,
     PairsResult,
     PastAnswer,
     Requirement,
@@ -109,6 +110,13 @@ def prefers_specific(message: str) -> JudgeResult:
     return verdict("A" if a and not b else "B" if b and not a else "tie")
 
 
+def default_library_answer(message: str) -> LibraryAnswerResult:
+    """Cites the first FACT- or ANS- id the prompt shows."""
+    first = re.search(r"\[((?:FACT|ANS)-[\w-]+)\]", message)
+    return LibraryAnswerResult(found=bool(first), answer="The record says so." if first else "Nothing on record.",
+                               source_ids=[first.group(1)] if first else [])
+
+
 @dataclass
 class FakeV1LLM:
     pairs: list[ExtractedPair] = field(default_factory=list)
@@ -122,6 +130,15 @@ class FakeV1LLM:
     temperatures: list[float | None] = field(default_factory=list)
     judger: Callable | None = None  # judge message -> JudgeResult or LLMError; default prefers_specific
     judged: list[str] = field(default_factory=list)  # every judge message received
+    answerer: Callable | None = None  # library question message -> LibraryAnswerResult or LLMError
+    asked: list[str] = field(default_factory=list)  # every library question message received
+
+    async def ask_library(self, system: str, message: str) -> LLMResult[LibraryAnswerResult]:
+        self.asked.append(message)
+        result = self.answerer(message) if self.answerer else default_library_answer(message)
+        if isinstance(result, LLMError):
+            raise result
+        return LLMResult(output=result, model=self.model, usage=TokenUsage(input_tokens=100, output_tokens=20))
 
     async def judge(self, system: str, message: str) -> LLMResult[JudgeResult]:
         self.judged.append(message)

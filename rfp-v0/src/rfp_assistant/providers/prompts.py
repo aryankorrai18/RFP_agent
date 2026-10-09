@@ -7,7 +7,7 @@ import base64
 from ..parsing.parser import ParsedDocument
 from ..schemas import Fact, PastAnswer, Requirement
 
-DRAFT_PROMPT_VERSION = "v1.0"
+DRAFT_PROMPT_VERSION = "v1.1"  # v1.1: past answers show their proposal date, and say when they are ordered by trust
 
 EXTRACTION_PROMPT_VERSION = "v2.0"
 
@@ -169,13 +169,18 @@ def render_past_answers(past_answers: list[PastAnswer]) -> str:
     if not past_answers:
         return "<past_answers>\nNone found for this requirement.\n</past_answers>"
     blocks = ["<past_answers>"]
+    if past_answers[0].ranked:
+        blocks.append("These are listed in the order the system trusts them for this requirement: most relevant first, then by "
+                      "how they did in past bids and reviews and how recent they are. When relevant answers disagree, prefer the "
+                      "higher-listed one (the fact sheet still wins over all of them).\n")
     for p in past_answers:
         details = ", ".join(
             part
             for part in (
                 f"client: {p.client}" if p.client else "",
                 f"industry: {p.industry}" if p.industry else "",
-                f"approved: {p.approved_on.isoformat()}" if p.approved_on else "",
+                f"written: {p.written_on.isoformat()} (date of the proposal it came from)" if p.written_on
+                else f"approved: {p.approved_on.isoformat()}" if p.approved_on else "",
             )
             if part
         )

@@ -1,4 +1,4 @@
-# Hackathon demo
+# Demo guide
 
 ## Recommended story
 

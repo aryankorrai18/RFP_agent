@@ -103,7 +103,7 @@ def test_full_flow_library_project_review_export(v1_client):
     scim = next(r for r in view["requirements"] if r["reference"] == "3.2")
     assert scim["draft"]["sources"] == ["ANS-0002"]
     assert scim["draft"]["retrieved"][0]["answer"].startswith("We support SCIM")
-    assert scim["draft"]["prompt_version"] == "v1.0"
+    assert scim["draft"]["prompt_version"] == "v1.1"
 
     # 4. Export is blocked until everything is final.
     blocked = client.get(f"/v1/projects/{project['id']}/export", params={"format": "docx"})

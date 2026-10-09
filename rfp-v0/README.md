@@ -75,7 +75,7 @@ Open <http://127.0.0.1:8001>.
 6. Review every answer, export the completed response, and record the outcome.
 7. Open **Memory** to show the resulting lessons and playbook.
 
-For the prepared Virtusa hackathon story, follow [Demo guide](docs/DEMO.md).
+For the prepared Virtusa demo story, follow [Demo guide](docs/DEMO.md).
 
 ## Tests
 
@@ -84,6 +84,13 @@ All automated tests use fake model and Hindsight clients, so they consume no pro
 ```powershell
 .\.venv\Scripts\python.exe -m pytest -q
 ```
+
+## Evaluation
+
+`evaluation/` measures whether the memory makes drafted answers better and safer, on synthetic worlds with planted rules (stale,
+reviewed, wrong-industry, lost-bid and conflicting answers, plus controls), marked by code with no model judging a model. The free
+layers run the product's own retrieval against baselines; the model layer drafts under four conditions. Read
+[evaluation/results/REPORT.md](evaluation/results/REPORT.md) and [evaluation/README.md](evaluation/README.md).
 
 ## Repository layout
 
@@ -102,7 +109,7 @@ frontend/
   app.html              production single-page application
 samples/
   corpus_v2/            fictional demo workspace seed and RFPs
-  virtusa_demo/         prepared Virtusa hackathon documents
+  virtusa_demo/         prepared Virtusa demo documents
 tests/                  offline unit and integration tests
 docs/                   architecture, memory, and demo documentation
 data/

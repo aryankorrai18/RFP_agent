@@ -1,4 +1,4 @@
-# Virtusa judge-demo upload pack
+# Virtusa demo upload pack
 
 **Disclosure:** Public Virtusa facts are separated from synthetic proposal history. The fictional
 clients, outcomes and delivery examples must never be represented as real Virtusa engagements.

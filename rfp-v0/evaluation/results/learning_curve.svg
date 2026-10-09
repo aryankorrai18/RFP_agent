@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 360" width="920" height="360" role="img" aria-label="Does it learn? Right answer first as review history accumulates" font-family="system-ui, -apple-system, Segoe UI, Roboto, sans-serif">
+<rect width="920" height="360" rx="14" fill="#ffffff" stroke="#d8ddd8"/>
+<text x="24" y="34" font-size="18" font-weight="700" fill="#17201f">Does it learn? Right answer first as review history accumulates</text>
+<text x="24" y="54" font-size="12.5" fill="#5a6866">Reviewed questions (n = 40 per point). Each round is one reviewer verdict on the wrong answer and one on the right one; shaded bands are 95% intervals.</text>
+<line x1="56" y1="288.0" x2="896" y2="288.0" stroke="#e3e8e3"/>
+<text x="48" y="292.0" font-size="11" text-anchor="end" fill="#5a6866">0%</text>
+<line x1="56" y1="235.5" x2="896" y2="235.5" stroke="#e3e8e3"/>
+<text x="48" y="239.5" font-size="11" text-anchor="end" fill="#5a6866">25%</text>
+<line x1="56" y1="183.0" x2="896" y2="183.0" stroke="#e3e8e3"/>
+<text x="48" y="187.0" font-size="11" text-anchor="end" fill="#5a6866">50%</text>
+<line x1="56" y1="130.5" x2="896" y2="130.5" stroke="#e3e8e3"/>
+<text x="48" y="134.5" font-size="11" text-anchor="end" fill="#5a6866">75%</text>
+<line x1="56" y1="78.0" x2="896" y2="78.0" stroke="#e3e8e3"/>
+<text x="48" y="82.0" font-size="11" text-anchor="end" fill="#5a6866">100%</text>
+<text x="56.0" y="306" font-size="11.5" text-anchor="middle" fill="#17201f">0</text>
+<text x="224.0" y="306" font-size="11.5" text-anchor="middle" fill="#17201f">1</text>
+<text x="392.0" y="306" font-size="11.5" text-anchor="middle" fill="#17201f">2</text>
+<text x="560.0" y="306" font-size="11.5" text-anchor="middle" fill="#17201f">3</text>
+<text x="728.0" y="306" font-size="11.5" text-anchor="middle" fill="#17201f">4</text>
+<text x="896.0" y="306" font-size="11.5" text-anchor="middle" fill="#17201f">5</text>
+<text x="476" y="326" font-size="11.5" text-anchor="middle" fill="#5a6866">rounds of review history per answer pair</text>
+<text x="14" y="183" font-size="11" fill="#5a6866" transform="rotate(-90 14 183)" text-anchor="middle">share of questions</text>
+<polygon points="56.0,147.2 224.0,147.2 392.0,147.2 560.0,147.2 728.0,147.2 896.0,147.2 896.0,209.3 728.0,209.3 560.0,209.3 392.0,209.3 224.0,209.3 56.0,209.3" fill="#64748b" opacity="0.13"/>
+<polyline fill="none" stroke="#64748b" stroke-width="2.4" points="56.0,177.8 224.0,177.8 392.0,177.8 560.0,177.8 728.0,177.8 896.0,177.8"/>
+<circle cx="56.0" cy="177.8" r="3.6" fill="#64748b"><title>Assistant, memory off for ranking at 0: 52% (37% to 67%)</title></circle>
+<circle cx="224.0" cy="177.8" r="3.6" fill="#64748b"><title>Assistant, memory off for ranking at 1: 52% (37% to 67%)</title></circle>
+<circle cx="392.0" cy="177.8" r="3.6" fill="#64748b"><title>Assistant, memory off for ranking at 2: 52% (37% to 67%)</title></circle>
+<circle cx="560.0" cy="177.8" r="3.6" fill="#64748b"><title>Assistant, memory off for ranking at 3: 52% (37% to 67%)</title></circle>
+<circle cx="728.0" cy="177.8" r="3.6" fill="#64748b"><title>Assistant, memory off for ranking at 4: 52% (37% to 67%)</title></circle>
+<circle cx="896.0" cy="177.8" r="3.6" fill="#64748b"><title>Assistant, memory off for ranking at 5: 52% (37% to 67%)</title></circle>
+<polygon points="56.0,147.2 224.0,147.2 392.0,147.2 560.0,80.9 728.0,80.9 896.0,80.9 896.0,112.7 728.0,112.7 560.0,112.7 392.0,209.3 224.0,209.3 56.0,209.3" fill="#d97706" opacity="0.13"/>
+<polyline fill="none" stroke="#d97706" stroke-width="2.4" points="56.0,177.8 224.0,177.8 392.0,177.8 560.0,88.5 728.0,88.5 896.0,88.5"/>
+<circle cx="56.0" cy="177.8" r="3.6" fill="#d97706"><title>Assistant (outcome-aware) at 0: 52% (37% to 67%)</title></circle>
+<circle cx="224.0" cy="177.8" r="3.6" fill="#d97706"><title>Assistant (outcome-aware) at 1: 52% (37% to 67%)</title></circle>
+<circle cx="392.0" cy="177.8" r="3.6" fill="#d97706"><title>Assistant (outcome-aware) at 2: 52% (37% to 67%)</title></circle>
+<circle cx="560.0" cy="88.5" r="3.6" fill="#d97706"><title>Assistant (outcome-aware) at 3: 95% (83% to 99%)</title></circle>
+<circle cx="728.0" cy="88.5" r="3.6" fill="#d97706"><title>Assistant (outcome-aware) at 4: 95% (83% to 99%)</title></circle>
+<circle cx="896.0" cy="88.5" r="3.6" fill="#d97706"><title>Assistant (outcome-aware) at 5: 95% (83% to 99%)</title></circle>
+<polygon points="56.0,147.2 224.0,147.2 392.0,147.2 560.0,80.9 728.0,80.9 896.0,80.9 896.0,112.7 728.0,112.7 560.0,112.7 392.0,209.3 224.0,209.3 56.0,209.3" fill="#0f766e" opacity="0.13"/>
+<polyline fill="none" stroke="#0f766e" stroke-width="2.4" points="56.0,177.8 224.0,177.8 392.0,177.8 560.0,88.5 728.0,88.5 896.0,88.5"/>
+<circle cx="56.0" cy="177.8" r="3.6" fill="#0f766e"><title>Assistant + lessons at 0: 52% (37% to 67%)</title></circle>
+<circle cx="224.0" cy="177.8" r="3.6" fill="#0f766e"><title>Assistant + lessons at 1: 52% (37% to 67%)</title></circle>
+<circle cx="392.0" cy="177.8" r="3.6" fill="#0f766e"><title>Assistant + lessons at 2: 52% (37% to 67%)</title></circle>
+<circle cx="560.0" cy="88.5" r="3.6" fill="#0f766e"><title>Assistant + lessons at 3: 95% (83% to 99%)</title></circle>
+<circle cx="728.0" cy="88.5" r="3.6" fill="#0f766e"><title>Assistant + lessons at 4: 95% (83% to 99%)</title></circle>
+<circle cx="896.0" cy="88.5" r="3.6" fill="#0f766e"><title>Assistant + lessons at 5: 95% (83% to 99%)</title></circle>
+<rect x="56" y="334" width="12" height="12" rx="3" fill="#64748b"/>
+<text x="74" y="344" font-size="12" fill="#17201f">Assistant, memory off for ranking</text>
+<rect x="321.6" y="334" width="12" height="12" rx="3" fill="#d97706"/>
+<text x="339.6" y="344" font-size="12" fill="#17201f">Assistant (outcome-aware)</text>
+<rect x="529.6" y="334" width="12" height="12" rx="3" fill="#0f766e"/>
+<text x="547.6" y="344" font-size="12" fill="#17201f">Assistant + lessons</text>
+</svg>

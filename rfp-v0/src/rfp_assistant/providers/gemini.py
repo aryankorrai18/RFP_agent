@@ -21,10 +21,12 @@ from pydantic import BaseModel, ValidationError
 
 from . import prompts
 from ..config import Settings, has_key
-from .base import JUDGE_MAX_TOKENS, MALFORMED_ATTEMPTS, LLMError, LLMResult, TokenUsage
+from .base import ASK_MAX_TOKENS, JUDGE_MAX_TOKENS, MALFORMED_ATTEMPTS, LLMError, LLMResult, TokenUsage
 from .errors import PHRASE, quota_is_hard
 from ..parsing.parser import ParsedDocument
-from ..schemas import DraftResult, ExtractionResult, Fact, JudgeResult, PairsResult, PastAnswer, Requirement
+from ..schemas import (
+    DraftResult, ExtractionResult, Fact, JudgeResult, LibraryAnswerResult, PairsResult, PastAnswer, Requirement,
+)
 
 T = TypeVar("T", bound=BaseModel)
 
@@ -135,6 +137,12 @@ class GeminiLLM:
             effort=self.settings.draft_effort,
             max_tokens=DRAFT_MAX_TOKENS,
             temperature=temperature,
+        )
+
+    async def ask_library(self, system: str, message: str) -> LLMResult[LibraryAnswerResult]:
+        return await self._generate(
+            purpose="answering a library question", output_format=LibraryAnswerResult, system=system, contents=[message],
+            effort="low", max_tokens=ASK_MAX_TOKENS, temperature=0,
         )
 
     async def judge(self, system: str, message: str) -> LLMResult[JudgeResult]:

@@ -19,7 +19,9 @@ from . import prompts
 from ..config import Settings
 from ..parsing.parser import ParsedDocument
 from .errors import PHRASE, provider_health, quota_is_hard, reason_of
-from ..schemas import DraftResult, ExtractionResult, Fact, JudgeResult, PairsResult, PastAnswer, Requirement
+from ..schemas import (
+    DraftResult, ExtractionResult, Fact, JudgeResult, LibraryAnswerResult, PairsResult, PastAnswer, Requirement,
+)
 
 FALLBACK_BETA = "server-side-fallback-2026-07-01"
 EXTRACTION_MAX_TOKENS = 16000
@@ -27,6 +29,7 @@ PAIRS_MAX_TOKENS = 16000  # answers are copied verbatim, so this output is the l
 DRAFT_MAX_TOKENS = 8000
 MALFORMED_ATTEMPTS = 2  # one retry when the output doesn't match the schema
 JUDGE_MAX_TOKENS = 1500  # a verdict is a winner, a short reason and six scores
+ASK_MAX_TOKENS = 3000  # a short cited answer; the headroom is for the model's own thinking
 
 T = TypeVar("T", bound=BaseModel)
 log = logging.getLogger(__name__)
@@ -89,6 +92,10 @@ class LLM(Protocol):
         memory offered, not to chance. Claude ignores it: extended thinking pins temperature=1."""
         ...
 
+    async def ask_library(self, system: str, message: str) -> LLMResult[LibraryAnswerResult]:
+        """Answer a question from the fact sheet and approved past answers shown in `message`."""
+        ...
+
     async def judge(self, system: str, message: str) -> LLMResult[JudgeResult]:
         """V4 pairwise judge: which of two blinded drafts is better (rfp_assistant/api/v1/judge.py
         builds the prompt). Temperature 0 where the provider allows it."""
@@ -145,6 +152,12 @@ class ClaudeLLM:
             content=prompts.drafting_user_message(requirement, past_answers, instructions),
             effort=self.settings.draft_effort,
             max_tokens=DRAFT_MAX_TOKENS,
+        )
+
+    async def ask_library(self, system: str, message: str) -> LLMResult[LibraryAnswerResult]:
+        return await self._parse(
+            purpose="answering a library question", output_format=LibraryAnswerResult, system=system, content=message,
+            effort="low", max_tokens=ASK_MAX_TOKENS,
         )
 
     async def judge(self, system: str, message: str) -> LLMResult[JudgeResult]:
@@ -252,6 +265,9 @@ class MonitoredLLM:
 
     async def draft_answer(self, *args, **kwargs) -> LLMResult[DraftResult]:  # noqa: ANN002, ANN003
         return await self._watch(self.inner.draft_answer(*args, **kwargs))
+
+    async def ask_library(self, system: str, message: str) -> LLMResult[LibraryAnswerResult]:
+        return await self._watch(self.inner.ask_library(system, message))
 
     async def judge(self, system: str, message: str) -> LLMResult[JudgeResult]:
         return await self._watch(self.inner.judge(system, message))

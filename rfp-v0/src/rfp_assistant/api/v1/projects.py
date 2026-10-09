@@ -262,6 +262,9 @@ def start_drafting(ctx: V1Context, project_id: int, requirement_ids: list[int] |
         valid = {r.id for r in project.requirements}
         if requirement_ids is not None and not set(requirement_ids) <= valid:
             raise PipelineError("invalid_request", "Some requirement IDs don't belong to this project.", 422)
+        # Check the company facts first (the same check the draft job makes), so a workspace without usable
+        # facts is told so now and the project stays in its current state instead of getting stuck in drafting.
+        _live_facts(ctx, project_id)
         project.state = "drafting"
         session.commit()
     payload = {"requirement_ids": requirement_ids} if requirement_ids is not None else {}

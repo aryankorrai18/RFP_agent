@@ -1,4 +1,4 @@
-"""Build the upload-ready Virtusa judge-demo pack.
+"""Build the upload-ready Virtusa demo pack.
 
 Company facts come from the public Virtusa sources in corpus.json. Every client, proposal,
 outcome and engagement detail is explicitly synthetic.
@@ -154,7 +154,7 @@ def _write_support_files(data: dict, force: bool) -> None:
     }
     manifest_path.write_text(json.dumps(manifest, indent=2), encoding="utf-8")
 
-    readme = """# Virtusa judge-demo upload pack
+    readme = """# Virtusa demo upload pack
 
 **Disclosure:** Public Virtusa facts are separated from synthetic proposal history. The fictional
 clients, outcomes and delivery examples must never be represented as real Virtusa engagements.

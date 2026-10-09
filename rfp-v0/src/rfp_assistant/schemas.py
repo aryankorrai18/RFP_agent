@@ -127,6 +127,14 @@ class JudgeResult(BaseModel):
     B: JudgeScores
 
 
+class LibraryAnswerResult(BaseModel):
+    """AI output of a question about what the company has said and holds (the library and the fact sheet)."""
+
+    found: bool  # false when the facts and past answers do not answer the question
+    answer: str
+    source_ids: list[str] = Field(default_factory=list)  # FACT-xx and ANS-xxxx ids shown in the prompt
+
+
 class PastAnswer(BaseModel):
     """An approved library answer offered to the drafter (V1). Not an AI output."""
 
@@ -136,6 +144,11 @@ class PastAnswer(BaseModel):
     client: str | None = None
     industry: str | None = None
     approved_on: date | None = None
+    # When the answer was written: the date of the past proposal it came from (None when not known). Shown to the drafter
+    # instead of the approval date, which for an imported answer is only the day it was imported.
+    written_on: date | None = None
+    # True when the list was ordered by the system's trust ranking (outcome or hindsight mode), not plain search order.
+    ranked: bool = False
 
 
 # --- API response --------------------------------------------------------------------------

@@ -215,7 +215,9 @@ async def run_judging(ctx: V1Context, job_id: int) -> None:
         job.total, job.done = len(todo), 0
         session.commit()
     company, facts = _live_facts(ctx, project_id)
-    judge_llm = ctx.llm_provider(replace(settings, model=model))
+    from .usage import MeteredLLM
+
+    judge_llm = MeteredLLM(ctx.llm_provider(replace(settings, model=model)), ctx.db)
     semaphore = asyncio.Semaphore(settings.draft_concurrency)
     breaker = StopOnBlocking()
     errors: list[str] = []

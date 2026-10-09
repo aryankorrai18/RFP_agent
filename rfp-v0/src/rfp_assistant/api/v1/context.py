@@ -31,6 +31,7 @@ class V1Context:
     sync_lock: asyncio.Lock = field(default_factory=asyncio.Lock)
     lessons: LessonsMemory | None = None
     lessons_lock: asyncio.Lock = field(default_factory=asyncio.Lock)
+    workspace_id: str | None = None  # set for a context opened by name; None for the active workspace's own
     last_lesson_sync: LessonSyncReport | None = field(default=None, init=False)
     jobs: JobRunner = field(init=False)
     _background: set[asyncio.Task] = field(default_factory=set, init=False)
@@ -50,7 +51,9 @@ class V1Context:
 
     @property
     def llm(self) -> LLM:
-        return self.llm_provider(self.settings)
+        from .usage import MeteredLLM
+
+        return MeteredLLM(self.llm_provider(self.settings), self.db)
 
     async def sync(self) -> SyncReport:
         report = await sync_outbox(self.db, self.memory, self.sync_lock)
@@ -112,7 +115,8 @@ def build_context(settings_provider: Callable[[], Settings], llm_provider: Calla
     settings = settings_provider()
     return V1Context(
         db=Database(settings.db_path),
-        memory=HindsightMemory(settings.hindsight_url, settings.hindsight_bank, api_key=settings.hindsight_api_key),
+        memory=HindsightMemory(settings.hindsight_url, settings.hindsight_bank, api_key=settings.hindsight_api_key,
+                               order=settings.recall_order),
         lessons=(HindsightLessons(settings.hindsight_url, settings.hindsight_lessons_bank,
                                   api_key=settings.hindsight_api_key) if settings.lessons_enabled else None),
         settings_provider=settings_provider,

@@ -222,6 +222,20 @@ class MemoryEvent(Base):
     created_at: Mapped[datetime] = mapped_column(default=utcnow)
 
 
+class ModelUsage(Base):
+    """One row per model call made for this workspace: what ran, which model, how many tokens. Written by
+    usage.MeteredLLM, read by GET /v1/usage. Counting starts when this table was added; earlier calls were not recorded."""
+
+    __tablename__ = "model_usage"
+    id: Mapped[int] = mapped_column(primary_key=True)
+    at: Mapped[datetime] = mapped_column(default=utcnow)
+    purpose: Mapped[str] = mapped_column(String(60))  # the model method that was called (e.g. draft_answer, brief)
+    model: Mapped[str | None] = mapped_column(String(100))
+    input_tokens: Mapped[int] = mapped_column(Integer, default=0)
+    output_tokens: Mapped[int] = mapped_column(Integer, default=0)
+    ok: Mapped[bool] = mapped_column(Boolean, default=True)  # False: the call failed (it used no tokens we know of)
+
+
 class Lesson(Base):
     """A plain-language lesson for the Hindsight lessons bank, and its outbox state.
 
@@ -364,7 +378,7 @@ class Database:
 
         Base.metadata.create_all(self.engine)
         # create_all does not add columns to an existing SQLite table. This small additive migration
-        # keeps hackathon databases usable after per-project fact sheets were introduced.
+        # keeps older databases usable after per-project fact sheets were introduced.
         columns = {column["name"] for column in inspect(self.engine).get_columns("projects")}
         if "fact_sheet_document_id" not in columns:
             with self.engine.begin() as connection:

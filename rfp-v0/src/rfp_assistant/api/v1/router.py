@@ -6,7 +6,7 @@ import json
 from datetime import date, datetime
 from typing import Any
 
-from fastapi import APIRouter, Depends, File, Form, Query, Request, UploadFile
+from fastapi import APIRouter, Depends, File, Form, Header, Query, Request, UploadFile
 from fastapi.responses import Response
 from pydantic import BaseModel
 from sqlalchemy import func, select
@@ -16,7 +16,7 @@ from ...config import PROVIDER_KEY_VARS, ROOT, has_key
 from ...providers.errors import explain_message, provider_health
 from ...schemas import FACT_ID_PATTERN, FactOut
 from ...errors import PipelineError, load_fact_sheet
-from . import demo, library, outcomes, projects
+from . import ask, demo, library, outcomes, projects
 from .context import V1Context
 from .db import (
     Answer, AnswerStats, Debrief, Job, MemoryEvent, PastProposal, Project, ProjectOutcome,
@@ -33,7 +33,11 @@ from .sync import pending_count
 router = APIRouter(prefix="/v1", tags=["v1"])
 
 
-def get_v1(request: Request) -> V1Context:
+async def get_v1(request: Request, x_workspace: str | None = Header(None)) -> V1Context:
+    """The services for this request: the workspace named in the X-Workspace header (so a caller such as the hub
+    can work in its own workspace without switching the one the app's screens show), else the active one."""
+    if x_workspace and x_workspace.strip():
+        return await request.app.state.context_for(x_workspace.strip())
     ctx = getattr(request.app.state, "v1", None)
     if ctx is None:
         raise PipelineError("v1_unavailable", "The library service hasn't started.", 503)
@@ -474,7 +478,7 @@ def _workspace_summary(ctx: V1Context) -> dict[str, Any]:
         proposal_count = session.scalar(
             select(func.count()).select_from(PastProposal).where(PastProposal.status != "discarded")
         ) or 0
-    space = workspaces.active()
+    space = (workspaces.get(ctx.workspace_id) if ctx.workspace_id else None) or workspaces.active()
     return {
         "id": space.id if space else None, "name": space.name if space else None, "kind": space.kind if space else None,
         "company_set_up": ctx.settings.fact_sheet_path.exists(), "fact_sheet_locked": _fact_sheet_locked(ctx),
@@ -482,10 +486,28 @@ def _workspace_summary(ctx: V1Context) -> dict[str, Any]:
     }
 
 
+class AskIn(BaseModel):
+    question: str
+
+
+@router.post("/library/ask")
+async def ask_library(body: AskIn, ctx: V1Context = Depends(get_v1)) -> dict[str, Any]:
+    """One model call: answer a question from the company facts and the approved library answers. Nothing is stored."""
+    return await ask.ask_library(ctx, body.question)
+
+
 @router.get("/workspace")
 async def workspace_summary(ctx: V1Context = Depends(get_v1)) -> dict[str, Any]:
     """The open workspace, without the Hindsight checks /status makes."""
     return _workspace_summary(ctx)
+
+
+@router.get("/usage")
+async def usage(ctx: V1Context = Depends(get_v1)) -> dict[str, Any]:
+    """What this workspace has used: model calls and tokens (counted since tracking began) and the space its data takes."""
+    from .usage import storage, summary
+
+    return {"workspace": ctx.workspace_id, "model": summary(ctx.db), "storage": storage(ctx)}
 
 
 @router.get("/status")

@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import asyncio
 import contextlib
+import hmac
 import os
 from contextlib import asynccontextmanager
 from functools import lru_cache
@@ -73,12 +74,73 @@ async def lifespan(app: FastAPI):  # noqa: ANN201
     try:
         yield
     finally:
+        await _close_pooled()
         await ctx.shutdown()
         app.state.v1 = None
 
 
 app = FastAPI(title="RFP Memory Assistant", version="4.0.0", lifespan=lifespan)
 app.include_router(v1_router)
+
+
+# --- one context per workspace a caller names (the X-Workspace header) ------------------------------
+
+_pool_lock = asyncio.Lock()
+app.state.pool = {}  # workspace id -> context, for workspaces other than the active one
+
+
+async def _context_for(workspace_id: str):  # noqa: ANN202
+    """The services for a request that names its workspace. The active workspace uses the main context; any
+    other one is opened once and kept, so two callers can work in different workspaces at the same time and
+    nobody has to switch the workspace the app's own screens show."""
+    active = workspaces.active()
+    current = getattr(app.state, "v1", None)
+    if active is not None and active.id == workspace_id and current is not None:
+        return current
+    if workspaces.get(workspace_id) is None:
+        raise PipelineError("not_found", f"No workspace {workspace_id!r}.", 404)
+    async with _pool_lock:
+        pool = app.state.pool
+        if workspace_id not in pool:
+            factory = getattr(app.state, "workspace_factory", None)  # tests supply their own
+            ctx = factory(workspace_id) if factory else build_context(
+                lambda: workspaces.apply_workspace(base_settings(), workspace_id), _llm_for)
+            ctx.workspace_id = workspace_id
+            await ctx.startup()
+            pool[workspace_id] = ctx
+        return pool[workspace_id]
+
+
+async def _close_pooled(workspace_id: str | None = None, *, check_busy: bool = False) -> None:
+    """Close the context opened for one workspace (or all). Refuses, when asked, while one of its jobs is running."""
+    async with _pool_lock:
+        pool = app.state.pool
+        for key in [workspace_id] if workspace_id else list(pool):
+            ctx = pool.get(key)
+            if ctx is None:
+                continue
+            if check_busy and ctx.jobs.busy():
+                raise PipelineError(
+                    "workspace_busy", "A background job is still running in this workspace. Let it finish or stop it, then switch.", 409
+                )
+            del pool[key]
+            await ctx.shutdown()
+
+
+app.state.context_for = _context_for
+
+
+@app.middleware("http")
+async def service_token(request: Request, call_next):  # noqa: ANN001, ANN201
+    """When RFP_SERVICE_TOKEN is set, only callers that hold it (the Agent Hub) may use the API. The agents' own screens are then
+    for a person on this machine with the token unset; once the agents sit behind the hub they are not reachable by
+    clients at all. Unset (the default) changes nothing."""
+    expected = os.environ.get("RFP_SERVICE_TOKEN", "").strip()
+    if expected and request.url.path.startswith("/v1/"):
+        given = request.headers.get("x-service-token", "")
+        if not hmac.compare_digest(given.encode(), expected.encode()):
+            return JSONResponse(status_code=401, content={"error": {"code": "service_token", "message": "This API only accepts calls from the Agent Hub."}})
+    return await call_next(request)
 
 
 @app.middleware("http")
@@ -227,6 +289,7 @@ async def _switch(workspace_id: str) -> None:
             raise PipelineError(
                 "workspace_busy", "A background job is still running in this workspace. Let it finish or stop it, then switch.", 409
             )
+        await _close_pooled(workspace_id, check_busy=True)  # one context per workspace: the main one takes over
         previous = workspaces.active()
         if current is not None:
             await current.shutdown()
@@ -295,6 +358,7 @@ async def _delete_hindsight_banks(settings: Settings, space: workspaces.Workspac
 async def delete_workspace(workspace_id: str) -> dict:
     """Permanently delete a workspace: its database, uploads, fact sheet, and its two Hindsight
     banks. Refused for "main" and for the currently active workspace (switch away first)."""
+    await _close_pooled(workspace_id)  # a context opened for it by name must not outlive it
     try:
         space = workspaces.remove(workspace_id)
     except KeyError as exc:

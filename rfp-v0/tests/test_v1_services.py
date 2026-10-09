@@ -297,6 +297,25 @@ def test_hindsight_outage_during_drafting_degrades_to_fact_sheet_only(tmp_path):
     run(main())
 
 
+def test_drafting_without_company_facts_is_refused_and_leaves_the_project_as_it_was(tmp_path):
+    llm = FakeV1LLM(pairs=PAIRS[:2], requirements=RFP_REQS)
+    ctx = make_context(tmp_path, llm, fact_sheet_path=tmp_path / "no_such_facts" / "fact_sheet.json")
+
+    async def main():
+        project = await project_ready(ctx)
+        with ctx.db.session() as s:
+            state_before, jobs_before = s.get(Project, project.id).state, len(s.scalars(select(Job)).all())
+        with pytest.raises(PipelineError) as raised:
+            projects.start_drafting(ctx, project.id)
+        assert (raised.value.code, raised.value.http_status) == ("no_company_facts", 409)
+        with ctx.db.session() as s:
+            assert s.get(Project, project.id).state == state_before != "drafting"  # not stuck, so it can be retried
+            assert len(s.scalars(select(Job)).all()) == jobs_before  # no job was created
+        assert llm.drafted == []
+
+    run(main())
+
+
 def test_review_actions_update_the_library_and_project_state(tmp_path):
     memory = FakeMemory()
     llm = FakeV1LLM(pairs=PAIRS[:2], requirements=RFP_REQS[:2])

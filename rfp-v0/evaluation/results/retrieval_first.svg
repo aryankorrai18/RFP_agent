@@ -1,0 +1,156 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 400" width="920" height="400" role="img" aria-label="Is the right approved answer ranked first?" font-family="system-ui, -apple-system, Segoe UI, Roboto, sans-serif">
+<rect width="920" height="400" rx="14" fill="#ffffff" stroke="#d8ddd8"/>
+<text x="24" y="34" font-size="18" font-weight="700" fill="#17201f">Is the right approved answer ranked first?</text>
+<text x="24" y="54" font-size="12.5" fill="#5a6866">10 worlds, 95% intervals, by kind of question.</text>
+<line x1="56" y1="330.0" x2="900" y2="330.0" stroke="#e3e8e3"/>
+<text x="48" y="334.0" font-size="11" text-anchor="end" fill="#5a6866">0%</text>
+<line x1="56" y1="267.0" x2="900" y2="267.0" stroke="#e3e8e3"/>
+<text x="48" y="271.0" font-size="11" text-anchor="end" fill="#5a6866">25%</text>
+<line x1="56" y1="204.0" x2="900" y2="204.0" stroke="#e3e8e3"/>
+<text x="48" y="208.0" font-size="11" text-anchor="end" fill="#5a6866">50%</text>
+<line x1="56" y1="141.0" x2="900" y2="141.0" stroke="#e3e8e3"/>
+<text x="48" y="145.0" font-size="11" text-anchor="end" fill="#5a6866">75%</text>
+<line x1="56" y1="78.0" x2="900" y2="78.0" stroke="#e3e8e3"/>
+<text x="48" y="82.0" font-size="11" text-anchor="end" fill="#5a6866">100%</text>
+<text x="14" y="204" font-size="11" fill="#5a6866" transform="rotate(-90 14 204)" text-anchor="middle">share of questions</text>
+<rect x="67.0" y="86.4" width="26.2" height="243.6" fill="#64748b" rx="3"><title>Plain search (no checks): 97% (83% to 99%)</title></rect>
+<line x1="80.1" y1="79.5" x2="80.1" y2="120.0" stroke="#17201f" stroke-width="1.4"/>
+<line x1="76.1" y1="79.5" x2="84.1" y2="79.5" stroke="#17201f" stroke-width="1.4"/>
+<line x1="76.1" y1="120.0" x2="84.1" y2="120.0" stroke="#17201f" stroke-width="1.4"/>
+<text x="80.1" y="71.5" font-size="10.5" text-anchor="middle" fill="#17201f">97%</text>
+<rect x="97.2" y="86.4" width="26.2" height="243.6" fill="#d97706" rx="3"><title>Newest first (heuristic): 97% (83% to 99%)</title></rect>
+<line x1="110.2" y1="79.5" x2="110.2" y2="120.0" stroke="#17201f" stroke-width="1.4"/>
+<line x1="106.2" y1="79.5" x2="114.2" y2="79.5" stroke="#17201f" stroke-width="1.4"/>
+<line x1="106.2" y1="120.0" x2="114.2" y2="120.0" stroke="#17201f" stroke-width="1.4"/>
+<text x="110.2" y="71.5" font-size="10.5" text-anchor="middle" fill="#17201f">97%</text>
+<rect x="127.3" y="86.4" width="26.2" height="243.6" fill="#0f766e" rx="3"><title>Assistant, memory off for ranking: 97% (83% to 99%)</title></rect>
+<line x1="140.4" y1="79.5" x2="140.4" y2="120.0" stroke="#17201f" stroke-width="1.4"/>
+<line x1="136.4" y1="79.5" x2="144.4" y2="79.5" stroke="#17201f" stroke-width="1.4"/>
+<line x1="136.4" y1="120.0" x2="144.4" y2="120.0" stroke="#17201f" stroke-width="1.4"/>
+<text x="140.4" y="71.5" font-size="10.5" text-anchor="middle" fill="#17201f">97%</text>
+<rect x="157.5" y="86.4" width="26.2" height="243.6" fill="#2563eb" rx="3"><title>Assistant (outcome-aware): 97% (83% to 99%)</title></rect>
+<line x1="170.6" y1="79.5" x2="170.6" y2="120.0" stroke="#17201f" stroke-width="1.4"/>
+<line x1="166.6" y1="79.5" x2="174.6" y2="79.5" stroke="#17201f" stroke-width="1.4"/>
+<line x1="166.6" y1="120.0" x2="174.6" y2="120.0" stroke="#17201f" stroke-width="1.4"/>
+<text x="170.6" y="71.5" font-size="10.5" text-anchor="middle" fill="#17201f">97%</text>
+<rect x="187.6" y="86.4" width="26.2" height="243.6" fill="#7c3aed" rx="3"><title>Assistant + lessons: 97% (83% to 99%)</title></rect>
+<line x1="200.7" y1="79.5" x2="200.7" y2="120.0" stroke="#17201f" stroke-width="1.4"/>
+<line x1="196.7" y1="79.5" x2="204.7" y2="79.5" stroke="#17201f" stroke-width="1.4"/>
+<line x1="196.7" y1="120.0" x2="204.7" y2="120.0" stroke="#17201f" stroke-width="1.4"/>
+<text x="200.7" y="71.5" font-size="10.5" text-anchor="middle" fill="#17201f">97%</text>
+<text x="140.4" y="350" font-size="12" text-anchor="middle" fill="#17201f">Exact</text>
+<rect x="235.8" y="216.6" width="26.2" height="113.4" fill="#64748b" rx="3"><title>Plain search (no checks): 45% (31% to 60%)</title></rect>
+<line x1="248.9" y1="178.4" x2="248.9" y2="252.6" stroke="#17201f" stroke-width="1.4"/>
+<line x1="244.9" y1="178.4" x2="252.9" y2="178.4" stroke="#17201f" stroke-width="1.4"/>
+<line x1="244.9" y1="252.6" x2="252.9" y2="252.6" stroke="#17201f" stroke-width="1.4"/>
+<text x="248.9" y="170.4" font-size="10.5" text-anchor="middle" fill="#17201f">45%</text>
+<rect x="266.0" y="84.3" width="26.2" height="245.7" fill="#d97706" rx="3"><title>Newest first (heuristic): 98% (87% to 100%)</title></rect>
+<line x1="279.0" y1="79.1" x2="279.0" y2="110.5" stroke="#17201f" stroke-width="1.4"/>
+<line x1="275.0" y1="79.1" x2="283.0" y2="79.1" stroke="#17201f" stroke-width="1.4"/>
+<line x1="275.0" y1="110.5" x2="283.0" y2="110.5" stroke="#17201f" stroke-width="1.4"/>
+<text x="279.0" y="71.1" font-size="10.5" text-anchor="middle" fill="#17201f">98%</text>
+<rect x="296.1" y="216.6" width="26.2" height="113.4" fill="#0f766e" rx="3"><title>Assistant, memory off for ranking: 45% (31% to 60%)</title></rect>
+<line x1="309.2" y1="178.4" x2="309.2" y2="252.6" stroke="#17201f" stroke-width="1.4"/>
+<line x1="305.2" y1="178.4" x2="313.2" y2="178.4" stroke="#17201f" stroke-width="1.4"/>
+<line x1="305.2" y1="252.6" x2="313.2" y2="252.6" stroke="#17201f" stroke-width="1.4"/>
+<text x="309.2" y="170.4" font-size="10.5" text-anchor="middle" fill="#17201f">45%</text>
+<rect x="326.3" y="96.9" width="26.2" height="233.1" fill="#2563eb" rx="3"><title>Assistant (outcome-aware): 92% (80% to 97%)</title></rect>
+<line x1="339.4" y1="84.5" x2="339.4" y2="128.1" stroke="#17201f" stroke-width="1.4"/>
+<line x1="335.4" y1="84.5" x2="343.4" y2="84.5" stroke="#17201f" stroke-width="1.4"/>
+<line x1="335.4" y1="128.1" x2="343.4" y2="128.1" stroke="#17201f" stroke-width="1.4"/>
+<text x="339.4" y="76.5" font-size="10.5" text-anchor="middle" fill="#17201f">92%</text>
+<rect x="356.4" y="96.9" width="26.2" height="233.1" fill="#7c3aed" rx="3"><title>Assistant + lessons: 92% (80% to 97%)</title></rect>
+<line x1="369.5" y1="84.5" x2="369.5" y2="128.1" stroke="#17201f" stroke-width="1.4"/>
+<line x1="365.5" y1="84.5" x2="373.5" y2="84.5" stroke="#17201f" stroke-width="1.4"/>
+<line x1="365.5" y1="128.1" x2="373.5" y2="128.1" stroke="#17201f" stroke-width="1.4"/>
+<text x="369.5" y="76.5" font-size="10.5" text-anchor="middle" fill="#17201f">92%</text>
+<text x="309.2" y="350" font-size="12" text-anchor="middle" fill="#17201f">Stale</text>
+<rect x="404.6" y="204.0" width="26.2" height="126.0" fill="#64748b" rx="3"><title>Plain search (no checks): 50% (33% to 67%)</title></rect>
+<line x1="417.7" y1="161.5" x2="417.7" y2="246.5" stroke="#17201f" stroke-width="1.4"/>
+<line x1="413.7" y1="161.5" x2="421.7" y2="161.5" stroke="#17201f" stroke-width="1.4"/>
+<line x1="413.7" y1="246.5" x2="421.7" y2="246.5" stroke="#17201f" stroke-width="1.4"/>
+<text x="417.7" y="153.5" font-size="10.5" text-anchor="middle" fill="#17201f">50%</text>
+<rect x="434.8" y="212.4" width="26.2" height="117.6" fill="#d97706" rx="3"><title>Newest first (heuristic): 47% (30% to 64%)</title></rect>
+<line x1="447.8" y1="169.1" x2="447.8" y2="253.8" stroke="#17201f" stroke-width="1.4"/>
+<line x1="443.8" y1="169.1" x2="451.8" y2="169.1" stroke="#17201f" stroke-width="1.4"/>
+<line x1="443.8" y1="253.8" x2="451.8" y2="253.8" stroke="#17201f" stroke-width="1.4"/>
+<text x="447.8" y="161.1" font-size="10.5" text-anchor="middle" fill="#17201f">47%</text>
+<rect x="464.9" y="204.0" width="26.2" height="126.0" fill="#0f766e" rx="3"><title>Assistant, memory off for ranking: 50% (33% to 67%)</title></rect>
+<line x1="478.0" y1="161.5" x2="478.0" y2="246.5" stroke="#17201f" stroke-width="1.4"/>
+<line x1="474.0" y1="161.5" x2="482.0" y2="161.5" stroke="#17201f" stroke-width="1.4"/>
+<line x1="474.0" y1="246.5" x2="482.0" y2="246.5" stroke="#17201f" stroke-width="1.4"/>
+<text x="478.0" y="153.5" font-size="10.5" text-anchor="middle" fill="#17201f">50%</text>
+<rect x="495.1" y="204.0" width="26.2" height="126.0" fill="#2563eb" rx="3"><title>Assistant (outcome-aware): 50% (33% to 67%)</title></rect>
+<line x1="508.2" y1="161.5" x2="508.2" y2="246.5" stroke="#17201f" stroke-width="1.4"/>
+<line x1="504.2" y1="161.5" x2="512.2" y2="161.5" stroke="#17201f" stroke-width="1.4"/>
+<line x1="504.2" y1="246.5" x2="512.2" y2="246.5" stroke="#17201f" stroke-width="1.4"/>
+<text x="508.2" y="153.5" font-size="10.5" text-anchor="middle" fill="#17201f">50%</text>
+<rect x="525.2" y="204.0" width="26.2" height="126.0" fill="#7c3aed" rx="3"><title>Assistant + lessons: 50% (33% to 67%)</title></rect>
+<line x1="538.3" y1="161.5" x2="538.3" y2="246.5" stroke="#17201f" stroke-width="1.4"/>
+<line x1="534.3" y1="161.5" x2="542.3" y2="161.5" stroke="#17201f" stroke-width="1.4"/>
+<line x1="534.3" y1="246.5" x2="542.3" y2="246.5" stroke="#17201f" stroke-width="1.4"/>
+<text x="538.3" y="153.5" font-size="10.5" text-anchor="middle" fill="#17201f">50%</text>
+<text x="478.0" y="350" font-size="12" text-anchor="middle" fill="#17201f">Context</text>
+<rect x="573.4" y="197.7" width="26.2" height="132.3" fill="#64748b" rx="3"><title>Plain search (no checks): 52% (37% to 67%)</title></rect>
+<line x1="586.5" y1="161.0" x2="586.5" y2="235.5" stroke="#17201f" stroke-width="1.4"/>
+<line x1="582.5" y1="161.0" x2="590.5" y2="161.0" stroke="#17201f" stroke-width="1.4"/>
+<line x1="582.5" y1="235.5" x2="590.5" y2="235.5" stroke="#17201f" stroke-width="1.4"/>
+<text x="586.5" y="153.0" font-size="10.5" text-anchor="middle" fill="#17201f">52%</text>
+<rect x="603.6" y="222.9" width="26.2" height="107.1" fill="#d97706" rx="3"><title>Newest first (heuristic): 42% (29% to 58%)</title></rect>
+<line x1="616.6" y1="184.3" x2="616.6" y2="258.2" stroke="#17201f" stroke-width="1.4"/>
+<line x1="612.6" y1="184.3" x2="620.6" y2="184.3" stroke="#17201f" stroke-width="1.4"/>
+<line x1="612.6" y1="258.2" x2="620.6" y2="258.2" stroke="#17201f" stroke-width="1.4"/>
+<text x="616.6" y="176.3" font-size="10.5" text-anchor="middle" fill="#17201f">42%</text>
+<rect x="633.7" y="197.7" width="26.2" height="132.3" fill="#0f766e" rx="3"><title>Assistant, memory off for ranking: 52% (37% to 67%)</title></rect>
+<line x1="646.8" y1="161.0" x2="646.8" y2="235.5" stroke="#17201f" stroke-width="1.4"/>
+<line x1="642.8" y1="161.0" x2="650.8" y2="161.0" stroke="#17201f" stroke-width="1.4"/>
+<line x1="642.8" y1="235.5" x2="650.8" y2="235.5" stroke="#17201f" stroke-width="1.4"/>
+<text x="646.8" y="153.0" font-size="10.5" text-anchor="middle" fill="#17201f">52%</text>
+<rect x="663.9" y="90.6" width="26.2" height="239.4" fill="#2563eb" rx="3"><title>Assistant (outcome-aware): 95% (83% to 99%)</title></rect>
+<line x1="677.0" y1="81.5" x2="677.0" y2="119.6" stroke="#17201f" stroke-width="1.4"/>
+<line x1="673.0" y1="81.5" x2="681.0" y2="81.5" stroke="#17201f" stroke-width="1.4"/>
+<line x1="673.0" y1="119.6" x2="681.0" y2="119.6" stroke="#17201f" stroke-width="1.4"/>
+<text x="677.0" y="73.5" font-size="10.5" text-anchor="middle" fill="#17201f">95%</text>
+<rect x="694.0" y="90.6" width="26.2" height="239.4" fill="#7c3aed" rx="3"><title>Assistant + lessons: 95% (83% to 99%)</title></rect>
+<line x1="707.1" y1="81.5" x2="707.1" y2="119.6" stroke="#17201f" stroke-width="1.4"/>
+<line x1="703.1" y1="81.5" x2="711.1" y2="81.5" stroke="#17201f" stroke-width="1.4"/>
+<line x1="703.1" y1="119.6" x2="711.1" y2="119.6" stroke="#17201f" stroke-width="1.4"/>
+<text x="707.1" y="73.5" font-size="10.5" text-anchor="middle" fill="#17201f">95%</text>
+<text x="646.8" y="350" font-size="12" text-anchor="middle" fill="#17201f">Reviewed</text>
+<rect x="742.2" y="153.6" width="26.2" height="176.4" fill="#64748b" rx="3"><title>Plain search (no checks): 70% (48% to 85%)</title></rect>
+<line x1="755.3" y1="114.7" x2="755.3" y2="208.8" stroke="#17201f" stroke-width="1.4"/>
+<line x1="751.3" y1="114.7" x2="759.3" y2="114.7" stroke="#17201f" stroke-width="1.4"/>
+<line x1="751.3" y1="208.8" x2="759.3" y2="208.8" stroke="#17201f" stroke-width="1.4"/>
+<text x="755.3" y="106.7" font-size="10.5" text-anchor="middle" fill="#17201f">70%</text>
+<rect x="772.4" y="90.6" width="26.2" height="239.4" fill="#d97706" rx="3"><title>Newest first (heuristic): 95% (76% to 99%)</title></rect>
+<line x1="785.4" y1="80.2" x2="785.4" y2="137.5" stroke="#17201f" stroke-width="1.4"/>
+<line x1="781.4" y1="80.2" x2="789.4" y2="80.2" stroke="#17201f" stroke-width="1.4"/>
+<line x1="781.4" y1="137.5" x2="789.4" y2="137.5" stroke="#17201f" stroke-width="1.4"/>
+<text x="785.4" y="72.2" font-size="10.5" text-anchor="middle" fill="#17201f">95%</text>
+<rect x="802.5" y="90.6" width="26.2" height="239.4" fill="#0f766e" rx="3"><title>Assistant, memory off for ranking: 95% (76% to 99%)</title></rect>
+<line x1="815.6" y1="80.2" x2="815.6" y2="137.5" stroke="#17201f" stroke-width="1.4"/>
+<line x1="811.6" y1="80.2" x2="819.6" y2="80.2" stroke="#17201f" stroke-width="1.4"/>
+<line x1="811.6" y1="137.5" x2="819.6" y2="137.5" stroke="#17201f" stroke-width="1.4"/>
+<text x="815.6" y="72.2" font-size="10.5" text-anchor="middle" fill="#17201f">95%</text>
+<rect x="832.7" y="90.6" width="26.2" height="239.4" fill="#2563eb" rx="3"><title>Assistant (outcome-aware): 95% (76% to 99%)</title></rect>
+<line x1="845.8" y1="80.2" x2="845.8" y2="137.5" stroke="#17201f" stroke-width="1.4"/>
+<line x1="841.8" y1="80.2" x2="849.8" y2="80.2" stroke="#17201f" stroke-width="1.4"/>
+<line x1="841.8" y1="137.5" x2="849.8" y2="137.5" stroke="#17201f" stroke-width="1.4"/>
+<text x="845.8" y="72.2" font-size="10.5" text-anchor="middle" fill="#17201f">95%</text>
+<rect x="862.8" y="90.6" width="26.2" height="239.4" fill="#7c3aed" rx="3"><title>Assistant + lessons: 95% (76% to 99%)</title></rect>
+<line x1="875.9" y1="80.2" x2="875.9" y2="137.5" stroke="#17201f" stroke-width="1.4"/>
+<line x1="871.9" y1="80.2" x2="879.9" y2="80.2" stroke="#17201f" stroke-width="1.4"/>
+<line x1="871.9" y1="137.5" x2="879.9" y2="137.5" stroke="#17201f" stroke-width="1.4"/>
+<text x="875.9" y="72.2" font-size="10.5" text-anchor="middle" fill="#17201f">95%</text>
+<text x="815.6" y="350" font-size="12" text-anchor="middle" fill="#17201f">Lost trap</text>
+<rect x="56" y="370" width="12" height="12" rx="3" fill="#64748b"/>
+<text x="74" y="380" font-size="12" fill="#17201f">Plain search (no checks)</text>
+<rect x="256.8" y="370" width="12" height="12" rx="3" fill="#d97706"/>
+<text x="274.8" y="380" font-size="12" fill="#17201f">Newest first (heuristic)</text>
+<rect x="457.6" y="370" width="12" height="12" rx="3" fill="#0f766e"/>
+<text x="475.6" y="380" font-size="12" fill="#17201f">Assistant, memory off for ranking</text>
+<rect x="723.2" y="370" width="12" height="12" rx="3" fill="#2563eb"/>
+<text x="741.2" y="380" font-size="12" fill="#17201f">Assistant (outcome-aware)</text>
+<rect x="931.2" y="370" width="12" height="12" rx="3" fill="#7c3aed"/>
+<text x="949.2" y="380" font-size="12" fill="#17201f">Assistant + lessons</text>
+</svg>

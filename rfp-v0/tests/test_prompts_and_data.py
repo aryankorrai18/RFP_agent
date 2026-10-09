@@ -84,8 +84,24 @@ def test_versioned_production_prompts_are_unchanged():
     from rfp_assistant.providers import prompts
 
     sha = lambda s: hashlib.sha256(s.encode()).hexdigest()[:16]  # noqa: E731
-    assert prompts.DRAFT_PROMPT_VERSION == "v1.0"
+    assert prompts.DRAFT_PROMPT_VERSION == "v1.1"
     assert sha(prompts.DRAFTING_RULES) == "c6df7ac57d50b9fb"
     assert sha(prompts.PAIRS_SYSTEM) == "1c74cba59c166142"
     assert sha(prompts.PAIRS_INSTRUCTION) == "38b8283a6f6fa9f5"
     assert sha(prompts.DRAFT_INSTRUCTION) == "f9f7f91b33221d87"
+
+
+def test_past_answers_show_their_proposal_date_and_say_when_they_are_ordered_by_trust():
+    from datetime import date as _date
+
+    from rfp_assistant.providers import prompts
+    from rfp_assistant.schemas import PastAnswer
+
+    def answer(i: str, **kw):  # noqa: ANN003, ANN202
+        return PastAnswer(id=i, question="Q?", answer="A.", approved_on=_date(2026, 10, 7), **kw)
+
+    ranked = prompts.render_past_answers([answer("ANS-0002", written_on=_date(2025, 2, 20), ranked=True), answer("ANS-0001", ranked=True)])
+    assert "written: 2025-02-20 (date of the proposal it came from)" in ranked and "approved: 2026-10-07" in ranked
+    assert "order the system trusts them" in ranked and "fact sheet still wins" in ranked
+    plain = prompts.render_past_answers([answer("ANS-0002", written_on=_date(2025, 2, 20))])
+    assert "written: 2025-02-20" in plain and "trusts them" not in plain  # search order is not presented as a trust order

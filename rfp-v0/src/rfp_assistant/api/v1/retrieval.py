@@ -1,8 +1,9 @@
 """Approved-answer retrieval with optional outcome and lesson ranking.
 
-Hindsight finds candidates by meaning; SQLite decides which of them may be used. The order
-Hindsight returns *is* the relevance ranking: no scores are recomputed and no threshold is
-applied (the spike showed the scores aren't calibrated for this content; §13).
+Hindsight finds candidates by meaning; SQLite decides which of them may be used. The relevance ranking
+is Hindsight's semantic-score order (RFP_RECALL_ORDER=semantic, the default since the 2026-10-08 pilot,
+where Hindsight's own fused order buried the right answer). No threshold is applied (the spike showed
+the scores aren't calibrated for this content; §13), so the score only orders.
 """
 
 from __future__ import annotations
@@ -105,6 +106,8 @@ async def retrieve(
                 client=answer.client,
                 industry=answer.industry,
                 approved_on=answer.updated_at.date(),
+                written_on=written.get(answer.id),
+                ranked=mode in ("outcome", "hindsight"),
             )
         )
         factor = factors[answer.code]
