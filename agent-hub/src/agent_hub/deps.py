@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import os
+import re
 
 from fastapi import HTTPException, Request
 from fastapi.responses import Response
@@ -23,10 +24,19 @@ def guard(request: Request) -> User | None:
     auth = get_auth(request)
     if auth is None or auth.mode() != "on":
         return None
-    user = auth.user_for_token(request.cookies.get(SESSION_COOKIE))
+    user = auth.user_for_token(request.cookies.get(SESSION_COOKIE), touch=not is_background(request))
     if user is None:
         raise HTTPException(401, "Sign in to continue.")
     return user
+
+
+_BACKGROUND = re.compile(r"^/api/(?:conversations/[^/]+/events|agents)$")
+
+
+def is_background(request: Request) -> bool:
+    """Polling a page does by itself (new chat events, agent status). It doesn't count as using the session, so an
+    abandoned open tab still reaches the idle limit."""
+    return request.method == "GET" and bool(_BACKGROUND.match(request.url.path))
 
 
 def require_admin(request: Request) -> User:
@@ -55,7 +65,7 @@ def setup_available(request: Request) -> bool:
     return not auth.has_users() and is_loopback(request)
 
 
-def set_session_cookie(response: Response, request: Request, auth: Auth, token: str) -> None:
+def set_session_cookie(response: Response, request: Request, auth: Auth, token: str, user: User | None = None) -> None:
     secure = request.url.scheme == "https" or os.environ.get("HUB_COOKIE_SECURE", "").strip() in ("1", "true", "on")
-    response.set_cookie(SESSION_COOKIE, token, max_age=auth.session_days * 86400, httponly=True, samesite="lax",
+    response.set_cookie(SESSION_COOKIE, token, max_age=auth.session_seconds(user), httponly=True, samesite="lax",
                         secure=secure, path="/")

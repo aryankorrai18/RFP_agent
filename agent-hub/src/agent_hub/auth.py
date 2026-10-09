@@ -104,6 +104,19 @@ def _slug(name: str) -> str:
     return re.sub(r"[^a-z0-9]+", "-", name.lower()).strip("-")[:40] or "company"
 
 
+def describe_browser(user_agent: str | None) -> str:
+    """A short, human description of a browser ("Chrome on Windows"), never the raw header."""
+    ua = user_agent or ""
+    system = next((name for marker, name in (("Windows", "Windows"), ("iPhone", "iPhone"), ("iPad", "iPad"), ("Android", "Android"),
+                                              ("CrOS", "ChromeOS"), ("Macintosh", "macOS"), ("Mac OS X", "macOS"), ("Linux", "Linux"))
+                   if marker in ua), "")
+    browser = next((name for marker, name in (("Edg/", "Edge"), ("OPR/", "Opera"), ("Firefox/", "Firefox"), ("Chrome/", "Chrome"),
+                                               ("Safari/", "Safari")) if marker in ua), "")
+    if not (browser or system):
+        return "Unknown browser" if ua else "Unknown device"
+    return f"{browser or 'Browser'} on {system}" if system else browser
+
+
 def _token_hash(token: str) -> str:
     return hashlib.sha256(token.encode()).hexdigest()
 
@@ -112,6 +125,12 @@ class Auth:
     def __init__(self, store: Store, session_days: int | None = None) -> None:
         self.store = store
         self.session_days = session_days or int(os.environ.get("HUB_SESSION_DAYS", "7"))
+        # A session ends at its lifetime or after this long without use, whichever comes first. Administrators get
+        # shorter ones: their sessions can change every company's setup.
+        self.idle = timedelta(hours=float(os.environ.get("HUB_SESSION_IDLE_HOURS", "12")))
+        self.admin_lifetime = timedelta(hours=float(os.environ.get("HUB_ADMIN_SESSION_HOURS", "12")))
+        self.admin_idle = timedelta(minutes=float(os.environ.get("HUB_ADMIN_IDLE_MINUTES", "60")))
+        self._lookups = 0
         if store.exists():
             self.ensure_operator()
 
@@ -323,11 +342,20 @@ class Auth:
         self.store.sql_exec("DELETE FROM login_failures WHERE at < ?", (cutoff,))
         return self.store.sql_one("SELECT COUNT(*) AS n FROM login_failures WHERE key = ?", (key,))["n"]
 
-    def login(self, email: str, password: str, address: str = "") -> tuple[str, User]:
+    def lifetime(self, role: str) -> timedelta:
+        return self.admin_lifetime if role == "admin" else timedelta(days=self.session_days)
+
+    def session_seconds(self, user: User | None) -> int:
+        """How long the browser should keep the cookie (the server enforces the real limits)."""
+        return int(self.lifetime(user.role if user else "member").total_seconds())
+
+    def login(self, email: str, password: str, address: str = "", user_agent: str = "") -> tuple[str, User]:
         global _DUMMY_HASH
         email = (email or "").strip().lower()
         key = f"{email}|{address}"
+        where = f"from {address or 'an unknown address'}, {describe_browser(user_agent)}"
         if self._failures(key) >= MAX_FAILURES:
+            self.audit(email[:200] or "unknown", "auth.locked", f"sign-in refused while locked out, {where}")
             raise AuthError("locked", "Too many failed sign-ins. Wait a few minutes and try again.", 429,
                             retry_after=int(FAILURE_WINDOW.total_seconds()))
         row = self.store.sql_one("SELECT * FROM users WHERE email = ?", (email,)) if self.store.exists() else None
@@ -336,12 +364,20 @@ class Auth:
         good = verify_password(password or "", row["password_hash"] if row else _DUMMY_HASH)
         if not (row and good) or row["disabled"]:
             self.store.sql_exec("INSERT INTO login_failures VALUES (?, ?)", (key, _iso(_now())))
+            self.audit(email[:200] or "unknown", "auth.signin_failed", where)
+            if self._failures(key) >= MAX_FAILURES:
+                self.audit(email[:200] or "unknown", "auth.locked", f"{MAX_FAILURES} failed sign-ins: locked for "
+                                                                    f"{int(FAILURE_WINDOW.total_seconds() // 60)} minutes, {where}")
             raise AuthError("bad_login", "That email and password do not match an account.", 401)
         self.store.sql_exec("DELETE FROM login_failures WHERE key = ?", (key,))
+        self.cleanup_sessions()
         token = secrets.token_urlsafe(32)
         now = _now()
-        self.store.sql_exec("INSERT INTO sessions VALUES (?, ?, ?, ?)",
-                            (_token_hash(token), row["id"], _iso(now), _iso(now + timedelta(days=self.session_days))))
+        self.store.sql_exec(
+            "INSERT INTO sessions (token_hash, user_id, created_at, expires_at, last_seen, address, user_agent) VALUES (?, ?, ?, ?, ?, ?, ?)",
+            (_token_hash(token), row["id"], _iso(now), _iso(now + self.lifetime(row["role"])), _iso(now), address[:64],
+             (user_agent or "")[:300]))
+        self.audit(email, "auth.signin", where)
         return token, self._user(row["id"])  # type: ignore[return-value]
 
     def _user(self, user_id: str) -> User | None:
@@ -353,20 +389,78 @@ class Auth:
         workspaces = {a: tuple(ids) for a, ids in json.loads(row["company_workspaces"]).items()}
         return User(row["id"], row["email"], row["name"], row["company_id"], row["company_name"], workspaces, row["role"])
 
-    def user_for_token(self, token: str | None) -> User | None:
+    def user_for_token(self, token: str | None, touch: bool = True) -> User | None:
+        """The person a session belongs to, or None when it has ended (lifetime reached, or unused for too long).
+        `touch` counts this request as use; background polling passes False, so an open tab alone doesn't keep a
+        session alive forever."""
         if not token or not self.store.exists():
             return None
-        row = self.store.sql_one("SELECT user_id, expires_at FROM sessions WHERE token_hash = ?", (_token_hash(token),))
+        hashed = _token_hash(token)
+        row = self.store.sql_one("SELECT s.user_id, s.expires_at, s.last_seen, u.role FROM sessions s JOIN users u ON u.id = s.user_id "
+                                 "WHERE s.token_hash = ?", (hashed,))
         if row is None:
             return None
-        if row["expires_at"] < _iso(_now()):
-            self.store.sql_exec("DELETE FROM sessions WHERE token_hash = ?", (_token_hash(token),))
+        now = _now()
+        idle = self.admin_idle if row["role"] == "admin" else self.idle
+        last = row["last_seen"]
+        if row["expires_at"] < _iso(now) or (last and last < _iso(now - idle)):
+            self.store.sql_exec("DELETE FROM sessions WHERE token_hash = ?", (hashed,))
             return None
+        if touch and (not last or last < _iso(now - timedelta(seconds=60))):  # at most one write a minute per session
+            self.store.sql_exec("UPDATE sessions SET last_seen = ? WHERE token_hash = ?", (_iso(now), hashed))
+        self._lookups += 1
+        if self._lookups % 500 == 0:
+            self.cleanup_sessions()
         return self._user(row["user_id"])
+
+    def cleanup_sessions(self) -> int:
+        """Remove sessions past their lifetime or idle limit (otherwise they'd only go when presented again)."""
+        if not self.store.exists():
+            return 0
+        now = _now()
+        removed = self.store.sql_exec("DELETE FROM sessions WHERE expires_at < ?", (_iso(now),))
+        removed += self.store.sql_exec(
+            "DELETE FROM sessions WHERE last_seen < ? AND user_id IN (SELECT id FROM users WHERE role != 'admin')", (_iso(now - self.idle),))
+        removed += self.store.sql_exec(
+            "DELETE FROM sessions WHERE last_seen < ? AND user_id IN (SELECT id FROM users WHERE role = 'admin')", (_iso(now - self.admin_idle),))
+        return removed
+
+    def list_sessions(self, user_id: str, current_token: str | None = None) -> list[dict[str, Any]]:
+        """A person's signed-in sessions, most recently used first. `id` is a short prefix of the token's hash: it
+        names a session without revealing anything that could be used to sign in."""
+        current = _token_hash(current_token) if current_token else None
+        rows = self.store.sql_all("SELECT * FROM sessions WHERE user_id = ? ORDER BY last_seen DESC", (user_id,))
+        return [{"id": r["token_hash"][:16], "browser": describe_browser(r["user_agent"]), "address": r["address"] or "",
+                 "signed_in": r["created_at"], "last_seen": r["last_seen"] or r["created_at"], "expires": r["expires_at"],
+                 "current": r["token_hash"] == current} for r in rows]
+
+    def end_session(self, user_id: str, session_id: str) -> int:
+        if not re.fullmatch(r"[0-9a-f]{16}", session_id or ""):
+            return 0
+        return self.store.sql_exec("DELETE FROM sessions WHERE user_id = ? AND substr(token_hash, 1, 16) = ?", (user_id, session_id))
+
+    def end_other_sessions(self, user_id: str, current_token: str | None) -> int:
+        keep = _token_hash(current_token) if current_token else ""
+        return self.store.sql_exec("DELETE FROM sessions WHERE user_id = ? AND token_hash != ?", (user_id, keep))
+
+    def end_all_sessions(self, user_id: str) -> int:
+        return self.store.sql_exec("DELETE FROM sessions WHERE user_id = ?", (user_id,))
+
+    def check_password(self, user_id: str, password: str) -> bool:
+        """Re-entering the password before something that can't be undone."""
+        row = self.store.sql_one("SELECT password_hash FROM users WHERE id = ? AND disabled = 0", (user_id,))
+        return bool(row) and verify_password(password or "", row["password_hash"])
+
+    def user_id_for_email(self, email: str) -> str | None:
+        row = self.store.sql_one("SELECT id FROM users WHERE email = ?", ((email or "").strip().lower(),)) if self.store.exists() else None
+        return row["id"] if row else None
 
     def user_by_id(self, user_id: str | None) -> User | None:
         return self._user(user_id) if user_id and self.store.exists() else None
 
     def logout(self, token: str | None) -> None:
         if token and self.store.exists():
+            user = self.user_for_token(token, touch=False)
             self.store.sql_exec("DELETE FROM sessions WHERE token_hash = ?", (_token_hash(token),))
+            if user is not None:
+                self.audit(user.email, "auth.signout", "signed out")

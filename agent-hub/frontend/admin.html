@@ -250,6 +250,40 @@ ul.hint { margin: 0; padding-left: 20px; display: grid; gap: 4px; }
 #note.busy::before { content: ""; display: inline-block; width: 11px; height: 11px; margin-right: 9px; vertical-align: -1px; border-radius: 50%; border: 1.5px solid currentColor; border-right-color: transparent; animation: spin .9s linear infinite; }
 @keyframes shimmer { from { background-position: -60% 0; } to { background-position: 160% 0; } }
 @keyframes spin { to { transform: rotate(360deg); } }
+/* ---------- sessions, re-sign-in, activity filters ---------- */
+.ferr { margin: 0; color: var(--bad); font-size: 13.5px; font-weight: 500; }
+.ferr:empty { display: none; }
+.calmnote { margin: 0; padding: 11px 14px; border-radius: 14px; background: var(--accent-soft); color: var(--ink-2); font-size: 14px; line-height: 1.45; }
+.signin input { font-size: 15px; }
+.signin .row a { font-size: 14px; }
+.btn.small.on { background: var(--ink); color: var(--canvas); }
+.sess-panel, .endbox { box-shadow: none; background: var(--surface); }
+.endbox { border-color: color-mix(in srgb, var(--bad) 28%, transparent); background: var(--bad-soft); }
+.sess-list { display: grid; gap: 8px; }
+.sess-row { display: grid; grid-template-columns: 36px minmax(0, 1fr) auto; gap: 12px; align-items: center; padding: 11px 14px; border-radius: 14px; background: var(--sunk); border: 1px solid var(--hair); }
+.sess-row[aria-hidden="true"] { grid-template-columns: 1fr 1fr; }
+.sess-dev { width: 36px; height: 36px; border-radius: 10px; display: grid; place-items: center; background: var(--surface); border: 1px solid var(--hair); color: var(--ink-2); }
+.sess-dev svg { width: 19px; height: 19px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+.sess-main { display: grid; gap: 2px; min-width: 0; }
+.sess-act { font-size: 12.5px; color: var(--muted); white-space: nowrap; display: inline-flex; align-items: center; gap: 6px; }
+.sess-act.now { color: var(--ok); font-weight: 500; }
+.sess-act.now::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: currentColor; }
+.fchips { display: flex; flex-wrap: wrap; gap: 8px; }
+.fchipb { display: inline-flex; align-items: center; gap: 8px; padding: 7px 15px; border-radius: 999px; border: 1px solid var(--hair); background: var(--surface); color: var(--ink-2); font-size: 14px; font-weight: 500; cursor: pointer; box-shadow: var(--shadow-sm); transition: background .2s, color .2s; }
+.fchipb:hover { color: var(--ink); }
+.fchipb .n { font-size: 12.5px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.fchipb[aria-pressed="true"] { background: var(--ink); color: var(--canvas); border-color: transparent; }
+.fchipb[aria-pressed="true"] .n { color: color-mix(in srgb, var(--canvas) 70%, transparent); }
+.act { display: inline-flex; align-items: center; gap: 9px; }
+.act-ic { width: 26px; height: 26px; border-radius: 8px; display: grid; place-items: center; flex: none; background: var(--fill-2); color: var(--ink-2); }
+.act-ic svg { width: 15px; height: 15px; fill: none; stroke: currentColor; stroke-width: 1.9; stroke-linecap: round; stroke-linejoin: round; }
+.act-in .act-ic { background: var(--ok-soft); color: var(--ok); }
+.act-out .act-ic { background: var(--accent-soft); color: var(--link); }
+.act-warn .act-ic { background: var(--warn-soft); color: var(--warn); }
+.act-warn strong { color: var(--warn); }
+tr.warnrow td { background: color-mix(in srgb, var(--warn) 6%, var(--surface)); }
+tbody tr.warnrow:hover td { background: color-mix(in srgb, var(--warn) 10%, var(--surface)); }
+@media (max-width: 720px) { .sess-row { grid-template-columns: 32px minmax(0, 1fr); } .sess-act { grid-column: 2; } }
 @keyframes drop { from { opacity: 0; transform: translate(-50%, -8px); } to { opacity: 1; transform: translate(-50%, 0); } }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
 @media (max-width: 900px) {
@@ -338,6 +372,12 @@ const ICONS = {
   sun: ["M12 8.2a3.8 3.8 0 1 0 0 7.6a3.8 3.8 0 1 0 0-7.6z", "M12 2.8v1.8", "M12 19.4v1.8", "M2.8 12h1.8", "M19.4 12h1.8", "M5.5 5.5l1.3 1.3", "M17.2 17.2l1.3 1.3", "M5.5 18.5l1.3-1.3", "M17.2 6.8l1.3-1.3"],
   moon: ["M20 14.6A8.2 8.2 0 0 1 9.4 4a8.2 8.2 0 1 0 10.6 10.6z"],
   back: ["M15 6l-6 6 6 6"],
+  laptop: ["M5 6h14v9H5z", "M3 18h18"],
+  phone: ["M8 3h8a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1H8a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z", "M11 18h2"],
+  signin: ["M9 4H6a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h3", "M14 7l5 5-5 5", "M19 12H8"],
+  signout: ["M15 4h3a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-3", "M10 17l5-5-5-5", "M15 12H4"],
+  warn: ["M12 4L2.5 20h19z", "M12 10v4.5", "M12 17.5h.01"],
+  change: ["M4 20h4L18.6 9.4a2.1 2.1 0 0 0-3-3L5 17v3z"],
 };
 $("back").prepend(icon(ICONS.back));
 $("back").setAttribute("aria-label", "Back to the chat");
@@ -360,6 +400,7 @@ matchMedia("(prefers-color-scheme: dark)").addEventListener("change", paintTheme
 
 let noteTimer = null;
 function note(text, kind, sticky) {  // kind: "ok", "err" or "busy"; a sticky note stays until the next one
+  if (authLost && text) return;  // signed out: the sign-in card says so; no toasts over it
   let n = $("note");
   if (!n) { n = el("div", { id: "note", role: "status" }); document.body.insertBefore(n, $("main")); }
   clearTimeout(noteTimer);
@@ -388,7 +429,9 @@ function retryAfterOf(r) {
   const at = Date.parse(h);
   return isNaN(at) ? null : Math.max(0, (at - Date.now()) / 1000);
 }
-function failure(message, status, retryAfter) { const e = new Error(message); e.status = status; e.retryAfter = retryAfter; return e; }
+function failure(message, status, retryAfter, code) { const e = new Error(message); e.status = status; e.retryAfter = retryAfter; e.code = code; return e; }
+const SIGNED_OUT_IDLE = "You were signed out after a while without activity. Sign in again.";
+let authLost = false;  // the session ended: the sign-in card is showing and nothing else may draw over it
 async function call(method, path, body) {
   netStart();
   try {
@@ -397,10 +440,10 @@ async function call(method, path, body) {
       r = await fetch(path, { method, headers: body ? { "content-type": "application/json" } : undefined, body: body ? JSON.stringify(body) : undefined });
     } catch { throw failure("Could not reach the hub. Check that it is running.", 0, null); }
     const data = await r.json().catch(() => ({}));
-    if (r.status === 401) { location.href = "/"; throw failure("Please sign in.", 401, null); }
+    if (r.status === 401) { renderSignIn(SIGNED_OUT_IDLE); throw failure("Please sign in.", 401, null); }
     if (!r.ok) {
       const msg = typeof data.detail === "string" ? data.detail : Array.isArray(data.detail) && data.detail[0] ? data.detail[0].msg : "";
-      throw failure(msg || BUSY_WORDS[r.status] || "That did not work.", r.status, retryAfterOf(r));
+      throw failure(msg || BUSY_WORDS[r.status] || "That did not work.", r.status, retryAfterOf(r), data.code);
     }
     return data;
   } finally { netEnd(); }
@@ -531,13 +574,50 @@ async function renderSetup() {
     el("div", { class: "row" }, go));
   $("main").replaceChildren(form);
 }
+// Signed out (after a while without activity, or from another device): sign in again right here, then carry on.
+function renderSignIn(noteText) {
+  if (authLost) return;  // several calls can fail at once: keep the form as it is being filled in
+  authLost = true;
+  clearTimeout(noteTimer); const n = $("note"); if (n) n.hidden = true;
+  hideRetry();
+  $("subnav").hidden = true; $("who").hidden = $("signout").hidden = true;
+  const email = el("input", { type: "email", required: true, autocomplete: "username", "aria-label": "Email" });
+  const pass = el("input", { type: "password", required: true, autocomplete: "current-password", "aria-label": "Password" });
+  const err = el("p", { class: "ferr", role: "alert" });
+  const go = el("button", { class: "btn", type: "submit", text: "Sign in" });
+  const form = el("form", { class: "card center signin", onsubmit: async (ev) => {
+    ev.preventDefault(); go.disabled = true; err.textContent = "";
+    try {
+      const r = await track(fetch("/api/auth/login", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ email: email.value, password: pass.value }) }));
+      const body = await r.json().catch(() => ({}));
+      if (!r.ok) { err.textContent = typeof body.detail === "string" ? body.detail : "Could not sign in."; return; }
+      authLost = false;
+      const u = body.user || {};
+      if (u.role !== "admin") return renderNotice("Administrators only", "Your account can use the chat but not this page. Ask an administrator.", { href: "/", text: "Back to the chat" });
+      $("who").hidden = $("signout").hidden = false;
+      $("who").textContent = `${u.name || u.email} | ${u.company}`;
+      $("main").replaceChildren(el("div", { class: "empty", text: "Loading..." }));
+      await loadWithRetry();
+    } catch (e) { if (!authLost) err.textContent = e.message || "Could not reach the hub. Check that it is running."; }
+    finally { go.disabled = false; }
+  } },
+    el("span", { class: "kicker", text: "Admin console" }),
+    el("h2", {}, el("span", { text: "Sign in again." }), " ", el("span", { class: "g", text: "Your work here is waiting." })),
+    noteText ? el("p", { class: "calmnote", role: "status", text: noteText }) : null,
+    el("label", { class: "f" }, "Email", email), el("label", { class: "f" }, "Password", pass), err,
+    el("div", { class: "row" }, go, el("a", { href: "/", text: "Back to the chat" })));
+  $("main").replaceChildren(form);
+  email.focus();
+}
 function renderNotice(title, text, link) {
+  if (authLost) return;
   $("main").replaceChildren(el("div", { class: "card center" }, el("h2", { text: title }), text ? el("p", { class: "hint", text }) : null,
     link ? el("div", {}, el("a", { href: link.href, text: `${link.text} ›` })) : null));
 }
 
 // ---------- the admin screens ----------
 let data = null, editingCompany = null, editingUser = null, resetting = null, deleting = null;
+let sessionsFor = null, endingFor = null;  // the person whose sessions are open, or who is being signed out everywhere
 
 function explainer() {
   const step = (n, title, text) => el("div", { class: "step" }, el("span", { class: "num", text: n }), el("div", {}, el("strong", { text: title }), el("div", { class: "dim", text })));
@@ -589,20 +669,38 @@ function deletePanel(c, plan) {
   const typed = el("input", { type: "text", autocomplete: "off", "aria-label": "Type the company name to confirm", placeholder: `Type ${c.name} to confirm` });
   const typedRow = el("label", { class: "f" }, `To permanently delete its data, type the company name (${c.name}):`, typed);
   typedRow.hidden = true;
+  // deleting data for good also needs the administrator's own password (it is sent once and never kept)
+  const pw = el("input", { type: "password", autocomplete: "current-password", "aria-describedby": `pwerr-${c.id}` });
+  const pwErr = el("p", { class: "ferr", id: `pwerr-${c.id}`, role: "alert" });
+  const pwRow = el("label", { class: "f" }, "Your password", pw, el("span", { class: "dim small", text: "To permanently delete a company's data, confirm it is you." }));
+  pwRow.hidden = true;
   const go = el("button", { class: "btn danger", type: "button", text: "Delete company" });
   const sync = () => {
-    typedRow.hidden = !(withData.checked && deletable.length);
-    go.textContent = withData.checked && deletable.length ? "Delete company and its data" : "Delete company, keep its data";
-    go.disabled = withData.checked && deletable.length > 0 && typed.value.trim() !== c.name;
+    const purge = withData.checked && deletable.length > 0;
+    typedRow.hidden = pwRow.hidden = !purge;
+    if (!purge) pwErr.textContent = "";
+    go.textContent = purge ? "Delete company and its data" : "Delete company, keep its data";
+    go.disabled = purge && (typed.value.trim() !== c.name || !pw.value);
   };
-  withData.addEventListener("change", sync); typed.addEventListener("input", sync);
-  go.addEventListener("click", () => act(go, async () => {
-    const r = await call("POST", `/api/admin/companies/${encodeURIComponent(c.id)}/delete`,
-      { delete_data: withData.checked, confirm: withData.checked ? deletable.map((w) => w.key) : [] });
-    deleting = null;
-    note(r.deleted.length ? `Company deleted, and its data in ${r.deleted.length} app(s)${r.kept.length ? `; ${r.kept.length} kept.` : "."}`
-      : "Company deleted. Its data was kept.", "ok");
-  }));
+  withData.addEventListener("change", sync); typed.addEventListener("input", sync); pw.addEventListener("input", () => { pwErr.textContent = ""; sync(); });
+  go.addEventListener("click", async () => {
+    const purge = withData.checked && deletable.length > 0;
+    go.disabled = true; pwErr.textContent = "";
+    try {
+      const body = { delete_data: withData.checked, confirm: withData.checked ? deletable.map((w) => w.key) : [] };
+      if (purge) body.password = pw.value;
+      const r = await call("POST", `/api/admin/companies/${encodeURIComponent(c.id)}/delete`, body);
+      pw.value = "";
+      deleting = null;
+      note(r.deleted.length ? `Company deleted, and its data in ${r.deleted.length} app(s)${r.kept.length ? `; ${r.kept.length} kept.` : "."}`
+        : "Company deleted. Its data was kept.", "ok");
+      try { await refresh(); } catch (e) { if (transient(e)) loadWithRetry().catch(() => {}); else note(e.message, "err"); }
+    } catch (e) {
+      if (e.status === 401) return;
+      if (e.status === 403) { pwErr.textContent = e.message; pw.value = ""; pw.focus(); }  // the password was missing or wrong: say so right here
+      else note(changeError(e), "err");
+    } finally { if (document.contains(go)) sync(); }
+  });
   const list = spaces.length ? el("ul", { class: "hint" }, spaces.map((w) => el("li", {}, `${w.agent_name === "RFP Memory Assistant" ? "RFP Assistant" : w.agent_name}: "${w.name}"`,
     w.deletable ? " - can be deleted" : el("span", { style: "color:var(--warn)", text: ` - will always be kept: ${w.reason}` }))))
     : el("p", { class: "hint", text: "This company has no data, so there is nothing to keep or delete." });
@@ -613,7 +711,7 @@ function deletePanel(c, plan) {
     list,
     deletable.length ? el("label", { class: "row", style: "flex-wrap:nowrap;align-items:flex-start" }, withData, el("span", {}, el("strong", { text: "Also permanently delete its data" }),
       " (its deals, RFP answers, uploaded files and memory). This cannot be undone.")) : null,
-    typedRow,
+    typedRow, pwRow, pwErr,
     el("div", { class: "row" }, go, el("button", { class: "btn ghost", type: "button", text: "Cancel", onclick: () => { deleting = null; render(); } })));
 }
 
@@ -750,6 +848,58 @@ function resetForm(u) {
     el("div", { class: "row" }, save, el("button", { class: "btn ghost", type: "button", text: "Cancel", onclick: () => { resetting = null; render(); } })));
 }
 
+// one panel under a person's row at a time: edit, reset password, sessions, or the sign-out-everywhere confirmation
+function openPanel(kind, email) {
+  editingUser = kind === "edit" ? email : null;
+  resetting = kind === "reset" ? email : null;
+  sessionsFor = kind === "sessions" ? email : null;
+  endingFor = kind === "end" ? email : null;
+  render();
+  const focusIt = document.querySelector("#people .sess-panel button, #people .endbox button.danger");
+  if (focusIt && (kind === "sessions" || kind === "end")) focusIt.focus();
+}
+const agoShort = (iso) => { const t = Date.parse(iso || ""); if (!t) return ""; const s = Math.max(0, (Date.now() - t) / 1000);
+  return s < 60 ? "just now" : s < 3600 ? `${Math.floor(s / 60)} min ago` : s < 86400 ? `${Math.floor(s / 3600)} h ago` : Math.floor(s / 86400) === 1 ? "yesterday" : `${Math.floor(s / 86400)} days ago`; };
+function sessionsPanel(u) {
+  const list = el("div", { class: "sess-list", "aria-busy": "true" }, [0, 1].map(() => el("div", { class: "sess-row", "aria-hidden": "true" },
+    el("span", { class: "sk sk-line w60" }), el("span", { class: "sk sk-line w40" }))));
+  const name = u.name || u.email;
+  const box = el("div", { class: "box sess-panel" },
+    el("div", { class: "row" }, el("strong", { text: `Where ${name} is signed in` }), el("span", { class: "spacer" }),
+      el("button", { class: "btn ghost small", type: "button", text: "Close", onclick: () => openPanel(null, u.email) })),
+    list,
+    el("div", { class: "row" }, el("button", { class: "btn danger small", type: "button", text: "Sign out everywhere", onclick: () => openPanel("end", u.email) })));
+  call("GET", `/api/admin/users/${encodeURIComponent(u.email)}/sessions`).then((d) => {
+    const sessions = [...(d.sessions || [])].sort((a, b) => Date.parse(b.last_seen) - Date.parse(a.last_seen));
+    list.setAttribute("aria-busy", "false");
+    list.replaceChildren(...(sessions.length ? sessions.map((s) => {
+      const now = Date.now() - (Date.parse(s.last_seen || "") || 0) < 120000;
+      return el("div", { class: "sess-row" },
+        el("span", { class: "sess-dev", "aria-hidden": "true" }, icon(/iphone|ipad|android|mobile|phone/i.test(s.browser || "") ? ICONS.phone : ICONS.laptop)),
+        el("div", { class: "sess-main" }, el("strong", { text: s.browser || "Unknown browser" }),
+          el("span", { class: "dim small", text: [s.address, s.signed_in ? `signed in ${agoShort(s.signed_in)}` : ""].filter(Boolean).join(" · ") })),
+        el("span", { class: `sess-act${now ? " now" : ""}`, text: now ? "Active now" : `Last active ${agoShort(s.last_seen)}` }));
+    }) : [el("p", { class: "hint", text: `${name} isn't signed in anywhere right now.` })]));
+  }).catch((e) => { list.setAttribute("aria-busy", "false"); if (e.status !== 401) list.replaceChildren(el("p", { class: "ferr", text: `Couldn't load the sessions. ${e.message}` })); });
+  return box;
+}
+function endPanel(u, mine) {
+  const name = u.name || u.email;
+  const go = el("button", { class: "btn danger small", type: "button", text: "Sign out everywhere" });
+  const cancel = el("button", { class: "btn ghost small", type: "button", text: "Cancel", onclick: () => openPanel(null, u.email) });
+  go.addEventListener("click", () => act(go, async () => {
+    const r = await call("POST", `/api/admin/users/${encodeURIComponent(u.email)}/sessions/end`);
+    endingFor = null;
+    note(r.ended ? `Signed ${name} out of ${r.ended} ${r.ended === 1 ? "session" : "sessions"}.` : `${name} wasn't signed in anywhere.`, "ok");
+  }));
+  const box = el("div", { class: "box endbox", role: "group", "aria-label": `Sign ${name} out everywhere` },
+    el("strong", { text: `Sign ${name} out everywhere?` }),
+    el("p", { class: "hint", text: mine ? "This includes this browser: you will need to sign in again." : `Every browser where ${name} is signed in is signed out. They can sign in again with their password.` }),
+    el("div", { class: "row" }, go, cancel));
+  box.addEventListener("keydown", (e) => { if (e.key === "Escape") { e.preventDefault(); cancel.click(); } });
+  return box;
+}
+
 let peopleQuery = "", peopleCompany = "", peopleAll = false;
 const PEOPLE_LIMIT = 8;
 function peopleCard() {
@@ -771,17 +921,22 @@ function peopleCard() {
       el("td", {}, el("span", { class: `badge ${u.role === "admin" ? "admin" : ""}`, text: u.role === "admin" ? "Administrator" : "Member" })),
       el("td", {}, el("span", { class: `badge ${u.disabled ? "off" : "on"}`, text: u.disabled ? "Disabled" : "Active" })),
       el("td", {}, el("div", { class: "actions" },
-        el("button", { class: "btn ghost small", type: "button", text: "Edit", onclick: () => { editingUser = u.email; resetting = null; render(); } }),
-        el("button", { class: "btn ghost small", type: "button", text: "Reset password", onclick: () => { resetting = u.email; editingUser = null; render(); } }), toggle)));
+        el("button", { class: "btn ghost small", type: "button", text: "Edit", onclick: () => { openPanel("edit", u.email); } }),
+        el("button", { class: "btn ghost small", type: "button", text: "Reset password", onclick: () => { openPanel("reset", u.email); } }), toggle,
+        el("button", { class: `btn ghost small${sessionsFor === u.email ? " on" : ""}`, type: "button", text: "Sessions", "aria-expanded": String(sessionsFor === u.email),
+          onclick: () => { openPanel(sessionsFor === u.email ? null : "sessions", u.email); } }),
+        el("button", { class: "btn danger small", type: "button", text: "Sign out everywhere", onclick: () => { openPanel("end", u.email); } }))));
     const extra = editingUser === u.email ? el("tr", {}, el("td", { colspan: 5 }, userForm(u)))
-      : resetting === u.email ? el("tr", {}, el("td", { colspan: 5 }, resetForm(u))) : null;
+      : resetting === u.email ? el("tr", {}, el("td", { colspan: 5 }, resetForm(u)))
+      : sessionsFor === u.email ? el("tr", { class: "detail" }, el("td", { colspan: 5 }, sessionsPanel(u)))
+      : endingFor === u.email ? el("tr", { class: "detail" }, el("td", { colspan: 5 }, endPanel(u, mine))) : null;
     return extra ? [main, extra] : [main];
   };
   const draw = () => {
     const q = peopleQuery.trim().toLowerCase();
     const match = users.filter((u) => (!peopleCompany || u.company === peopleCompany)
       && (!q || (u.name || "").toLowerCase().includes(q) || u.email.toLowerCase().includes(q)));
-    const pinned = match.filter((u) => u.email === editingUser || u.email === resetting);
+    const pinned = match.filter((u) => [editingUser, resetting, sessionsFor, endingFor].includes(u.email));
     const filtered = q || peopleCompany;
     const shown = peopleAll || filtered ? match : [...new Set([...match.slice(0, PEOPLE_LIMIT), ...pinned])];
     const table = shown.length ? el("div", { class: "scroll" }, el("table", {},
@@ -868,8 +1023,17 @@ const ACTION_WORDS = {
   "setup": "Turned on sign-in", "reset": "Fresh start", "company.add": "Added a company", "company.update": "Changed a company",
   "company.delete": "Deleted a company", "user.add": "Added a person", "user.update": "Changed a person", "workspace.create": "Set up data",
   "workspace.delete": "Deleted data", "rfp.facts": "Saved company facts", "rfp.library": "Added a past proposal", "deal.plays": "Saved plays",
+  "auth.signin": "Signed in", "auth.signin_failed": "Sign-in failed", "auth.locked": "Account locked", "auth.signout": "Signed out",
+  "auth.session_ended": "Ended a session", "auth.sessions_ended": "Signed out other sessions", "user.sessions_ended": "Signed someone out everywhere",
+  "auth.reauth_failed": "Wrong password on a protected step",
 };
-let activityAll = false;
+// what kind of line it is: "in" and "out" are sign-ins, "warn" a failed or blocked attempt, anything else a change
+const ACTION_KIND = { "auth.signin": "in", "auth.signin_failed": "warn", "auth.locked": "warn", "auth.reauth_failed": "warn",
+  "auth.signout": "out", "auth.session_ended": "out", "auth.sessions_ended": "out", "user.sessions_ended": "out" };
+const kindOf = (action) => ACTION_KIND[action] || (String(action).startsWith("auth.") ? "in" : "change");
+const isSignIn = (action) => kindOf(action) !== "change";
+const KIND_ICON = { in: "signin", out: "signout", warn: "warn", change: "change" };
+let activityAll = false, activityFilter = "all";
 function ago(iso) {
   const d = new Date(iso);
   if (isNaN(d)) return iso;
@@ -880,16 +1044,28 @@ function ago(iso) {
   if (s < 7 * 86400) return `${Math.floor(s / 86400)} d ago`;
   return d.toLocaleDateString();
 }
-function activityCard(entries) {
+function activityCard(all) {
+  const counts = { all: all.length, changes: all.filter((e) => !isSignIn(e.action)).length, signins: all.filter((e) => isSignIn(e.action)).length };
+  const entries = activityFilter === "changes" ? all.filter((e) => !isSignIn(e.action)) : activityFilter === "signins" ? all.filter((e) => isSignIn(e.action)) : all;
   const shown = activityAll ? entries : entries.slice(0, 8);
-  return el("section", { class: "section", id: "activity" }, head("Recent activity.", "Who changed what, and when."),
+  const chips = el("div", { class: "fchips", role: "group", "aria-label": "Show activity" }, [["all", "All"], ["changes", "Changes"], ["signins", "Sign-ins"]].map(([k, label]) =>
+    el("button", { type: "button", class: "fchipb", "aria-pressed": String(activityFilter === k), onclick: () => { activityFilter = k; activityAll = false; render(); document.querySelector(`#activity .fchipb[aria-pressed="true"]`).focus(); } },
+      label, el("span", { class: "n", text: String(counts[k]) }))));
+  const what = (e) => {
+    const k = kindOf(e.action);
+    return el("td", { class: "nowrap" }, el("span", { class: `act act-${k}` }, el("span", { class: "act-ic", "aria-hidden": "true" }, icon(ICONS[KIND_ICON[k]])),
+      el("strong", { text: ACTION_WORDS[e.action] || e.action })));
+  };
+  return el("section", { class: "section", id: "activity" }, head("Recent activity.", "Who changed what, and who signed in."),
+    chips,
     el("div", { class: "panel flush" },
       entries.length ? el("div", { class: "scroll" }, el("table", {},
         el("thead", {}, el("tr", {}, ["When", "Who", "What", "Details"].map((h) => el("th", { text: h })))),
-        el("tbody", {}, shown.map((e) => el("tr", {}, el("td", { class: "dim nowrap", text: ago(e.at), title: new Date(e.at).toLocaleString() }), el("td", { text: e.actor }),
-          el("td", { class: "nowrap" }, el("strong", { text: ACTION_WORDS[e.action] || e.action })), el("td", { class: "dim", text: e.detail }))))))
-        : el("div", { class: "empty", style: "padding:18px 22px", text: "Nothing yet." }),
-      entries.length > 8 ? el("div", { class: "row pfoot" }, el("button", { class: "btn ghost small", type: "button", text: activityAll ? "Show fewer" : `Show the last ${entries.length}`,
+        el("tbody", {}, shown.map((e) => el("tr", { class: kindOf(e.action) === "warn" ? "warnrow" : null },
+          el("td", { class: "dim nowrap", text: ago(e.at), title: new Date(e.at).toLocaleString() }), el("td", { text: e.actor }),
+          what(e), el("td", { class: "dim", text: e.detail }))))))
+        : el("div", { class: "empty", style: "padding:18px 22px", text: activityFilter === "all" ? "Nothing yet." : "Nothing of this kind yet." }),
+      entries.length > 8 ? el("div", { class: "row pfoot" }, el("button", { class: "btn ghost small", type: "button", text: activityAll ? "Show fewer" : `Show all ${entries.length}`,
         onclick: () => { activityAll = !activityAll; render(); } })) : null));
 }
 
@@ -988,7 +1164,7 @@ function render() {
 }
 async function refresh() {
   data = await call("GET", "/api/admin/overview");
-  activity = (await call("GET", "/api/admin/audit?limit=30")).entries;
+  activity = (await call("GET", "/api/admin/audit?limit=100")).entries;  // sign-ins are logged too now, so read further back
   try { usageData = await call("GET", "/api/admin/usage"); } catch { usageData = null; }  // the rest of the page works without it
   render();
 }
@@ -1020,7 +1196,7 @@ async function whoAmI() {  // who is signed in; retried by itself while the hub 
       ? "Setup can only be done from the computer the hub runs on, and only before the first account exists. If sign-in was switched off with HUB_AUTH=off, remove that setting."
       : "", { href: "/", text: "Back to the chat" });
   }
-  if (!me.user) { location.href = "/"; return; }
+  if (!me.user) { stopSlow(); renderSignIn(""); return; }
   $("who").hidden = $("signout").hidden = false;
   $("who").textContent = `${me.user.name || me.user.email} | ${me.user.company}`;
   if (me.user.role !== "admin") return renderNotice("Administrators only", "Your account can use the chat but not this page. Ask an administrator.", { href: "/", text: "Back to the chat" });

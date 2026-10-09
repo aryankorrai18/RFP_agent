@@ -127,6 +127,11 @@ class Store:
                 self._conn.execute("ALTER TABLE conversations ADD COLUMN user_id TEXT")
             if "role" not in {row["name"] for row in self._conn.execute("PRAGMA table_info(users)")}:
                 self._conn.execute("ALTER TABLE users ADD COLUMN role TEXT NOT NULL DEFAULT 'member'")
+            session_columns = {row["name"] for row in self._conn.execute("PRAGMA table_info(sessions)")}
+            if "last_seen" not in session_columns:  # session management: idle timeout and the "your sessions" list
+                for column in ("last_seen", "address", "user_agent"):
+                    self._conn.execute(f"ALTER TABLE sessions ADD COLUMN {column} TEXT")
+                self._conn.execute("UPDATE sessions SET last_seen = created_at")
             if "last_activity" not in columns:  # chat history: titles, ordering and deleting
                 for column in ("title", "first_message", "last_activity", "deleted_at"):
                     self._conn.execute(f"ALTER TABLE conversations ADD COLUMN {column} TEXT")

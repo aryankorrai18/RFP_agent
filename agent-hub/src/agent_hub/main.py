@@ -268,13 +268,53 @@ async def auth_login(body: LoginIn, request: Request) -> JSONResponse:
     if auth is None or auth.mode() != "on":
         raise HTTPException(400, "Sign-in is not turned on for this hub.")
     try:
-        token, user = auth.login(body.email, body.password, request.client.host if request.client else "")
+        token, user = auth.login(body.email, body.password, request.client.host if request.client else "",
+                                 request.headers.get("user-agent", ""))
     except AuthError as exc:
         headers = {"Retry-After": str(exc.retry_after)} if exc.retry_after else None
         return JSONResponse({"detail": exc.message}, status_code=exc.status, headers=headers)
     response = JSONResponse({"auth": "on", "user": user.public()})
-    set_session_cookie(response, request, auth, token)
+    set_session_cookie(response, request, auth, token, user)
     return response
+
+
+def _signed_in(request: Request) -> tuple[Auth, User]:
+    auth = get_auth(request)
+    if auth is None or auth.mode() != "on":
+        raise HTTPException(400, "Sign-in is not turned on for this hub.")
+    user = guard(request)
+    assert user is not None
+    return auth, user
+
+
+@app.get("/api/auth/sessions")
+async def my_sessions(request: Request) -> dict:
+    """Where the signed-in person is signed in: browser, address, when they signed in and last used it."""
+    auth, user = _signed_in(request)
+    return {"sessions": auth.list_sessions(user.id, request.cookies.get(SESSION_COOKIE)),
+            "limits": {"idle_minutes": int((auth.admin_idle if user.is_admin else auth.idle).total_seconds() // 60),
+                       "lifetime_hours": int(auth.lifetime(user.role).total_seconds() // 3600)}}
+
+
+@app.delete("/api/auth/sessions/{session_id}")
+async def end_my_session(session_id: str, request: Request) -> JSONResponse:
+    auth, user = _signed_in(request)
+    current = [s for s in auth.list_sessions(user.id, request.cookies.get(SESSION_COOKIE)) if s["current"]]
+    if not auth.end_session(user.id, session_id):
+        raise HTTPException(404, "That session has already ended.")
+    auth.audit(user.email, "auth.session_ended", f"ended session {session_id}")
+    response = JSONResponse({"ok": True, "signed_out": bool(current and current[0]["id"] == session_id)})
+    if current and current[0]["id"] == session_id:
+        response.delete_cookie(SESSION_COOKIE, path="/")
+    return response
+
+
+@app.post("/api/auth/sessions/sign-out-others")
+async def end_my_other_sessions(request: Request) -> dict:
+    auth, user = _signed_in(request)
+    ended = auth.end_other_sessions(user.id, request.cookies.get(SESSION_COOKIE))
+    auth.audit(user.email, "auth.sessions_ended", f"signed out of {ended} other session(s)")
+    return {"ended": ended}
 
 
 @app.post("/api/auth/logout")

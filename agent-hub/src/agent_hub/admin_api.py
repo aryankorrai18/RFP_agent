@@ -41,6 +41,7 @@ class CompanyIn(BaseModel):
 class CompanyDelete(BaseModel):
     delete_data: bool = False  # also permanently delete the company's workspaces (default: keep the data)
     confirm: list[str] = Field(default_factory=list, max_length=100)  # "agent:workspace-id" of every workspace to be deleted
+    password: str | None = Field(default=None, max_length=500)  # the administrator's own password: required to delete data
 
 
 class CompanyPatch(BaseModel):
@@ -128,11 +129,12 @@ async def setup(body: SetupIn, request: Request) -> JSONResponse:
         return JSONResponse({"detail": "Setup is only available on this machine, before the first account exists."}, status_code=403)
     try:
         auth.create_first_admin(body.email, body.password, body.name)
-        token, user = auth.login(body.email, body.password, request.client.host if request.client else "")
+        token, user = auth.login(body.email, body.password, request.client.host if request.client else "",
+                                 request.headers.get("user-agent", ""))
     except AuthError as exc:
         return _error(exc)
     response = JSONResponse({"auth": "on", "user": user.public()})
-    set_session_cookie(response, request, auth, token)
+    set_session_cookie(response, request, auth, token, user)
     return response
 
 
@@ -291,6 +293,9 @@ async def delete_company(company_id: str, body: CompanyDelete, request: Request,
         if people:
             raise AuthError("company_in_use", "Move or disable its people first: this company still has accounts.", 409)
         deletable = sorted(i.key for i in plan if i.deletable)
+        if body.delete_data and not auth.check_password(admin.id, body.password or ""):
+            auth.audit(admin.email, "auth.reauth_failed", f"wrong password when deleting {company_id}'s data")
+            raise AuthError("password_required", "Enter your own password to permanently delete a company's data.", 403)
         if body.delete_data and sorted(set(body.confirm)) != deletable:
             raise AuthError("confirm_mismatch", "The list of workspaces to delete has changed. Review it and confirm again.", 409)
         auth.delete_company(company_id)
@@ -311,6 +316,27 @@ async def delete_company(company_id: str, body: CompanyDelete, request: Request,
                 kept.append({"key": item.key, "name": item.name, "reason": provisioning._why(exc)})
     auth.audit(admin.email, "company.delete", f"{company_id}: " + (f"deleted {len(deleted)} workspace(s), kept {len(kept)}" if body.delete_data else "data kept"))
     return JSONResponse({"ok": True, "deleted": deleted, "kept": kept})
+
+
+@router.get("/users/{email}/sessions")
+async def user_sessions(email: str, request: Request, admin: User = Depends(require_admin)) -> JSONResponse:
+    auth = get_auth(request)
+    user_id = auth.user_id_for_email(email)
+    if user_id is None:
+        return JSONResponse({"detail": "No such person."}, status_code=404)
+    return JSONResponse({"sessions": [{k: v for k, v in s.items() if k != "current"} for s in auth.list_sessions(user_id)]})
+
+
+@router.post("/users/{email}/sessions/end")
+async def end_user_sessions(email: str, request: Request, admin: User = Depends(require_admin)) -> JSONResponse:
+    """Sign a person out everywhere (a lost laptop, a shared computer)."""
+    auth = get_auth(request)
+    user_id = auth.user_id_for_email(email)
+    if user_id is None:
+        return JSONResponse({"detail": "No such person."}, status_code=404)
+    ended = auth.end_all_sessions(user_id)
+    auth.audit(admin.email, "user.sessions_ended", f"signed {email.strip().lower()} out of {ended} session(s)")
+    return JSONResponse({"ended": ended})
 
 
 @router.post("/users")

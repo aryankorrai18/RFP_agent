@@ -235,7 +235,7 @@ def test_every_change_is_logged_with_who_made_it_and_never_a_password(staffed):
     staffed.post("/api/admin/companies", json={"name": "Globex"})
     staffed.post("/api/admin/users", json={"email": "gus@globex.com", "company": "Globex", "password": PASSWORD})
     staffed.patch("/api/admin/users/gus@globex.com", json={"password": "a brand new password", "disabled": True})
-    entries = staffed.get("/api/admin/audit").json()["entries"]
+    entries = [e for e in staffed.get("/api/admin/audit").json()["entries"] if not e["action"].startswith("auth.")]  # sign-ins are logged too
     assert [e["action"] for e in entries][:3] == ["user.update", "user.add", "company.add"]
     assert all(e["actor"] == "admin@acc.com" for e in entries) and "gus@globex.com: disabled, password" in entries[0]["detail"]
     blob = str(entries)
@@ -246,7 +246,7 @@ def test_every_change_is_logged_with_who_made_it_and_never_a_password(staffed):
 def test_setup_is_logged(hub, monkeypatch):
     monkeypatch.setattr(deps, "is_loopback", lambda _r: True)
     hub.post("/api/admin/setup", json=SETUP)
-    assert hub.get("/api/admin/audit").json()["entries"][0]["action"] == "setup"
+    assert [e["action"] for e in hub.get("/api/admin/audit").json()["entries"]][:2] == ["auth.signin", "setup"]  # set up, then signed in
 
 
 def test_the_setup_form_can_list_the_workspaces_only_while_setup_is_open(hub, monkeypatch):

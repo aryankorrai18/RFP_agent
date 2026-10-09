@@ -94,7 +94,45 @@ details.later summary::-webkit-details-marker { display: none; }
 details.later summary::after { content: ""; width: 6px; height: 6px; border-right: 1.5px solid currentColor; border-bottom: 1.5px solid currentColor; transform: rotate(-45deg); transition: transform .2s; margin-left: 2px; }
 details.later[open] summary::after { transform: rotate(45deg); }
 .rail-foot { border-top: 1px solid var(--hair); padding: 14px 16px 16px; display: grid; gap: 12px; }
-.userchip { display: flex; align-items: center; gap: 10px; min-width: 0; }
+.userchip { display: flex; align-items: center; gap: 10px; min-width: 0; width: 100%; padding: 6px 8px; margin: -6px -8px; width: calc(100% + 16px); border: 0; border-radius: 12px; background: none; text-align: left; color: inherit; transition: background .15s; }
+.userchip:hover, .userchip[aria-expanded="true"] { background: var(--fill-2); }
+.acctwrap { position: relative; }
+.acctmenu { position: absolute; left: -6px; right: -6px; bottom: calc(100% + 12px); z-index: 30; padding: 6px; border-radius: 16px; background: var(--surface); border: 1px solid var(--hair); box-shadow: var(--shadow-lg); display: grid; gap: 2px; transform-origin: bottom left; animation: popIn .16s cubic-bezier(.2, .7, .2, 1); }
+.acctmenu > [role="menuitem"] { display: flex; align-items: center; gap: 10px; width: 100%; padding: 9px 10px; border: 0; background: none; border-radius: 10px; font-size: 14px; color: var(--ink); text-decoration: none; text-align: left; }
+.acctmenu > [role="menuitem"]:hover, .acctmenu > [role="menuitem"]:focus-visible { background: var(--fill-2); outline: none; }
+.acctmenu > .danger { color: var(--bad); }
+.acctmenu svg { width: 17px; height: 17px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+
+/* the sessions sheet */
+.modal { position: fixed; inset: 0; z-index: 80; display: grid; place-items: center; padding: 20px; }
+.mscrim { position: absolute; inset: 0; background: rgba(0, 0, 0, .34); backdrop-filter: blur(3px); -webkit-backdrop-filter: blur(3px); animation: fadeIn .2s ease; }
+.msheet { position: relative; width: min(600px, 100%); max-height: min(720px, calc(100dvh - 40px)); overflow-y: auto; padding: 26px 26px 22px; border-radius: 26px; background: var(--surface); border: 1px solid var(--hair); box-shadow: var(--shadow-lg); display: grid; gap: 14px; align-content: start; animation: sheetIn .32s cubic-bezier(.2, .7, .2, 1); }
+.msheet:focus { outline: none; }
+.mhead { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
+.mtitle { margin: 0; font-size: 28px; line-height: 1.12; letter-spacing: -.028em; font-weight: 700; }
+.mtitle .g { color: var(--ink-3); }
+.mnote { margin: -4px 0 2px; font-size: 14px; color: var(--muted); }
+.mmsg { margin: 0; padding: 10px 14px; border-radius: 12px; font-size: 13.5px; background: var(--ok-soft); color: var(--ok); }
+.mmsg.bad { background: var(--bad-soft); color: var(--bad); }
+.slist { display: grid; gap: 8px; }
+.srow { display: grid; grid-template-columns: 42px minmax(0, 1fr) auto; gap: 14px; align-items: center; padding: 14px 16px; border-radius: 18px; background: var(--surface-2, var(--fill-2)); border: 1px solid var(--hair); transition: opacity .2s, transform .2s; }
+.srow.cur { background: var(--accent-soft); border-color: color-mix(in srgb, var(--accent) 24%, transparent); }
+.srow.leaving { opacity: 0; transform: translateX(-10px); }
+.sdev { width: 42px; height: 42px; border-radius: 12px; display: grid; place-items: center; background: var(--surface); color: var(--ink-2); border: 1px solid var(--hair); }
+.sdev svg { width: 21px; height: 21px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+.sname { font-weight: 600; font-size: 15px; letter-spacing: -.01em; display: flex; flex-wrap: wrap; align-items: center; gap: 6px 8px; }
+.sbadge { font-size: 11px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; padding: 3px 8px; border-radius: 999px; background: var(--link); color: #fff; }
+.smeta { font-size: 13px; color: var(--muted); }
+.sactive { font-size: 12.5px; color: var(--muted); display: inline-flex; align-items: center; gap: 6px; }
+.sactive.now { color: var(--ok); font-weight: 500; }
+.sactive.now::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: currentColor; }
+.sothers { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; padding-top: 4px; }
+.sconfirm { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; width: 100%; padding: 12px 14px; border-radius: 16px; background: var(--bad-soft); border: 1px solid color-mix(in srgb, var(--bad) 22%, transparent); font-size: 14px; animation: rowIn .2s cubic-bezier(.2, .7, .2, 1); }
+.sconfirm span { flex: 1 1 220px; }
+.lnote { margin: -4px 0 0; padding: 11px 14px; border-radius: 14px; background: var(--accent-soft); color: var(--ink-2); font-size: 14px; line-height: 1.45; }
+@keyframes sheetIn { from { opacity: 0; transform: translateY(16px) scale(.98); } to { opacity: 1; transform: none; } }
+@keyframes fadeIn { from { opacity: 0; } }
+@keyframes sheetUp { from { opacity: .6; transform: translateY(40px); } to { opacity: 1; transform: none; } }
 .avatar-i { width: 34px; height: 34px; border-radius: 50%; display: grid; place-items: center; flex: none; font-size: 13px; font-weight: 600; color: #fff; background: linear-gradient(150deg, #8e8e93, #48484a); letter-spacing: 0; }
 .who { display: grid; min-width: 0; line-height: 1.3; }
 .who strong { font-size: 14px; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
@@ -494,6 +532,12 @@ dl.rows dt:last-of-type, dl.rows dt:last-of-type + dd { padding-bottom: 0; }
   .ctx { max-width: 38vw; }
 }
 @media (max-width: 640px) {
+  .modal { place-items: end stretch; padding: 0; }
+  .msheet { width: 100%; max-height: 90dvh; border-radius: 26px 26px 0 0; padding: 22px 18px calc(20px + env(safe-area-inset-bottom)); animation-name: sheetUp; }
+  .mtitle { font-size: 24px; }
+  .srow { grid-template-columns: 38px minmax(0, 1fr); padding: 13px 14px; }
+  .srow > .btn { grid-column: 2; justify-self: start; }
+  .sdev { width: 38px; height: 38px; }
   .agsw-label { display: none; }
   .agsw-btn { padding: 0 10px; }
   .agpop { position: fixed; left: 12px; right: 12px; top: 60px; width: auto; }
@@ -538,10 +582,16 @@ dl.rows dt:last-of-type, dl.rows dt:last-of-type + dd { padding-bottom: 0; }
       <div class="hmore" id="hmore" aria-hidden="true"></div>
     </div>
     <div class="rail-foot">
-      <div class="userchip" id="userchip" hidden></div>
+      <div class="acctwrap">
+        <button class="userchip" id="userchip" type="button" aria-haspopup="menu" aria-expanded="false" aria-controls="acctmenu" hidden></button>
+        <div class="acctmenu" id="acctmenu" role="menu" aria-label="Account" hidden>
+          <button type="button" role="menuitem" id="sessbtn"><span id="sessic"></span>Your sessions</button>
+          <a role="menuitem" href="/privacy" id="privmenu"><span id="privic"></span>Privacy</a>
+          <button type="button" role="menuitem" id="logout" class="danger" hidden><span id="logoutic"></span>Sign out</button>
+        </div>
+      </div>
       <div class="acct">
         <a class="tlink go" id="adminlink" href="/admin" hidden>Admin console</a>
-        <button class="tlink" id="logout" type="button" hidden>Sign out</button>
       </div>
       <div class="rail-note">Runs on this machine. Your files stay local. <a href="/privacy">Privacy</a></div>
     </div>
@@ -604,10 +654,24 @@ dl.rows dt:last-of-type, dl.rows dt:last-of-type + dd { padding-bottom: 0; }
   </main>
 </div>
 <div class="hpop" id="hpop" role="menu" aria-label="Chat options" hidden></div>
+<div class="modal" id="sessmodal" hidden>
+  <div class="mscrim" id="sessscrim"></div>
+  <section class="msheet" id="sesssheet" role="dialog" aria-modal="true" aria-labelledby="sesstitle" aria-describedby="sesslimits">
+    <header class="mhead">
+      <h2 class="mtitle" id="sesstitle"><span>Your sessions.</span> <span class="g">Where you're signed in.</span></h2>
+      <button class="icon-btn" id="sessclose" type="button" aria-label="Close"></button>
+    </header>
+    <p class="mnote" id="sesslimits"></p>
+    <p class="mmsg" id="sessmsg" role="status" hidden></p>
+    <div class="slist" id="sesslist" aria-busy="true"></div>
+    <div class="sothers" id="sessothers"></div>
+  </section>
+</div>
 <div class="login" id="login" hidden>
   <form id="loginform" autocomplete="on">
     <span class="mark" aria-hidden="true"></span>
     <h2 class="display"><span>Sign in to the hub.</span> <span class="g">Your agents are waiting.</span></h2>
+    <p class="lnote" id="lnote" role="status" hidden></p>
     <p>Use the account your administrator made for you. You will only see your own company's data.</p>
     <label>Email<input id="lemail" type="email" autocomplete="username" required></label>
     <label>Password<input id="lpass" type="password" autocomplete="current-password" required></label>
@@ -658,6 +722,12 @@ const ICONS = {
   grid: ["M4 4h7v7H4z", "M13 4h7v7h-7z", "M4 13h7v7H4z", "M13 13h7v7h-7z"],
   chat: ["M4 5h16v11H9l-5 4z"],
   chevdown: ["M6 9l6 6 6-6"],
+  laptop: ["M5 6h14v9H5z", "M3 18h18"],
+  phone: ["M8 3h8a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1H8a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z", "M11 18h2"],
+  devices: ["M3 6h12v8H3z", "M1.5 17h15", "M18 9h4v10h-4z"],
+  shield: ["M12 3l7 3v5c0 4.4-3 8.3-7 10-4-1.7-7-5.6-7-10V6z"],
+  signout: ["M15 4h3a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-3", "M10 17l5-5-5-5", "M15 12H4"],
+  close: ["M6 6l12 12", "M18 6L6 18"],
 };
 $("attach").append(icon(ICONS.attach));
 $("menu").append(icon(ICONS.menu));
@@ -665,6 +735,10 @@ $("send").append(icon(ICONS.send));
 $("newchat").prepend(icon(ICONS.plus));
 $("hsearchic").replaceWith(icon(ICONS.search));
 $("navagentsic").replaceWith(icon(ICONS.grid));
+$("sessic").replaceWith(icon(ICONS.devices));
+$("privic").replaceWith(icon(ICONS.shield));
+$("logoutic").replaceWith(icon(ICONS.signout));
+$("sessclose").append(icon(ICONS.close));
 { const chev = icon(ICONS.chevdown); chev.setAttribute("class", "chev"); $("agchev").replaceWith(chev); }
 $("pill").append(icon(ICONS.down));
 $("dropic").append(icon(ICONS.upload));
@@ -705,7 +779,7 @@ async function api(path, options, quiet) {
     let r;
     try { r = await fetch(path, options); } catch { throw new ApiError("Could not reach the hub. Check that it is running.", 0, null); }
     const body = await r.json().catch(() => ({}));
-    if (r.status === 401 && !path.startsWith("/api/auth/")) { showLogin(""); throw new ApiError("Please sign in.", 401, null); }
+    if (r.status === 401 && !path.startsWith("/api/auth/")) { showLogin(SIGNED_OUT_IDLE, true); throw new ApiError("Please sign in.", 401, null); }
     if (!r.ok) {
       const d = body && body.detail;
       const msg = (body && body.error && body.error.message) || (typeof d === "string" ? d : Array.isArray(d) && d[0] && d[0].msg) || "";
@@ -1634,6 +1708,7 @@ function initials(text) {
   const words = String(text).replace(/@.*/, "").split(/[\s._-]+/).filter(Boolean);
   return ((words[0] || "?")[0] + (words.length > 1 ? words[words.length - 1][0] : "")).toUpperCase();
 }
+const SIGNED_OUT_IDLE = "You were signed out after a while without activity. Sign in again.";
 function paintUser(me) {
   const chip = $("userchip"), out = $("logout"), who = me && me.user, link = $("adminlink");
   chip.hidden = out.hidden = !who;
@@ -1642,16 +1717,25 @@ function paintUser(me) {
     chip.replaceChildren(el("span", { class: "avatar-i", "aria-hidden": "true", text: initials(name) }),
       el("span", { class: "who" }, el("strong", { text: name }), el("span", { text: who.company || who.email })));
     chip.title = `${who.email}${who.company ? ` | ${who.company}` : ""}`;
-  } else chip.replaceChildren();
+    chip.setAttribute("aria-label", `Account: ${name}${who.company ? `, ${who.company}` : ""}`);
+  } else { chip.replaceChildren(); closeAcctMenu(false); }
   userName = who && who.name ? String(who.name).trim().split(/\s+/)[0] : "";
   // an administrator gets the admin page; before any account exists, this computer gets the first-run setup
   link.hidden = !((who && who.role === "admin") || (me && me.auth === "off" && me.setup_available));
   link.textContent = who ? "Admin console" : "Set up sign-in";
   renderEmpty();
 }
-function showLogin(msg) {
+// The sign-in screen. A calm note (signed out after a while, from another device) is not an error. Whatever was typed
+// in the message box stays there for after signing in.
+function showLogin(msg, calm) {
+  const already = !$("login").hidden;
   clearTimeout(timer); gen++; convId = null; busy = sending = false;
-  $("login").hidden = false; $("lerr").textContent = msg || ""; $("lpass").value = "";
+  closeSessions(false); closeAcctMenu(false); closeAgentMenu(false); closeRowMenu(false);
+  $("login").hidden = false;
+  $("lnote").textContent = calm && msg ? msg : ""; $("lnote").hidden = !(calm && msg);
+  $("lerr").textContent = calm ? "" : (msg || "");
+  if (already) return;  // several calls can fail at once: keep what is being typed in the form
+  $("lpass").value = "";
   paintUser(null); $("lemail").focus();
 }
 $("loginform").addEventListener("submit", async (e) => {
@@ -1662,14 +1746,164 @@ $("loginform").addEventListener("submit", async (e) => {
       body: JSON.stringify({ email: $("lemail").value, password: $("lpass").value }) }));
     const body = await r.json().catch(() => ({}));
     if (!r.ok) { $("lerr").textContent = typeof body.detail === "string" ? body.detail : "Could not sign in."; return; }
-    $("login").hidden = true; $("lpass").value = "";
+    $("login").hidden = true; $("lpass").value = ""; $("lnote").hidden = true;
     paintUser(body); startApp();
+    if ($("input").value || attached.length) { updateSend(); setTimeout(() => $("input").focus(), 0); }  // the kept draft is ready to send
   } catch { $("lerr").textContent = "Could not reach the hub. Check that it is running."; }
   finally { $("lgo").disabled = false; }
 });
 $("logout").addEventListener("click", async () => {
+  closeAcctMenu(false);
   try { await fetch("/api/auth/logout", { method: "POST" }); } catch { /* the cookie is cleared by the next failed call anyway */ }
-  ls.del(KEY); showLogin("You are signed out.");
+  ls.del(KEY); showLogin("You are signed out.", true);
+});
+
+// ---------- the account menu (Your sessions, Privacy, Sign out) ----------
+function openAcctMenu() {
+  closeAgentMenu(false); closeRowMenu(false);
+  $("acctmenu").hidden = false; $("userchip").setAttribute("aria-expanded", "true");
+  const first = $("acctmenu").querySelector('[role="menuitem"]:not([hidden])');
+  if (first) first.focus();
+}
+function closeAcctMenu(refocus) {
+  if ($("acctmenu").hidden) return;
+  $("acctmenu").hidden = true; $("userchip").setAttribute("aria-expanded", "false");
+  if (refocus) $("userchip").focus();
+}
+$("userchip").addEventListener("click", (e) => { e.stopPropagation(); if ($("acctmenu").hidden) openAcctMenu(); else closeAcctMenu(false); });
+$("userchip").addEventListener("keydown", (e) => { if ((e.key === "ArrowUp" || e.key === "ArrowDown") && $("acctmenu").hidden) { e.preventDefault(); openAcctMenu(); } });
+$("acctmenu").addEventListener("keydown", (e) => menuKeys($("acctmenu"), e, closeAcctMenu));
+document.addEventListener("click", (e) => { if (!$("acctmenu").hidden && !$("acctmenu").contains(e.target)) closeAcctMenu(false); });
+$("sessbtn").addEventListener("click", () => { closeAcctMenu(false); openSessions(); });
+
+// ---------- Your sessions: where this account is signed in ----------
+const S = { opener: null, data: null, confirming: false };
+function agoText(iso) {
+  const t = Date.parse(iso || "");
+  if (!t) return "";
+  const s = Math.max(0, (Date.now() - t) / 1000);
+  if (s < 60) return "just now";
+  if (s < 3600) return `${Math.floor(s / 60)} min ago`;
+  if (s < 86400) return `${Math.floor(s / 3600)} h ago`;
+  const d = Math.floor(s / 86400);
+  return d === 1 ? "yesterday" : `${d} days ago`;
+}
+const recent = (iso) => Date.now() - (Date.parse(iso || "") || 0) < 120000;
+const isPhone = (browser) => /iphone|ipad|android|mobile|phone/i.test(String(browser || ""));
+function limitsText(l) {
+  if (!l) return "";
+  const m = Number(l.idle_minutes) || 0, h = Number(l.lifetime_hours) || 0;
+  const idle = m % 60 === 0 ? `${m / 60} ${m === 60 ? "hour" : "hours"}` : `${m} minutes`;
+  const life = h % 24 === 0 ? `${h / 24} ${h === 24 ? "day" : "days"}` : `${h} ${h === 1 ? "hour" : "hours"}`;
+  return `Sessions end after ${idle} without activity or ${life} at most.`;
+}
+function sessMsg(text, bad) { const m = $("sessmsg"); m.textContent = text || ""; m.hidden = !text; m.classList.toggle("bad", !!bad); }
+function sessionsFailed(e) {
+  if (e.status === 401) { showLogin(SIGNED_OUT_IDLE, true); return; }
+  sessMsg(`Couldn't load your sessions. ${e.message}`, true);
+}
+async function loadSessions() {
+  $("sesslist").setAttribute("aria-busy", "true");
+  if (!S.data) $("sesslist").replaceChildren(...[0, 1].map(() => el("div", { class: "srow", "aria-hidden": "true" },
+    el("span", { class: "sk sdev" }), el("div", { style: "display:grid;gap:8px" }, el("span", { class: "sk sk-line w60" }), el("span", { class: "sk sk-line sm w80" })), el("span"))));
+  try {
+    S.data = await api("/api/auth/sessions");
+    renderSessions();
+  } catch (e) { sessionsFailed(e); if (!S.data) $("sesslist").replaceChildren(); }
+  finally { $("sesslist").setAttribute("aria-busy", "false"); }
+}
+function renderSessions() {
+  const list = [...((S.data && S.data.sessions) || [])].sort((a, b) => (b.current - a.current) || (Date.parse(b.last_seen) - Date.parse(a.last_seen)));
+  $("sesslimits").textContent = limitsText(S.data && S.data.limits);
+  $("sesslist").replaceChildren(...list.map((s) => {
+    const signOut = s.current ? null : el("button", { type: "button", class: "btn ghost small", text: "Sign out", "aria-label": `Sign out ${s.browser || "this session"}` });
+    if (signOut) signOut.addEventListener("click", () => endSession(s, signOut));
+    const active = s.current || recent(s.last_seen);
+    return el("div", { class: `srow${s.current ? " cur" : ""}`, "data-id": s.id },
+      el("span", { class: "sdev", "aria-hidden": "true" }, icon(isPhone(s.browser) ? ICONS.phone : ICONS.laptop)),
+      el("div", { style: "display:grid;gap:3px;min-width:0" },
+        el("div", { class: "sname" }, el("span", { text: s.browser || "Unknown browser" }), s.current ? el("span", { class: "sbadge", text: "This device" }) : null),
+        el("div", { class: "smeta", text: [s.address, s.signed_in ? `Signed in ${agoText(s.signed_in)}` : ""].filter(Boolean).join(" · ") }),
+        el("span", { class: `sactive${active ? " now" : ""}`, text: active ? "Active now" : `Last active ${agoText(s.last_seen)}` })),
+      signOut || el("span"));
+  }));
+  const others = list.filter((s) => !s.current).length;
+  paintOthers(others);
+}
+function paintOthers(others) {
+  const box = $("sessothers");
+  if (!others) { box.replaceChildren(el("p", { class: "smeta", text: "You aren't signed in anywhere else." })); return; }
+  if (!S.confirming) {
+    const b = el("button", { type: "button", class: "btn danger", text: "Sign out everywhere else" });
+    b.addEventListener("click", () => { S.confirming = true; paintOthers(others); $("sessothers").querySelector(".btn.ghost").focus(); });
+    box.replaceChildren(b);
+    return;
+  }
+  const yes = el("button", { type: "button", class: "btn danger", text: "Sign out" });
+  const no = el("button", { type: "button", class: "btn ghost", text: "Cancel" });
+  no.addEventListener("click", () => { S.confirming = false; paintOthers(others); });
+  yes.addEventListener("click", async () => {
+    yes.disabled = no.disabled = true;
+    try {
+      const r = await api("/api/auth/sessions/sign-out-others", { method: "POST" });
+      S.confirming = false;
+      sessMsg(`Signed out of ${r.ended} other ${r.ended === 1 ? "session" : "sessions"}.`);
+      await loadSessions();
+      $("sessclose").focus();  // the button that was clicked is gone: keep the keyboard inside the sheet
+    } catch (e) { yes.disabled = no.disabled = false; if (e.status === 401) showLogin(SIGNED_OUT_IDLE, true); else sessMsg(`That didn't work. ${e.message}`, true); }
+  });
+  const box2 = el("div", { class: "sconfirm", role: "group", "aria-label": "Confirm signing out everywhere else" },
+    el("span", { text: `Sign out of ${others} other ${others === 1 ? "session" : "sessions"}? Those browsers will need to sign in again.` }), yes, no);
+  box2.addEventListener("keydown", (e) => { if (e.key === "Escape") { e.preventDefault(); e.stopPropagation(); no.click(); } });
+  box.replaceChildren(box2);
+}
+async function endSession(s, btn) {
+  btn.disabled = true; btn.textContent = "Signing out...";
+  try {
+    const r = await api(`/api/auth/sessions/${encodeURIComponent(s.id)}`, { method: "DELETE" });
+    if (r && r.signed_out) { showLogin("You signed out on this device.", true); return; }
+    sessMsg(`Signed out ${s.browser || "that session"}.`);
+  } catch (e) {
+    if (e.status === 401) { showLogin(SIGNED_OUT_IDLE, true); return; }
+    if (e.status !== 404) { btn.disabled = false; btn.textContent = "Sign out"; sessMsg(`That didn't work. ${e.message}`, true); return; }
+    sessMsg("That session had already ended.");
+  }
+  const row = btn.closest(".srow");
+  if (row && !reducedMotion()) { row.classList.add("leaving"); await sleep(200); }
+  S.data.sessions = S.data.sessions.filter((x) => x.id !== s.id);
+  renderSessions();
+  // the row (and its button) is gone: focus the next session's button, or the close button
+  const next = $("sesslist").querySelector(".srow:not(.cur) .btn");
+  (next || $("sessclose")).focus();
+}
+function openSessions() {
+  S.opener = document.activeElement && document.activeElement !== document.body ? document.activeElement : $("userchip");
+  S.confirming = false; sessMsg("");
+  $("sessmodal").hidden = false;
+  document.body.style.overflow = "hidden";
+  $("sessclose").focus();
+  loadSessions();
+}
+function closeSessions(refocus = true) {
+  if ($("sessmodal").hidden) return;
+  $("sessmodal").hidden = true;
+  document.body.style.overflow = "";
+  S.data = null;
+  if (refocus) { const back = S.opener && document.contains(S.opener) && !S.opener.closest("[hidden]") ? S.opener : $("userchip"); back.focus(); }
+}
+$("sessclose").addEventListener("click", () => closeSessions());
+// Escape closes the sheet even if focus has slipped outside it (for example to the page body)
+document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("sessmodal").hidden && !$("sessmodal").contains(e.target)) { e.preventDefault(); closeSessions(); } });
+$("sessscrim").addEventListener("click", () => closeSessions());
+$("sessmodal").addEventListener("keydown", (e) => {
+  if (e.key === "Escape") { e.preventDefault(); e.stopPropagation(); closeSessions(); return; }
+  if (e.key !== "Tab") return;
+  // keep the keyboard inside the sheet while it is open
+  const f = [...$("sesssheet").querySelectorAll('button, a[href], input, [tabindex]:not([tabindex="-1"])')].filter((x) => !x.disabled && x.offsetParent !== null);
+  if (!f.length) return;
+  const first = f[0], last = f[f.length - 1];
+  if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+  else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
 });
 async function boot() {
   updateSend(); renderEmpty();

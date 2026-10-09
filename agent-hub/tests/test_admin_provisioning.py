@@ -98,7 +98,7 @@ def test_deleting_a_company_keeps_its_data_by_default(staffed, fakes):  # noqa: 
 def test_deleting_with_the_data_removes_exactly_the_confirmed_workspaces(staffed, fakes):  # noqa: F811
     created = add_company(staffed, provision=True).json()["created"]
     confirm = [f"deals:{created['deals']}", f"rfp:{created['rfp']}"]
-    response = staffed.post("/api/admin/companies/globex/delete", json={"delete_data": True, "confirm": confirm})
+    response = staffed.post("/api/admin/companies/globex/delete", json={"delete_data": True, "confirm": confirm, "password": PASSWORD})
     assert response.status_code == 200 and sorted(response.json()["deleted"]) == sorted(confirm)
     assert created["deals"] not in fakes.deal.workspace_ids() and created["rfp"] not in fakes.rfp.workspace_ids()
     assert audit_actions(staffed).count("workspace.delete") == 2
@@ -107,7 +107,7 @@ def test_deleting_with_the_data_removes_exactly_the_confirmed_workspaces(staffed
 def test_a_stale_or_missing_confirmation_deletes_nothing(staffed, fakes):  # noqa: F811
     created = add_company(staffed, provision=True).json()["created"]
     for confirm in ([], [f"deals:{created['deals']}"], [f"deals:{created['deals']}", f"rfp:{created['rfp']}", "deals:ws-other"]):
-        r = staffed.post("/api/admin/companies/globex/delete", json={"delete_data": True, "confirm": confirm})
+        r = staffed.post("/api/admin/companies/globex/delete", json={"delete_data": True, "confirm": confirm, "password": PASSWORD})
         assert r.status_code == 409 and r.json()["code"] == "confirm_mismatch"
     assert company(staffed, "Globex") and fakes.deal.removed == [] and fakes.rfp.removed == []
 
@@ -127,7 +127,7 @@ def test_a_workspace_another_company_uses_or_that_is_open_in_an_agent_is_kept_an
     plan = staffed.get("/api/admin/companies/globex/deletion-plan").json()["workspaces"]
     confirm = sorted(w["key"] for w in plan if w["deletable"])
     assert confirm == [f"rfp:{created['rfp']}"]
-    r = staffed.post("/api/admin/companies/globex/delete", json={"delete_data": True, "confirm": confirm}).json()
+    r = staffed.post("/api/admin/companies/globex/delete", json={"delete_data": True, "confirm": confirm, "password": PASSWORD}).json()
     assert r["deleted"] == [f"rfp:{created['rfp']}"]
     reasons = {k["key"]: k["reason"] for k in r["kept"]}
     assert "currently has open" in reasons["deals:ws-demo"] and "also uses it" in reasons[f"deals:{created['deals']}"]
@@ -182,3 +182,19 @@ def test_providing_workspaces_to_an_existing_company_is_all_or_nothing_and_admin
     assert r.status_code == 502 and "Nothing was created" in r.json()["detail"]
     assert fakes.deal.extra == [] and company(staffed, "Globex")["workspaces"] == {"deals": [], "rfp": []}
     assert staffed.post("/api/admin/companies/nobody/provision").status_code == 404
+
+
+def test_deleting_data_needs_the_administrators_own_password(staffed, fakes):  # noqa: F811
+    created = add_company(staffed, provision=True).json()["created"]
+    confirm = [f"deals:{created['deals']}", f"rfp:{created['rfp']}"]
+    for password in (None, "", "not my password"):
+        body = {"delete_data": True, "confirm": confirm, **({"password": password} if password is not None else {})}
+        r = staffed.post("/api/admin/companies/globex/delete", json=body)
+        assert r.status_code == 403 and r.json()["code"] == "password_required"
+    assert company(staffed, "Globex") and fakes.deal.removed == [] and fakes.rfp.removed == []
+    assert audit_actions(staffed).count("auth.reauth_failed") == 3
+
+
+def test_deleting_a_company_but_keeping_its_data_needs_no_password(staffed, fakes):  # noqa: F811
+    add_company(staffed, provision=True)
+    assert staffed.post("/api/admin/companies/globex/delete", json={"delete_data": False}).status_code == 200
