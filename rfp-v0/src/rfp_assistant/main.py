@@ -12,7 +12,7 @@ from functools import lru_cache
 from dotenv import dotenv_values
 from fastapi import Depends, FastAPI, Request
 from fastapi.exceptions import RequestValidationError
-from fastapi.responses import FileResponse, JSONResponse
+from fastapi.responses import FileResponse, JSONResponse, Response
 from hindsight_client import Hindsight
 from pydantic import BaseModel
 from starlette.exceptions import HTTPException as StarletteHTTPException
@@ -28,6 +28,7 @@ from .providers.model_choice import (
 from .parsing.parser import ParseError
 from .errors import PipelineError
 from .api.v1.router import router as v1_router
+from . import pagepolicy
 from .api.v1.context import build_context
 
 ENV_FILE = ROOT / ".env"
@@ -150,7 +151,7 @@ async def security_headers(request: Request, call_next):  # noqa: ANN001, ANN201
     response.headers.setdefault("X-Content-Type-Options", "nosniff")
     response.headers.setdefault("X-Frame-Options", "DENY")
     response.headers.setdefault("Referrer-Policy", "no-referrer")
-    response.headers.setdefault("Permissions-Policy", "camera=(), microphone=(), geolocation=()")
+    response.headers.setdefault("Permissions-Policy", pagepolicy.PERMISSIONS_POLICY)
     if request.url.path.startswith("/v1/"):
         response.headers.setdefault("Cache-Control", "no-store")
     return response
@@ -208,7 +209,12 @@ async def _request_error(_: Request, exc: RequestValidationError) -> JSONRespons
 
 @app.get("/", include_in_schema=False)
 async def index() -> FileResponse:
-    return FileResponse(ROOT / "frontend" / "app.html")
+    return pagepolicy.page(ROOT / "frontend" / "app.html")
+
+@app.get("/robots.txt", include_in_schema=False)
+async def robots() -> Response:
+    """A private work tool: ask every search engine not to index any of it."""
+    return Response("User-agent: *\nDisallow: /\n", media_type="text/plain")
 
 
 @app.get("/health")

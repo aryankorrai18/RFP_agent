@@ -17,8 +17,9 @@ AGENTS = load_registry()
 
 @pytest.fixture(autouse=True)
 def _isolated_data(tmp_path, monkeypatch):
-    """No test may touch the real data/hub.db or data/uploads."""
+    """No test may touch the real data/hub.db or data/uploads. Rate limits are off unless a test turns them on."""
     monkeypatch.setattr(store_module, "DATA_DIR", tmp_path / "default-data")
+    monkeypatch.setenv("HUB_RATE_LIMIT", "off")
 
 
 @pytest.fixture

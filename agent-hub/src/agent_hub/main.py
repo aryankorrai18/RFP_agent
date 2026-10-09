@@ -25,6 +25,7 @@ from .engine import Engine
 from .llm import apply_env_file, get_llm
 from .planner import Planner
 from .router import Routing, load_registry, route
+from . import pagepolicy, ratelimit
 from .store import MAX_UPLOAD_BYTES, Store
 
 ROOT = Path(__file__).resolve().parent.parent.parent
@@ -65,7 +66,8 @@ _status_cache: tuple[float, dict[str, str]] = (0.0, {})
 
 
 UNSAFE_METHODS = {"POST", "PUT", "PATCH", "DELETE"}
-PAGE_HEADERS = {"X-Content-Type-Options": "nosniff", "X-Frame-Options": "DENY", "Referrer-Policy": "no-referrer"}
+PAGE_HEADERS = {"X-Content-Type-Options": "nosniff", "X-Frame-Options": "DENY", "Referrer-Policy": "no-referrer",
+                "Permissions-Policy": pagepolicy.PERMISSIONS_POLICY}
 
 
 def _wants_page(request: Request) -> bool:
@@ -77,7 +79,7 @@ def _wants_page(request: Request) -> bool:
 @app.exception_handler(StarletteHTTPException)
 async def page_or_json_errors(request: Request, exc: StarletteHTTPException):  # noqa: ANN201
     if exc.status_code == 404 and _wants_page(request):
-        return FileResponse(ROOT / "frontend" / "404.html", status_code=404, headers=PAGE_HEADERS)
+        return pagepolicy.page(ROOT / "frontend" / "404.html", status_code=404, headers=PAGE_HEADERS)
     return await http_exception_handler(request, exc)  # the API keeps its JSON {"detail": ...}
 
 
@@ -85,7 +87,7 @@ async def page_or_json_errors(request: Request, exc: StarletteHTTPException):  #
 async def crash(request: Request, exc: Exception):  # noqa: ANN201
     # Runs outside the middleware, so the security headers are set here by hand.
     if _wants_page(request):
-        return FileResponse(ROOT / "frontend" / "500.html", status_code=500, headers=PAGE_HEADERS)
+        return pagepolicy.page(ROOT / "frontend" / "500.html", status_code=500, headers=PAGE_HEADERS)
     return JSONResponse({"detail": "Something went wrong on the hub."}, status_code=500, headers=PAGE_HEADERS)
 
 
@@ -97,10 +99,23 @@ async def security_headers(request: Request, call_next):  # noqa: ANN001, ANN201
     if request.method in UNSAFE_METHODS and origin and request.url.path.startswith("/api/"):
         if urlsplit(origin).netloc != request.headers.get("host", ""):
             return JSONResponse({"detail": "That request came from another site."}, status_code=403)
+    if ratelimit.enabled():
+        rule = ratelimit.rule_for(request.method, request.url.path)
+        if rule is not None:
+            limiter = getattr(request.app.state, "rate_limiter", None)
+            if limiter is None:
+                limiter = request.app.state.rate_limiter = ratelimit.RateLimiter()
+            wait = limiter.hit(rule, ratelimit.who(request.cookies.get(SESSION_COOKIE),
+                                                     request.client.host if request.client else "", rule))
+            if wait is not None:
+                return JSONResponse(
+                    {"detail": f"You're going a bit fast ({rule.name}). Try again in {wait} seconds."}, status_code=429,
+                    headers={"Retry-After": str(wait), **PAGE_HEADERS, "Cache-Control": "no-store"})
     response = await call_next(request)
     response.headers.setdefault("X-Content-Type-Options", "nosniff")
     response.headers.setdefault("X-Frame-Options", "DENY")
     response.headers.setdefault("Referrer-Policy", "no-referrer")
+    response.headers.setdefault("Permissions-Policy", pagepolicy.PERMISSIONS_POLICY)
     if request.url.path.startswith("/api/"):
         response.headers.setdefault("Cache-Control", "no-store")
     return response
@@ -175,13 +190,33 @@ class ChatIn(BaseModel):
 
 @app.get("/", include_in_schema=False)
 async def index() -> FileResponse:
-    return FileResponse(ROOT / "frontend" / "app.html")
+    return pagepolicy.page(ROOT / "frontend" / "app.html")
+
+
+@app.get("/privacy", include_in_schema=False)
+async def privacy_page() -> FileResponse:
+    return pagepolicy.page(ROOT / "frontend" / "privacy.html")
+
+
+@app.get("/favicon.svg", include_in_schema=False)
+async def favicon() -> FileResponse:
+    return FileResponse(ROOT / "frontend" / "favicon.svg", media_type="image/svg+xml", headers={"Cache-Control": "public, max-age=86400"})
+
+
+@app.get("/favicon.ico", include_in_schema=False)
+async def favicon_ico() -> Response:
+    return Response(status_code=308, headers={"Location": "/favicon.svg"})
+
+@app.get("/robots.txt", include_in_schema=False)
+async def robots() -> Response:
+    """A private work tool: ask every search engine not to index any of it."""
+    return Response("User-agent: *\nDisallow: /\n", media_type="text/plain")
 
 
 @app.get("/admin", include_in_schema=False)
 async def admin_page() -> FileResponse:
     """The page itself is public (like the chat page); everything it shows comes from /api/admin, which needs an administrator."""
-    return FileResponse(ROOT / "frontend" / "admin.html")
+    return pagepolicy.page(ROOT / "frontend" / "admin.html")
 
 
 app.include_router(admin_router)
