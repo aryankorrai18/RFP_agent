@@ -24,9 +24,9 @@ def guard(request: Request) -> User | None:
     auth = get_auth(request)
     if auth is None or auth.mode() != "on":
         return None
-    user = auth.user_for_token(request.cookies.get(SESSION_COOKIE), touch=not is_background(request))
-    if user is None:
-        raise HTTPException(401, "Sign in to continue.")
+    user, why = auth.check_token(request.cookies.get(SESSION_COOKIE), touch=not is_background(request))
+    if user is None:  # the page reads why, to say "after a while without activity" only when that's what happened
+        raise HTTPException(401, "Sign in to continue.", headers={"X-Session-End": why or "none"})
     return user
 
 

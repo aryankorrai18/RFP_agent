@@ -431,6 +431,14 @@ function retryAfterOf(r) {
 }
 function failure(message, status, retryAfter, code) { const e = new Error(message); e.status = status; e.retryAfter = retryAfter; e.code = code; return e; }
 const SIGNED_OUT_IDLE = "You were signed out after a while without activity. Sign in again.";
+const SIGNED_OUT_NOTES = {
+  idle: SIGNED_OUT_IDLE,
+  expired: "Your session reached its time limit. Sign in again.",
+  ended: "You were signed out on this device (from another device, by an administrator, or after a password change). Sign in again.",
+  none: "Sign in to continue.",
+};
+let signedOutNote = SIGNED_OUT_IDLE;
+const noteFor = (r) => SIGNED_OUT_NOTES[(r.headers.get("x-session-end") || "").toLowerCase()] || SIGNED_OUT_IDLE;
 let authLost = false;  // the session ended: the sign-in card is showing and nothing else may draw over it
 async function call(method, path, body) {
   netStart();
@@ -440,7 +448,7 @@ async function call(method, path, body) {
       r = await fetch(path, { method, headers: body ? { "content-type": "application/json" } : undefined, body: body ? JSON.stringify(body) : undefined });
     } catch { throw failure("Could not reach the hub. Check that it is running.", 0, null); }
     const data = await r.json().catch(() => ({}));
-    if (r.status === 401) { renderSignIn(SIGNED_OUT_IDLE); throw failure("Please sign in.", 401, null); }
+    if (r.status === 401) { signedOutNote = noteFor(r); renderSignIn(signedOutNote); throw failure("Please sign in.", 401, null); }
     if (!r.ok) {
       const msg = typeof data.detail === "string" ? data.detail : Array.isArray(data.detail) && data.detail[0] ? data.detail[0].msg : "";
       throw failure(msg || BUSY_WORDS[r.status] || "That did not work.", r.status, retryAfterOf(r), data.code);
@@ -876,7 +884,7 @@ function sessionsPanel(u) {
       const now = Date.now() - (Date.parse(s.last_seen || "") || 0) < 120000;
       return el("div", { class: "sess-row" },
         el("span", { class: "sess-dev", "aria-hidden": "true" }, icon(/iphone|ipad|android|mobile|phone/i.test(s.browser || "") ? ICONS.phone : ICONS.laptop)),
-        el("div", { class: "sess-main" }, el("strong", { text: s.browser || "Unknown browser" }),
+        el("div", { class: "sess-main" }, el("strong", { text: s.browser || "Unknown browser" }, ...(s.current ? [" ", el("span", { class: "badge", text: "This browser" })] : [])),
           el("span", { class: "dim small", text: [s.address, s.signed_in ? `signed in ${agoShort(s.signed_in)}` : ""].filter(Boolean).join(" · ") })),
         el("span", { class: `sess-act${now ? " now" : ""}`, text: now ? "Active now" : `Last active ${agoShort(s.last_seen)}` }));
     }) : [el("p", { class: "hint", text: `${name} isn't signed in anywhere right now.` })]));

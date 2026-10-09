@@ -779,7 +779,7 @@ async function api(path, options, quiet) {
     let r;
     try { r = await fetch(path, options); } catch { throw new ApiError("Could not reach the hub. Check that it is running.", 0, null); }
     const body = await r.json().catch(() => ({}));
-    if (r.status === 401 && !path.startsWith("/api/auth/")) { showLogin(SIGNED_OUT_IDLE, true); throw new ApiError("Please sign in.", 401, null); }
+    if (r.status === 401 && !path.startsWith("/api/auth/")) { signedOutNote = noteFor(r); showLogin(signedOutNote, true); throw new ApiError("Please sign in.", 401, null); }
     if (!r.ok) {
       const d = body && body.detail;
       const msg = (body && body.error && body.error.message) || (typeof d === "string" ? d : Array.isArray(d) && d[0] && d[0].msg) || "";
@@ -1709,6 +1709,14 @@ function initials(text) {
   return ((words[0] || "?")[0] + (words.length > 1 ? words[words.length - 1][0] : "")).toUpperCase();
 }
 const SIGNED_OUT_IDLE = "You were signed out after a while without activity. Sign in again.";
+const SIGNED_OUT_NOTES = {
+  idle: SIGNED_OUT_IDLE,
+  expired: "Your session reached its time limit. Sign in again.",
+  ended: "You were signed out on this device (from another device, by an administrator, or after a password change). Sign in again.",
+  none: "Sign in to continue.",
+};
+let signedOutNote = SIGNED_OUT_IDLE;
+const noteFor = (r) => SIGNED_OUT_NOTES[(r.headers.get("x-session-end") || "").toLowerCase()] || SIGNED_OUT_IDLE;
 function paintUser(me) {
   const chip = $("userchip"), out = $("logout"), who = me && me.user, link = $("adminlink");
   chip.hidden = out.hidden = !who;
@@ -1799,7 +1807,7 @@ function limitsText(l) {
 }
 function sessMsg(text, bad) { const m = $("sessmsg"); m.textContent = text || ""; m.hidden = !text; m.classList.toggle("bad", !!bad); }
 function sessionsFailed(e) {
-  if (e.status === 401) { showLogin(SIGNED_OUT_IDLE, true); return; }
+  if (e.status === 401) { showLogin(signedOutNote, true); return; }
   sessMsg(`Couldn't load your sessions. ${e.message}`, true);
 }
 async function loadSessions() {
@@ -1850,7 +1858,7 @@ function paintOthers(others) {
       sessMsg(`Signed out of ${r.ended} other ${r.ended === 1 ? "session" : "sessions"}.`);
       await loadSessions();
       $("sessclose").focus();  // the button that was clicked is gone: keep the keyboard inside the sheet
-    } catch (e) { yes.disabled = no.disabled = false; if (e.status === 401) showLogin(SIGNED_OUT_IDLE, true); else sessMsg(`That didn't work. ${e.message}`, true); }
+    } catch (e) { yes.disabled = no.disabled = false; if (e.status === 401) showLogin(signedOutNote, true); else sessMsg(`That didn't work. ${e.message}`, true); }
   });
   const box2 = el("div", { class: "sconfirm", role: "group", "aria-label": "Confirm signing out everywhere else" },
     el("span", { text: `Sign out of ${others} other ${others === 1 ? "session" : "sessions"}? Those browsers will need to sign in again.` }), yes, no);
@@ -1864,7 +1872,7 @@ async function endSession(s, btn) {
     if (r && r.signed_out) { showLogin("You signed out on this device.", true); return; }
     sessMsg(`Signed out ${s.browser || "that session"}.`);
   } catch (e) {
-    if (e.status === 401) { showLogin(SIGNED_OUT_IDLE, true); return; }
+    if (e.status === 401) { showLogin(signedOutNote, true); return; }
     if (e.status !== 404) { btn.disabled = false; btn.textContent = "Sign out"; sessMsg(`That didn't work. ${e.message}`, true); return; }
     sessMsg("That session had already ended.");
   }

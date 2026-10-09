@@ -393,25 +393,31 @@ class Auth:
         """The person a session belongs to, or None when it has ended (lifetime reached, or unused for too long).
         `touch` counts this request as use; background polling passes False, so an open tab alone doesn't keep a
         session alive forever."""
+        return self.check_token(token, touch)[0]
+
+    def check_token(self, token: str | None, touch: bool = True) -> tuple[User | None, str | None]:
+        """The person, or None and why: "none" (no session sent), "idle" (unused too long), "expired" (past its
+        lifetime) or "ended" (signed out, ended from another device or by an administrator, or a password change)."""
         if not token or not self.store.exists():
-            return None
+            return None, "none"
         hashed = _token_hash(token)
         row = self.store.sql_one("SELECT s.user_id, s.expires_at, s.last_seen, u.role FROM sessions s JOIN users u ON u.id = s.user_id "
                                  "WHERE s.token_hash = ?", (hashed,))
         if row is None:
-            return None
+            return None, "ended"
         now = _now()
         idle = self.admin_idle if row["role"] == "admin" else self.idle
         last = row["last_seen"]
         if row["expires_at"] < _iso(now) or (last and last < _iso(now - idle)):
             self.store.sql_exec("DELETE FROM sessions WHERE token_hash = ?", (hashed,))
-            return None
+            return None, ("expired" if row["expires_at"] < _iso(now) else "idle")
         if touch and (not last or last < _iso(now - timedelta(seconds=60))):  # at most one write a minute per session
             self.store.sql_exec("UPDATE sessions SET last_seen = ? WHERE token_hash = ?", (_iso(now), hashed))
         self._lookups += 1
         if self._lookups % 500 == 0:
             self.cleanup_sessions()
-        return self._user(row["user_id"])
+        user = self._user(row["user_id"])
+        return user, (None if user else "ended")
 
     def cleanup_sessions(self) -> int:
         """Remove sessions past their lifetime or idle limit (otherwise they'd only go when presented again)."""

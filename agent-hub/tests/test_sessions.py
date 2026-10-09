@@ -159,8 +159,40 @@ def test_an_administrator_can_see_and_end_someones_sessions(web):  # noqa: F811
     assert sign_in(member).status_code == 200
     assert sign_in(web, "ops@hub.test").status_code == 200
     seen = web.get("/api/admin/users/dana@accenture.com/sessions").json()["sessions"]
-    assert len(seen) == 1 and "current" not in seen[0]
+    assert len(seen) == 1 and seen[0]["current"] is False  # only the administrator's own browser is marked
     assert web.post("/api/admin/users/dana@accenture.com/sessions/end").json() == {"ended": 1}
     assert member.get("/api/auth/sessions").status_code == 401
     assert member.post("/api/admin/users/ops@hub.test/sessions/end").status_code == 401
     assert any(e["action"] == "user.sessions_ended" for e in web.engine.auth.list_audit(20))
+
+
+def test_the_reason_a_session_cannot_be_used_is_reported(auth, clock):
+    assert auth.check_token(None) == (None, "none")
+    idle, _ = auth.login("dana@acme.com", PASSWORD)
+    clock.now += timedelta(hours=12, minutes=1)
+    assert auth.check_token(idle) == (None, "idle")
+    old, _ = auth.login("dana@acme.com", PASSWORD)
+    for _ in range(20):  # used every 11 hours until the 7-day (168-hour) lifetime runs out
+        clock.now += timedelta(hours=11)
+        user, why = auth.check_token(old)
+        if user is None:
+            break
+    assert why == "expired"
+    gone, _ = auth.login("dana@acme.com", PASSWORD)
+    auth.end_other_sessions(auth.user_id_for_email("dana@acme.com"), None)
+    assert auth.check_token(gone) == (None, "ended")
+
+
+def test_a_401_says_why_and_an_admin_sees_their_own_browser_marked(web):  # noqa: F811
+    web.engine.auth.create_first_admin("ops@hub.test", PASSWORD, "Ops")
+    assert web.get("/api/auth/sessions").headers["x-session-end"] == "none"
+    assert sign_in(web, "ops@hub.test").status_code == 200
+    mine = web.get("/api/admin/users/ops@hub.test/sessions").json()["sessions"]
+    assert [s["current"] for s in mine] == [True]
+    make_user(web)
+    member = second_browser(web)
+    assert sign_in(member).status_code == 200
+    theirs = web.get("/api/admin/users/dana@accenture.com/sessions").json()["sessions"]
+    assert [s["current"] for s in theirs] == [False]
+    web.post("/api/admin/users/dana@accenture.com/sessions/end")
+    assert member.get("/api/auth/sessions").headers["x-session-end"] == "ended"

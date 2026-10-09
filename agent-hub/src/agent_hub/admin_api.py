@@ -18,7 +18,7 @@ from pydantic import BaseModel, Field
 from . import provisioning
 from .auth import OPERATOR_ID, OPERATOR_NAME, AuthError, User
 from .clients import AgentDown, UpstreamError
-from .deps import get_auth, require_admin, set_session_cookie, setup_available
+from .deps import SESSION_COOKIE, get_auth, require_admin, set_session_cookie, setup_available
 
 router = APIRouter(prefix="/api/admin")
 
@@ -324,7 +324,8 @@ async def user_sessions(email: str, request: Request, admin: User = Depends(requ
     user_id = auth.user_id_for_email(email)
     if user_id is None:
         return JSONResponse({"detail": "No such person."}, status_code=404)
-    return JSONResponse({"sessions": [{k: v for k, v in s.items() if k != "current"} for s in auth.list_sessions(user_id)]})
+    # "current" is true only for the administrator's own browser, when they are looking at their own sessions
+    return JSONResponse({"sessions": auth.list_sessions(user_id, request.cookies.get(SESSION_COOKIE) if user_id == admin.id else None)})
 
 
 @router.post("/users/{email}/sessions/end")
