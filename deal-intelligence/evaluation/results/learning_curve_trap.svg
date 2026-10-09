@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 360" width="920" height="360" role="img" aria-label="Does it stop recommending the trap as closed deals accumulate?" font-family="system-ui, -apple-system, Segoe UI, Roboto, sans-serif">
+<rect width="920" height="360" rx="14" fill="#ffffff" stroke="#d8ddd8"/>
+<text x="24" y="34" font-size="18" font-weight="700" fill="#17201f">Does it stop recommending the trap as closed deals accumulate?</text>
+<text x="24" y="54" font-size="12.5" fill="#5a6866">Share of cases where the trap is among the top three plays (lower is better).</text>
+<line x1="56" y1="288.0" x2="896" y2="288.0" stroke="#e3e8e3"/>
+<text x="48" y="292.0" font-size="11" text-anchor="end" fill="#5a6866">0%</text>
+<line x1="56" y1="235.5" x2="896" y2="235.5" stroke="#e3e8e3"/>
+<text x="48" y="239.5" font-size="11" text-anchor="end" fill="#5a6866">25%</text>
+<line x1="56" y1="183.0" x2="896" y2="183.0" stroke="#e3e8e3"/>
+<text x="48" y="187.0" font-size="11" text-anchor="end" fill="#5a6866">50%</text>
+<line x1="56" y1="130.5" x2="896" y2="130.5" stroke="#e3e8e3"/>
+<text x="48" y="134.5" font-size="11" text-anchor="end" fill="#5a6866">75%</text>
+<line x1="56" y1="78.0" x2="896" y2="78.0" stroke="#e3e8e3"/>
+<text x="48" y="82.0" font-size="11" text-anchor="end" fill="#5a6866">100%</text>
+<text x="56.0" y="306" font-size="11.5" text-anchor="middle" fill="#17201f">10</text>
+<text x="224.0" y="306" font-size="11.5" text-anchor="middle" fill="#17201f">20</text>
+<text x="560.0" y="306" font-size="11.5" text-anchor="middle" fill="#17201f">40</text>
+<text x="896.0" y="306" font-size="11.5" text-anchor="middle" fill="#17201f">60</text>
+<text x="476" y="326" font-size="11.5" text-anchor="middle" fill="#5a6866">closed deals in memory</text>
+<text x="14" y="183" font-size="11" fill="#5a6866" transform="rotate(-90 14 183)" text-anchor="middle">share of deals with the trap recommended</text>
+<polygon points="56.0,282.8 224.0,282.8 560.0,282.8 896.0,282.8 896.0,288.0 560.0,288.0 224.0,288.0 56.0,288.0" fill="#64748b" opacity="0.13"/>
+<polyline fill="none" stroke="#64748b" stroke-width="2.4" points="56.0,288.0 224.0,288.0 560.0,288.0 896.0,288.0"/>
+<circle cx="56.0" cy="288.0" r="3.6" fill="#64748b"><title>Popularity (situation-blind) at 10: 0% (0% to 2%)</title></circle>
+<circle cx="224.0" cy="288.0" r="3.6" fill="#64748b"><title>Popularity (situation-blind) at 20: 0% (0% to 2%)</title></circle>
+<circle cx="560.0" cy="288.0" r="3.6" fill="#64748b"><title>Popularity (situation-blind) at 40: 0% (0% to 2%)</title></circle>
+<circle cx="896.0" cy="288.0" r="3.6" fill="#64748b"><title>Popularity (situation-blind) at 60: 0% (0% to 2%)</title></circle>
+<polygon points="56.0,194.3 224.0,152.9 560.0,108.2 896.0,126.8 896.0,157.3 560.0,134.9 224.0,185.8 56.0,226.3" fill="#d97706" opacity="0.13"/>
+<polyline fill="none" stroke="#d97706" stroke-width="2.4" points="56.0,211.0 224.0,169.0 560.0,120.0 896.0,141.0"/>
+<circle cx="56.0" cy="211.0" r="3.6" fill="#d97706"><title>Plain retrieval (outcome-blind) at 10: 37% (29% to 45%)</title></circle>
+<circle cx="224.0" cy="169.0" r="3.6" fill="#d97706"><title>Plain retrieval (outcome-blind) at 20: 57% (49% to 64%)</title></circle>
+<circle cx="560.0" cy="120.0" r="3.6" fill="#d97706"><title>Plain retrieval (outcome-blind) at 40: 80% (73% to 86%)</title></circle>
+<circle cx="896.0" cy="141.0" r="3.6" fill="#d97706"><title>Plain retrieval (outcome-blind) at 60: 70% (62% to 77%)</title></circle>
+<polygon points="56.0,272.1 224.0,263.1 560.0,231.1 896.0,223.5 896.0,251.7 560.0,257.8 224.0,280.3 56.0,285.0" fill="#0f766e" opacity="0.13"/>
+<polyline fill="none" stroke="#0f766e" stroke-width="2.4" points="56.0,281.0 224.0,274.0 560.0,246.0 896.0,239.0"/>
+<circle cx="56.0" cy="281.0" r="3.6" fill="#0f766e"><title>Similar winners only at 10: 3% (1% to 8%)</title></circle>
+<circle cx="224.0" cy="274.0" r="3.6" fill="#0f766e"><title>Similar winners only at 20: 7% (4% to 12%)</title></circle>
+<circle cx="560.0" cy="246.0" r="3.6" fill="#0f766e"><title>Similar winners only at 40: 20% (14% to 27%)</title></circle>
+<circle cx="896.0" cy="239.0" r="3.6" fill="#0f766e"><title>Similar winners only at 60: 23% (17% to 31%)</title></circle>
+<polygon points="56.0,272.1 224.0,263.1 560.0,237.2 896.0,241.9 896.0,266.1 560.0,262.6 224.0,280.3 56.0,285.0" fill="#2563eb" opacity="0.13"/>
+<polyline fill="none" stroke="#2563eb" stroke-width="2.4" points="56.0,281.0 224.0,274.0 560.0,251.6 896.0,255.8"/>
+<circle cx="56.0" cy="281.0" r="3.6" fill="#2563eb"><title>Deal Intelligence at 10: 3% (1% to 8%)</title></circle>
+<circle cx="224.0" cy="274.0" r="3.6" fill="#2563eb"><title>Deal Intelligence at 20: 7% (4% to 12%)</title></circle>
+<circle cx="560.0" cy="251.6" r="3.6" fill="#2563eb"><title>Deal Intelligence at 40: 17% (12% to 24%)</title></circle>
+<circle cx="896.0" cy="255.8" r="3.6" fill="#2563eb"><title>Deal Intelligence at 60: 15% (10% to 22%)</title></circle>
+<rect x="56" y="334" width="12" height="12" rx="3" fill="#64748b"/>
+<text x="74" y="344" font-size="12" fill="#17201f">Popularity (situation-blind)</text>
+<rect x="285.6" y="334" width="12" height="12" rx="3" fill="#d97706"/>
+<text x="303.6" y="344" font-size="12" fill="#17201f">Plain retrieval (outcome-blind)</text>
+<rect x="536.8000000000001" y="334" width="12" height="12" rx="3" fill="#0f766e"/>
+<text x="554.8000000000001" y="344" font-size="12" fill="#17201f">Similar winners only</text>
+<rect x="708.8000000000001" y="334" width="12" height="12" rx="3" fill="#2563eb"/>
+<text x="726.8000000000001" y="344" font-size="12" fill="#17201f">Deal Intelligence</text>
+</svg>

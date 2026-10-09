@@ -1,0 +1,2724 @@
+{
+  "vendor": "Halcyon Software",
+  "product": "Halcyon Pipeline",
+  "disclosure": "All companies, people, emails and numbers are synthetic demonstration data. Halcyon Software, Halcyon Pipeline and every customer, competitor and person named here are fictional; any resemblance to a real organisation or individual is a coincidence. Amounts are in US dollars.",
+  "plays": [
+    {
+      "code": "PLAY-01",
+      "name": "Security architecture review in week 1",
+      "category": "security",
+      "description": "Book a live architecture session with the buyer's security team in the first week of evaluation, led by a Halcyon solutions engineer. Walk through tenant isolation, encryption, data location and the SOC 2 report so the security review starts early instead of becoming the last gate before signature.",
+      "addresses": [
+        "sso",
+        "security_review",
+        "data_residency"
+      ]
+    },
+    {
+      "code": "PLAY-02",
+      "name": "Executive sponsor call",
+      "category": "stakeholder",
+      "description": "Put a Halcyon executive on a call with the buyer's economic buyer to confirm business priority, timeline and budget authority. Use it when the day-to-day champion cannot move the deal alone or when the decision-maker has gone quiet.",
+      "addresses": [
+        "timeline"
+      ]
+    },
+    {
+      "code": "PLAY-03",
+      "name": "ROI workbook with the buyer's own numbers",
+      "category": "proof",
+      "description": "Build a short workbook with the buyer's analyst, using their own planning hours, forecast error and inventory or cash figures, so the champion has a business case they helped write and can defend to finance.",
+      "addresses": [
+        "pricing"
+      ]
+    },
+    {
+      "code": "PLAY-04",
+      "name": "Customer reference call",
+      "category": "proof",
+      "description": "Arrange a call between the buyer's day-to-day users and a similar Halcyon customer, matched on segment and systems. Best for settling doubts about gaps in the product and about the quality of support after the sale.",
+      "addresses": [
+        "feature_gap",
+        "support"
+      ]
+    },
+    {
+      "code": "PLAY-05",
+      "name": "Discount offer",
+      "category": "commercial",
+      "description": "Offer a price reduction, usually 8 to 15 percent, in exchange for a longer term or a faster signature. Settles price sensitivity but does nothing for security, product or sponsor problems.",
+      "addresses": [
+        "pricing"
+      ]
+    },
+    {
+      "code": "PLAY-06",
+      "name": "Technical proof of concept",
+      "category": "process",
+      "description": "Run a two-week proof of concept on a read-only copy of the buyer's data, with a named engineer on each side and success criteria agreed in writing before it starts.",
+      "addresses": [
+        "integration",
+        "feature_gap"
+      ]
+    },
+    {
+      "code": "PLAY-07",
+      "name": "Legal fast-track with pre-approved terms",
+      "category": "process",
+      "description": "Send Halcyon's pre-approved fallback clauses (liability super-cap, termination for convenience, governing law options) with the first draft so the buyer's counsel can turn the contract in days rather than weeks.",
+      "addresses": [
+        "legal_terms",
+        "timeline"
+      ]
+    },
+    {
+      "code": "PLAY-08",
+      "name": "Multi-thread to a second champion",
+      "category": "stakeholder",
+      "description": "Find and win a second advocate in a different function or reporting line, such as a senior user of the pilot dashboards, so the deal survives if the first champion goes quiet, travels or leaves.",
+      "addresses": []
+    },
+    {
+      "code": "PLAY-09",
+      "name": "Implementation plan with named owners",
+      "category": "process",
+      "description": "Share a dated week-by-week implementation plan that names an owner on the buyer's side and on Halcyon's side for every milestone, anchored on the go-live date the buyer needs.",
+      "addresses": [
+        "timeline",
+        "support"
+      ]
+    },
+    {
+      "code": "PLAY-10",
+      "name": "SSO walkthrough with their IdP admin",
+      "category": "security",
+      "description": "Schedule a 45-minute working session with the buyer's identity-provider administrator (Okta, Entra ID or Ping) and configure SAML against their sandbox live, including group-to-role mapping, so single sign-on is demonstrated rather than promised.",
+      "addresses": [
+        "sso"
+      ]
+    }
+  ],
+  "deals": [
+    {
+      "account": "Fennick Payments",
+      "name": "Fennick Payments - Halcyon Pipeline",
+      "industry": "fintech",
+      "segment": "mid_market",
+      "amount": 150000,
+      "owner": "Priya Nair",
+      "opened_on": "2023-12-11",
+      "closed_on": "2024-03-27",
+      "result": "won",
+      "loss_reason": null,
+      "stakeholders": [
+        {
+          "name": "Dana Okafor",
+          "title": "Head of Revenue Operations",
+          "stance": "champion",
+          "engaged": true,
+          "economic_buyer": false
+        },
+        {
+          "name": "Tomas Lindqvist",
+          "title": "CFO",
+          "stance": "supporter",
+          "engaged": true,
+          "economic_buyer": true
+        },
+        {
+          "name": "Ravi Deshmukh",
+          "title": "IT Security Lead",
+          "stance": "neutral",
+          "engaged": true,
+          "economic_buyer": false
+        }
+      ],
+      "interactions": [
+        {
+          "key": "fen-1",
+          "kind": "call_note",
+          "date": "2023-12-14",
+          "author": "Priya Nair",
+          "subject": "Discovery call with RevOps and the CFO",
+          "text": "Discovery call with Dana Okafor (Head of RevOps) and Tomas Lindqvist (CFO). Fennick closes the books on a seven-day cycle and rebuilds the revenue forecast by hand in spreadsheets every month; Dana estimates her team loses about four days per cycle. They want one view of bookings, billings and churn. Tomas reports forecast accuracy to the board, currently within 12 percent, and wants single digits. Brightline is also in the running and has already sent them a deck. Next step: a demo on their own data model next week. Dana will bring their IT security lead, because anything that touches Salesforce and NetSuite needs his sign-off."
+        },
+        {
+          "key": "fen-2",
+          "kind": "email",
+          "date": "2024-01-16",
+          "author": "Ravi Deshmukh",
+          "subject": "Security requirements before we go further",
+          "text": "Priya, our InfoSec requires SAML SSO with Okta before any vendor gets access to production data. Can you confirm that Halcyon Pipeline supports SAML 2.0 with Okta, and send over your SOC 2 Type II report? We also need to know where customer data is stored and whether your support staff can see it. If you can walk us through the architecture this week, we can keep the January timeline for the pilot. Dana tells me the demo went well, so I would like to get this out of the way quickly."
+        },
+        {
+          "key": "fen-3",
+          "kind": "meeting",
+          "date": "2024-01-24",
+          "author": "Priya Nair",
+          "subject": "Security architecture review and Okta SSO walkthrough",
+          "text": "Security architecture review held with Ravi and two of his engineers, followed by a 45 minute SSO working session with their Okta admin, Mei Tan. We configured SAML against their Okta sandbox live and tested group-to-role mapping for the Finance and RevOps groups. Ravi confirmed in the room that SSO is no longer a blocker and said he would tell Tomas himself. Mei asked for our penetration-test summary; I promised to send it by Friday. Outcome: security sign-off expected next week, pilot can start in February."
+        },
+        {
+          "key": "fen-4",
+          "kind": "email",
+          "date": "2024-03-05",
+          "author": "Priya Nair",
+          "subject": "Pricing and next steps",
+          "text": "Tomas, thanks for being candid about price. Brightline quoted 18 percent lower on the three-year term, but their forecasting module is sold separately and the NetSuite integration is a paid services engagement. Attached is a side-by-side with everything included at $150,000 a year. After our CEO's call with you on the 12th, I would rather hold the price and add two implementation workshops at no charge than cut it. Dana confirms the team prefers our NetSuite connector. If this works for you, I can have paper to you by Friday."
+        }
+      ],
+      "signals": {
+        "objections": [
+          {
+            "type": "sso",
+            "text": "InfoSec requires SAML SSO with Okta before any vendor touches production data.",
+            "status": "addressed",
+            "first_seen_on": "2024-01-16",
+            "evidence": [
+              "fen-2",
+              "fen-3"
+            ]
+          },
+          {
+            "type": "pricing",
+            "text": "Brightline quoted 18 percent lower on a three-year term.",
+            "status": "addressed",
+            "first_seen_on": "2024-03-05",
+            "evidence": [
+              "fen-4"
+            ]
+          }
+        ],
+        "competitors": [
+          "Brightline"
+        ],
+        "pricing": {
+          "discount_requested": true,
+          "notes": "Brightline quoted 18 percent lower; Halcyon held list price and added two implementation workshops at no charge."
+        },
+        "promises": [
+          {
+            "text": "Send the penetration-test summary to the Okta admin by Friday.",
+            "owner": "Priya Nair",
+            "due_on": "2024-01-26",
+            "status": "kept",
+            "evidence": [
+              "fen-3"
+            ]
+          }
+        ],
+        "plays_used": [
+          "PLAY-01",
+          "PLAY-10",
+          "PLAY-02"
+        ]
+      }
+    },
+    {
+      "account": "Brackenridge Health System",
+      "name": "Brackenridge Health System - Halcyon Pipeline",
+      "industry": "healthcare",
+      "segment": "enterprise",
+      "amount": 480000,
+      "owner": "Elena Rossi",
+      "opened_on": "2024-01-08",
+      "closed_on": "2024-06-14",
+      "result": "won",
+      "loss_reason": null,
+      "stakeholders": [
+        {
+          "name": "Segun Adeyemi",
+          "title": "Revenue Cycle Analytics Manager",
+          "stance": "champion",
+          "engaged": true,
+          "economic_buyer": false
+        },
+        {
+          "name": "Anita Joshi",
+          "title": "Director of Compliance",
+          "stance": "supporter",
+          "engaged": true,
+          "economic_buyer": false
+        },
+        {
+          "name": "Paul Nwosu",
+          "title": "CFO",
+          "stance": "supporter",
+          "engaged": true,
+          "economic_buyer": true
+        },
+        {
+          "name": "Helen Marchetti",
+          "title": "Chief Information Officer",
+          "stance": "neutral",
+          "engaged": true,
+          "economic_buyer": false
+        }
+      ],
+      "interactions": [
+        {
+          "key": "bra-1",
+          "kind": "call_note",
+          "date": "2024-01-17",
+          "author": "Elena Rossi",
+          "subject": "Discovery call, revenue cycle forecasting",
+          "text": "Discovery with Segun Adeyemi and Anita Joshi. Brackenridge runs nine hospitals and forecasts net patient revenue and denials in a patchwork of Excel files. Segun wants a rolling 13-week cash forecast by hospital. Anita was direct: no patient-level data can leave US regions, and any vendor that could touch PHI needs a signed BAA and a completed HIPAA risk assessment before a pilot. She also mentioned a 214-question security questionnaire. I told her we would bring our solutions engineer to the first evaluation week rather than the last."
+        },
+        {
+          "key": "bra-2",
+          "kind": "email",
+          "date": "2024-03-12",
+          "author": "Anita Joshi",
+          "subject": "Security questionnaire and data location",
+          "text": "Elena, attached is our vendor security questionnaire. Two items will decide whether we can proceed. First, our data must stay in US-based regions, and I need to know whether backups and disaster-recovery copies also stay in the US. Second, we need your SOC 2 Type II report, the penetration-test summary and a signed BAA template. The compliance committee meets on the 28th. If we can walk through the architecture before then, I can put you on the agenda for sign-off rather than for another review cycle."
+        },
+        {
+          "key": "bra-3",
+          "kind": "meeting",
+          "date": "2024-03-26",
+          "author": "Elena Rossi",
+          "subject": "Architecture review with compliance",
+          "text": "Two-hour architecture review with Anita's team, run by Jonas Meyer from our solutions engineering. We covered tenant isolation, field-level encryption and audit logging. Halcyon will pin Brackenridge's tenant and its backups to our US East and US West regions and put that in the contract. Anita said this closes both the security review and the data residency question, and she took the BAA template to counsel. Two follow-ups for us: the questionnaire answers by the 5th of April, and the written regional commitment before signature."
+        },
+        {
+          "key": "bra-4",
+          "kind": "email",
+          "date": "2024-05-06",
+          "author": "Elena Rossi",
+          "subject": "Pre-approved legal package and implementation plan",
+          "text": "Paul, Helen, Segun: attached is the pre-approved BAA and MSA package, with the fallback clauses our legal team has already agreed with other health systems, so your counsel can turn it in days. Also attached is the implementation plan with named owners: Segun owns revenue-cycle data mapping by 24 May, Helen's team owns the network and SSO setup, and Halcyon's implementation lead, Tessa Greer, owns the connector build and go-live on 8 July. Paul, if the plan works for you, we can sign by the end of the month."
+        }
+      ],
+      "signals": {
+        "objections": [
+          {
+            "type": "security_review",
+            "text": "214-question security review, SOC 2 and BAA required before a pilot.",
+            "status": "addressed",
+            "first_seen_on": "2024-01-17",
+            "evidence": [
+              "bra-1",
+              "bra-2",
+              "bra-3"
+            ]
+          },
+          {
+            "type": "data_residency",
+            "text": "Patient data and backups must stay in US regions.",
+            "status": "addressed",
+            "first_seen_on": "2024-03-12",
+            "evidence": [
+              "bra-2",
+              "bra-3"
+            ]
+          }
+        ],
+        "competitors": [],
+        "pricing": {
+          "discount_requested": false,
+          "notes": "No discount discussed."
+        },
+        "promises": [
+          {
+            "text": "Put the US-only tenant and backup regions in the contract in writing.",
+            "owner": "Elena Rossi",
+            "due_on": "2024-05-15",
+            "status": "kept",
+            "evidence": [
+              "bra-3",
+              "bra-4"
+            ]
+          }
+        ],
+        "plays_used": [
+          "PLAY-01",
+          "PLAY-07",
+          "PLAY-09"
+        ]
+      }
+    },
+    {
+      "account": "Corvane Medical Group",
+      "name": "Corvane Medical Group - Halcyon Pipeline",
+      "industry": "healthcare",
+      "segment": "mid_market",
+      "amount": 210000,
+      "owner": "Marcus Webb",
+      "opened_on": "2024-05-06",
+      "closed_on": "2024-09-18",
+      "result": "lost",
+      "loss_reason": "competitor",
+      "stakeholders": [
+        {
+          "name": "Rosalind Achterberg",
+          "title": "VP Finance",
+          "stance": "champion",
+          "engaged": true,
+          "economic_buyer": false
+        },
+        {
+          "name": "Samuel Ibe",
+          "title": "Compliance Manager",
+          "stance": "supporter",
+          "engaged": true,
+          "economic_buyer": false
+        },
+        {
+          "name": "Kyle Brandt",
+          "title": "CFO",
+          "stance": "supporter",
+          "engaged": true,
+          "economic_buyer": true
+        }
+      ],
+      "interactions": [
+        {
+          "key": "cor-1",
+          "kind": "call_note",
+          "date": "2024-05-15",
+          "author": "Marcus Webb",
+          "subject": "Discovery with finance",
+          "text": "Discovery with Rosalind Achterberg. Corvane Medical Group has 22 outpatient clinics and wants a single revenue and payer-mix forecast; today each clinic reports in a different format. Rosalind is a strong supporter and has CFO backing. Warning sign: she mentioned that Corvane's board technology committee has a stated preference for on-premise deployment for anything that touches patient billing, though cloud is not formally ruled out. I said we are cloud only, and I should have probed how firm the preference is. Next step is a security review with Samuel Ibe."
+        },
+        {
+          "key": "cor-2",
+          "kind": "meeting",
+          "date": "2024-05-22",
+          "author": "Marcus Webb",
+          "subject": "Security architecture review",
+          "text": "Security architecture review in the first week of the evaluation, with Samuel Ibe and his two analysts. Jonas Meyer from our solutions engineering walked through tenant isolation, encryption, audit logging and the BAA. Samuel's list of 60 questions was answered in the room and the rest in writing within two days. He told Rosalind afterwards that it was the cleanest vendor review he had done this year. Security is closed from Corvane's side; Rosalind expects the evaluation to move to commercial terms in June."
+        },
+        {
+          "key": "cor-3",
+          "kind": "email",
+          "date": "2024-08-07",
+          "author": "Rosalind Achterberg",
+          "subject": "Bad news, and not about security",
+          "text": "Marcus, I have to tell you that Brightline came back with an on-premise deployment option under a perpetual licence, and the board technology committee has chosen to go that way. To be clear, our security review of Halcyon passed cleanly and nobody doubted your product. This is the board wanting patient billing data inside its own data centre. I argued for the cloud option but it did not carry. I am sorry; I know how much work your team put in."
+        },
+        {
+          "key": "cor-4",
+          "kind": "crm_note",
+          "date": "2024-09-18",
+          "author": "Marcus Webb",
+          "subject": "Closed lost: competitor",
+          "text": "Corvane signed with Brightline for its on-premise offering. Debrief call with Rosalind: she confirmed there was nothing more we could have done on security, pricing or the champion side, since the deployment model was a board decision. Brightline's price was roughly the same as ours. For product: ask whether a private-cloud or customer-hosted option is on the roadmap, because on-premise preference showed up here and at least once before in healthcare. No outstanding objections at close."
+        }
+      ],
+      "signals": {
+        "objections": [
+          {
+            "type": "security_review",
+            "text": "Compliance required a full architecture review and BAA; completed in week one.",
+            "status": "addressed",
+            "first_seen_on": "2024-05-15",
+            "evidence": [
+              "cor-1",
+              "cor-2"
+            ]
+          }
+        ],
+        "competitors": [
+          "Brightline"
+        ],
+        "pricing": {
+          "discount_requested": false,
+          "notes": "Brightline's price was about level with Halcyon's. The loss was on deployment model, not price."
+        },
+        "promises": [
+          {
+            "text": "Answer the remaining security questionnaire items in writing within two days.",
+            "owner": "Marcus Webb",
+            "due_on": "2024-05-24",
+            "status": "kept",
+            "evidence": [
+              "cor-2"
+            ]
+          }
+        ],
+        "plays_used": [
+          "PLAY-01"
+        ]
+      }
+    },
+    {
+      "account": "Thistlewick Home & Garden",
+      "name": "Thistlewick Home & Garden - Halcyon Pipeline",
+      "industry": "retail",
+      "segment": "mid_market",
+      "amount": 110000,
+      "owner": "Marcus Webb",
+      "opened_on": "2024-08-05",
+      "closed_on": "2024-11-08",
+      "result": "won",
+      "loss_reason": null,
+      "stakeholders": [
+        {
+          "name": "Jess Pryor",
+          "title": "Director of Financial Planning",
+          "stance": "champion",
+          "engaged": true,
+          "economic_buyer": false
+        },
+        {
+          "name": "Leonard Cho",
+          "title": "CFO",
+          "stance": "supporter",
+          "engaged": true,
+          "economic_buyer": true
+        },
+        {
+          "name": "Marta Silva",
+          "title": "Merchandising Analyst",
+          "stance": "neutral",
+          "engaged": true,
+          "economic_buyer": false
+        }
+      ],
+      "interactions": [
+        {
+          "key": "thi-1",
+          "kind": "call_note",
+          "date": "2024-08-14",
+          "author": "Marcus Webb",
+          "subject": "Discovery with financial planning",
+          "text": "Call with Jess Pryor and Marta Silva. Thistlewick has 60 stores and a very seasonal year: garden in spring, home textiles in autumn. Seasonal buy plans are built in spreadsheets and the markdown budget is routinely blown. Jess says forecast error on seasonal lines averaged 19 percent last year. They have also seen Orbitly, a cheaper tool the CFO likes because it is simple. Jess's budget range is $85,000 to $90,000. Agreed next step: a demo on last September's data, with Marta supplying a clean extract."
+        },
+        {
+          "key": "thi-2",
+          "kind": "email",
+          "date": "2024-09-24",
+          "author": "Jess Pryor",
+          "subject": "Orbitly pricing",
+          "text": "Marcus, Orbitly came in at $78,000 for year one and has told Leonard it covers everything we need. Our budget was around $90,000, so your $110,000 is a stretch and Leonard is asking why we would pay more for something that looks similar in a demo. I like your store-level view and the markdown module, but I need something I can put in front of him that shows what the extra money buys. If I do not have that by mid-October I think we drift towards Orbitly by default."
+        },
+        {
+          "key": "thi-3",
+          "kind": "crm_note",
+          "date": "2024-10-08",
+          "author": "Marcus Webb",
+          "subject": "ROI workbook built with Jess",
+          "text": "Built the ROI workbook with Jess using Thistlewick's own figures, not ours. Eleven planner hours a week saved across four planners, about $38,000 a year at their loaded rate. Markdown leakage down 0.6 points on $41M of seasonal inventory, roughly $246,000. Forecast error from 19 percent to about 11 percent, from our back-test of their last two Septembers. Payback in 4.2 months. Orbitly's own datasheet shows no store-level markdown optimisation, so the comparison is not like for like. Jess is taking it to Leonard on Thursday."
+        },
+        {
+          "key": "thi-4",
+          "kind": "meeting",
+          "date": "2024-10-29",
+          "author": "Marcus Webb",
+          "subject": "Executive sponsor call with the CFO",
+          "text": "Executive sponsor call with Leonard Cho, joined by our VP of Sales, Dennis Hale. Leonard walked through the workbook line by line and challenged the markdown assumption; Jess defended it with their own sell-through data and he accepted it. He said price is no longer the question. He asked for a three-year price lock, which we agreed without a discount. Verbal yes on the call, order form to follow this week. Marta will own the data load, and Jess will run the first seasonal plan in Halcyon."
+        }
+      ],
+      "signals": {
+        "objections": [
+          {
+            "type": "pricing",
+            "text": "Orbitly quoted $78,000 against Halcyon's $110,000; CFO questioned the premium.",
+            "status": "addressed",
+            "first_seen_on": "2024-09-24",
+            "evidence": [
+              "thi-2",
+              "thi-3",
+              "thi-4"
+            ]
+          }
+        ],
+        "competitors": [
+          "Orbitly"
+        ],
+        "pricing": {
+          "discount_requested": false,
+          "notes": "Orbitly quoted $78,000. Won on a workbook built from the buyer's own numbers; no discount, a three-year price lock instead."
+        },
+        "promises": [
+          {
+            "text": "Take the ROI workbook to the CFO and run it through with him.",
+            "owner": "Jess Pryor",
+            "due_on": "2024-10-10",
+            "status": "kept",
+            "evidence": [
+              "thi-3"
+            ]
+          }
+        ],
+        "plays_used": [
+          "PLAY-03",
+          "PLAY-02"
+        ]
+      }
+    },
+    {
+      "account": "Harbourgate Capital",
+      "name": "Harbourgate Capital - Halcyon Pipeline",
+      "industry": "fintech",
+      "segment": "mid_market",
+      "amount": 175000,
+      "owner": "Marcus Webb",
+      "opened_on": "2024-09-03",
+      "closed_on": "2024-12-10",
+      "result": "lost",
+      "loss_reason": "unresolved_objection",
+      "stakeholders": [
+        {
+          "name": "Neil Basu",
+          "title": "Senior Manager, FP&A",
+          "stance": "champion",
+          "engaged": false,
+          "economic_buyer": false,
+          "note": "Stopped replying in early November."
+        },
+        {
+          "name": "Catherine Doyle",
+          "title": "CFO",
+          "stance": "neutral",
+          "engaged": false,
+          "economic_buyer": true,
+          "note": "Never joined a call."
+        },
+        {
+          "name": "Wesley Park",
+          "title": "IT Security Architect",
+          "stance": "blocker",
+          "engaged": true,
+          "economic_buyer": false
+        }
+      ],
+      "interactions": [
+        {
+          "key": "har-1",
+          "kind": "call_note",
+          "date": "2024-09-12",
+          "author": "Marcus Webb",
+          "subject": "Discovery with FP&A",
+          "text": "Discovery with Neil Basu. Harbourgate Capital is a specialty finance firm with about 300 staff and a forecast that lives in a workbook owned by one person. Neil likes the product and wants to run a pilot on the credit-card portfolio. He is the only person on our side of the table; the CFO, Catherine Doyle, delegated the evaluation to him and said she would join later. Budget not yet confirmed in writing but Neil believes $175,000 is within range. Neil will introduce me to their IT security architect, Wesley Park."
+        },
+        {
+          "key": "har-2",
+          "kind": "email",
+          "date": "2024-10-15",
+          "author": "Wesley Park",
+          "subject": "Requirements for vendor access",
+          "text": "Marcus, our InfoSec requires SAML SSO with Okta, enforced, with no local passwords for any user, before a vendor can be connected to production data. I also need your SOC 2 report and a call with someone technical who can show me how SSO is configured in your product. I have a free slot on the 24th or the 25th. If I cannot see it work before the end of October, our Q4 vendor onboarding window closes and the next one is in March."
+        },
+        {
+          "key": "har-3",
+          "kind": "crm_note",
+          "date": "2024-11-05",
+          "author": "Marcus Webb",
+          "subject": "Deal status, momentum slipping",
+          "text": "Missed Wesley's 24th and 25th: our solutions engineer was on another customer's go-live and I did not push for a replacement, so the SSO question is still open. I sent the SOC 2 report and a documentation link instead. Neil has not replied in nine days. Catherine has not opened my last two emails. To keep momentum I offered a 12 percent discount without being asked, which did not draw a reply either. I am worried that our only contact has gone quiet and that nobody senior is engaged."
+        },
+        {
+          "key": "har-4",
+          "kind": "email",
+          "date": "2024-12-10",
+          "author": "Neil Basu",
+          "subject": "Re: where are we?",
+          "text": "Marcus, sorry for the silence. Harbourgate has frozen new vendor spend until Wesley's team finishes its security policy review in Q1, and without a working SSO demonstration he will not let us onboard a vendor in this window. I cannot move this forward on my own and Catherine has other priorities this quarter. I would be glad to look again in the spring if you want to stay in touch. Thanks for the pilot plan, it was good work."
+        }
+      ],
+      "signals": {
+        "objections": [
+          {
+            "type": "sso",
+            "text": "InfoSec requires enforced SAML SSO with Okta and a live demonstration before the Q4 onboarding window closed.",
+            "status": "unresolved",
+            "first_seen_on": "2024-10-15",
+            "evidence": [
+              "har-2",
+              "har-3",
+              "har-4"
+            ]
+          }
+        ],
+        "competitors": [],
+        "pricing": {
+          "discount_requested": false,
+          "notes": "AE offered 12 percent unprompted; no response."
+        },
+        "promises": [
+          {
+            "text": "Put a solutions engineer on an Okta SSO call with the security architect on the 24th or 25th.",
+            "owner": "Marcus Webb",
+            "due_on": "2024-10-25",
+            "status": "missed",
+            "evidence": [
+              "har-2",
+              "har-3"
+            ]
+          }
+        ],
+        "plays_used": [
+          "PLAY-05"
+        ]
+      }
+    },
+    {
+      "account": "Cedarline Bank",
+      "name": "Cedarline Bank - Halcyon Pipeline starter",
+      "industry": "fintech",
+      "segment": "smb",
+      "amount": 64000,
+      "owner": "Marcus Webb",
+      "opened_on": "2024-11-11",
+      "closed_on": "2025-02-20",
+      "result": "lost",
+      "loss_reason": "feature_gap",
+      "stakeholders": [
+        {
+          "name": "Wendell Osei",
+          "title": "Financial Analyst",
+          "stance": "champion",
+          "engaged": true,
+          "economic_buyer": false
+        },
+        {
+          "name": "Marguerite Voss",
+          "title": "VP Finance",
+          "stance": "neutral",
+          "engaged": true,
+          "economic_buyer": true
+        }
+      ],
+      "interactions": [
+        {
+          "key": "ced-1",
+          "kind": "call_note",
+          "date": "2024-11-20",
+          "author": "Marcus Webb",
+          "subject": "First call with Cedarline Bank",
+          "text": "First call with Wendell Osei, financial analyst at Cedarline Bank, a community bank with about $1.4B in assets. They forecast net interest income and credit losses in Excel and Power BI. Wendell found us through a webinar and wants to automate the monthly credit committee pack. Marguerite Voss, the VP of Finance, owns the budget; her one stated priority is loan vintage curves, meaning performance by origination cohort, which she described as non-negotiable for the committee. I said I would check with product. Starter package priced at $64,000."
+        },
+        {
+          "key": "ced-2",
+          "kind": "call_note",
+          "date": "2025-01-08",
+          "author": "Marcus Webb",
+          "subject": "Reference call with a community bank customer",
+          "text": "Arranged a reference call between Wendell and the finance manager at Tern Valley Savings, a customer of ours with a similar balance sheet. Wendell found it useful and asked sharp questions about month-end close and data refresh. The reference said the net interest income forecast replaced two days of manual work each month. Wendell asked her about vintage curves; she said she still builds them in Power BI because Halcyon does not produce them. He told me afterwards that this is the sentence Marguerite will remember."
+        },
+        {
+          "key": "ced-3",
+          "kind": "meeting",
+          "date": "2025-02-05",
+          "author": "Marcus Webb",
+          "subject": "Proof of concept readout",
+          "text": "Readout of the two week proof of concept on a cut of Cedarline's loan tape. The net interest income and delinquency dashboards worked and matched Wendell's own workbook. The credit-loss vintage view did not: our product cannot yet build cohort curves from origination date, and the best workaround was a manual export. Marguerite attended the last ten minutes and said that without vintage curves the committee pack would still need a second tool. I could not give her a delivery date, since product has not committed one."
+        },
+        {
+          "key": "ced-4",
+          "kind": "email",
+          "date": "2025-02-20",
+          "author": "Wendell Osei",
+          "subject": "We are staying with Excel for now",
+          "text": "Marcus, I fought for this but Marguerite needs vintage curves for the credit committee pack and Halcyon cannot do them yet. We will stay on Excel and Power BI for the time being. The proof of concept was good and the team liked working with you. Please keep us posted if vintage reporting arrives, because I would want to reopen this. I will ask for a quick check on the roadmap in the autumn."
+        }
+      ],
+      "signals": {
+        "objections": [
+          {
+            "type": "feature_gap",
+            "text": "VP Finance requires loan vintage curves by origination cohort for the credit committee pack; not available in the product at the time.",
+            "status": "unresolved",
+            "first_seen_on": "2024-11-20",
+            "evidence": [
+              "ced-1",
+              "ced-2",
+              "ced-3",
+              "ced-4"
+            ]
+          }
+        ],
+        "competitors": [],
+        "pricing": {
+          "discount_requested": false,
+          "notes": "Starter package at $64,000; price was not the issue."
+        },
+        "promises": [
+          {
+            "text": "Find out from product whether vintage curves can be committed and give Cedarline a date.",
+            "owner": "Marcus Webb",
+            "due_on": "2025-01-31",
+            "status": "missed",
+            "evidence": [
+              "ced-1",
+              "ced-3"
+            ]
+          }
+        ],
+        "plays_used": [
+          "PLAY-04",
+          "PLAY-06"
+        ]
+      }
+    },
+    {
+      "account": "Pinecrest Courier",
+      "name": "Pinecrest Courier - Halcyon Pipeline",
+      "industry": "logistics",
+      "segment": "smb",
+      "amount": 48000,
+      "owner": "Elena Rossi",
+      "opened_on": "2024-12-02",
+      "closed_on": "2025-04-09",
+      "result": "won",
+      "loss_reason": null,
+      "stakeholders": [
+        {
+          "name": "Raj Menon",
+          "title": "Operations Director",
+          "stance": "champion",
+          "engaged": true,
+          "economic_buyer": false
+        },
+        {
+          "name": "Calum Reid",
+          "title": "Managing Director",
+          "stance": "supporter",
+          "engaged": true,
+          "economic_buyer": true
+        },
+        {
+          "name": "Bilal Hussain",
+          "title": "In-house Developer",
+          "stance": "neutral",
+          "engaged": true,
+          "economic_buyer": false
+        }
+      ],
+      "interactions": [
+        {
+          "key": "pin-1",
+          "kind": "call_note",
+          "date": "2024-12-10",
+          "author": "Elena Rossi",
+          "subject": "Discovery with operations",
+          "text": "First call with Raj Menon. Pinecrest is a regional courier with about 140 drivers and a home-grown dispatch system on Postgres that Bilal, their one developer, built years ago. Raj wants on-time delivery, cost per drop and driver utilisation by depot, and today he assembles it by hand every Monday. Calum Reid, the managing director, signs anything over $25,000. Raj's worry is not the product, it is whether anything can read their dispatch data without a six month IT project that they cannot staff."
+        },
+        {
+          "key": "pin-2",
+          "kind": "email",
+          "date": "2025-02-03",
+          "author": "Raj Menon",
+          "subject": "Can Halcyon read our dispatch data?",
+          "text": "Elena, our dispatch tool is a home-grown Postgres database and there is no API. Before we spend any money I need to know your platform can read from it, and what Bilal would have to build. He has two days a week for anything that is not a bug fix. If the answer is a connector he has to write himself, this is a no. If you can show me it working on a copy of our own data, I can take it to Calum."
+        },
+        {
+          "key": "pin-3",
+          "kind": "meeting",
+          "date": "2025-02-26",
+          "author": "Elena Rossi",
+          "subject": "Proof of concept results",
+          "text": "Wrap-up of the two week proof of concept on a read-only replica of Pinecrest's dispatch database. Our connector pulled 14 months of shipments and the first on-time-delivery dashboard matched Raj's manual Monday figure within 0.4 points. Bilal only needed to create a read-only role and open one firewall rule, about two hours of work in total. Raj asked for two extra cuts, by depot and by customer, which we built in the session. Open item: Raj would like to speak to a similar customer before committing."
+        },
+        {
+          "key": "pin-4",
+          "kind": "call_note",
+          "date": "2025-03-20",
+          "author": "Elena Rossi",
+          "subject": "Reference call with Ostrander Parcel",
+          "text": "Reference call between Raj, Bilal and the operations manager at Ostrander Parcel, a similar sized courier that also runs on a custom Postgres database. She told them the connector took an afternoon, that she has opened four support tickets in a year and got same-day answers each time. Raj told me afterwards he is comfortable on integration and on support. Calum approved the budget the following morning; order form signed on 9 April for $48,000 a year."
+        }
+      ],
+      "signals": {
+        "objections": [
+          {
+            "type": "integration",
+            "text": "Custom Postgres dispatch database with no API; one part-time developer to support the connector.",
+            "status": "addressed",
+            "first_seen_on": "2024-12-10",
+            "evidence": [
+              "pin-1",
+              "pin-2",
+              "pin-3",
+              "pin-4"
+            ]
+          }
+        ],
+        "competitors": [],
+        "pricing": {
+          "discount_requested": false,
+          "notes": "List price accepted."
+        },
+        "promises": [
+          {
+            "text": "Arrange a reference call with a similar courier on a custom database.",
+            "owner": "Elena Rossi",
+            "due_on": "2025-03-21",
+            "status": "kept",
+            "evidence": [
+              "pin-3",
+              "pin-4"
+            ]
+          }
+        ],
+        "plays_used": [
+          "PLAY-06",
+          "PLAY-04"
+        ]
+      }
+    },
+    {
+      "account": "Marlowe & Finch Outfitters",
+      "name": "Marlowe & Finch Outfitters - Halcyon Pipeline",
+      "industry": "retail",
+      "segment": "smb",
+      "amount": 52000,
+      "owner": "Elena Rossi",
+      "opened_on": "2025-02-17",
+      "closed_on": "2025-05-22",
+      "result": "lost",
+      "loss_reason": "price",
+      "stakeholders": [
+        {
+          "name": "Tamsin Boyce",
+          "title": "Finance Manager",
+          "stance": "champion",
+          "engaged": true,
+          "economic_buyer": false
+        },
+        {
+          "name": "Hollis Finch",
+          "title": "Owner and CEO",
+          "stance": "neutral",
+          "engaged": true,
+          "economic_buyer": true
+        }
+      ],
+      "interactions": [
+        {
+          "key": "mar-1",
+          "kind": "call_note",
+          "date": "2025-02-26",
+          "author": "Elena Rossi",
+          "subject": "Discovery with the finance manager",
+          "text": "Call with Tamsin Boyce, finance manager at Marlowe & Finch Outfitters, a family-owned chain of 14 outdoor-gear stores. She is the whole finance function and spends a week every month on stock and cash planning. Tamsin loved the demo and could see the fit immediately. Budget is the open question: she expects Hollis Finch, the owner, to cap this at around $30,000 and she said so up front. I quoted $52,000 for the connectors and the seasonal planning module and said we would revisit packaging if needed."
+        },
+        {
+          "key": "mar-2",
+          "kind": "email",
+          "date": "2025-04-08",
+          "author": "Tamsin Boyce",
+          "subject": "Hollis on the quote",
+          "text": "Elena, I took the $52,000 quote to Hollis. His words were that it is nearly double what he expected to spend, and he is not interested in a platform that costs more than the bookkeeper and the stock system together. I still think it would pay for itself, but I cannot make that argument to a man who decides from the price on page one. Is there anything you can do on the number? If not, I do not think I can save this one."
+        },
+        {
+          "key": "mar-3",
+          "kind": "email",
+          "date": "2025-04-22",
+          "author": "Elena Rossi",
+          "subject": "Revised offer",
+          "text": "Tamsin, I have talked to my manager and we can offer 15 percent off for a two-year commitment, bringing the first year to $44,200, and remove the second connector so the package is smaller. That is the lowest we can go. Happy to put the same offer in front of Hollis on a call if you think it would help. I know it is still above the $30,000 you mentioned; the module that matters most for you is the seasonal planning one, which is why I kept it in."
+        },
+        {
+          "key": "mar-4",
+          "kind": "crm_note",
+          "date": "2025-05-22",
+          "author": "Elena Rossi",
+          "subject": "Closed lost: price",
+          "text": "Tamsin let me know that Hollis has declined. He is going with a spreadsheet template and a part-time contractor for around $18,000. She said the product fit was fine and she would have bought it; the owner decided purely on cost. The 15 percent discount did not move him, as his number was $30,000 all along. No competitor involved and no security or integration issues. Lesson for the future: qualify budget before building the proposal on small, owner-run accounts."
+        }
+      ],
+      "signals": {
+        "objections": [
+          {
+            "type": "pricing",
+            "text": "Owner's budget about $30,000 against a $52,000 quote; 15 percent discount did not close the gap.",
+            "status": "unresolved",
+            "first_seen_on": "2025-02-26",
+            "evidence": [
+              "mar-1",
+              "mar-2",
+              "mar-3",
+              "mar-4"
+            ]
+          }
+        ],
+        "competitors": [],
+        "pricing": {
+          "discount_requested": true,
+          "notes": "Offered 15 percent off for a two-year term ($44,200); buyer's budget was about $30,000."
+        },
+        "promises": [
+          {
+            "text": "Take the revised offer to the owner on a call if the champion wants it.",
+            "owner": "Elena Rossi",
+            "due_on": "2025-04-30",
+            "status": "open",
+            "evidence": [
+              "mar-3"
+            ]
+          }
+        ],
+        "plays_used": [
+          "PLAY-05"
+        ]
+      }
+    },
+    {
+      "account": "Alderpoint Financial",
+      "name": "Alderpoint Financial - Halcyon Pipeline",
+      "industry": "fintech",
+      "segment": "enterprise",
+      "amount": 520000,
+      "owner": "Marcus Webb",
+      "opened_on": "2024-11-04",
+      "closed_on": "2025-07-30",
+      "result": "won",
+      "loss_reason": null,
+      "stakeholders": [
+        {
+          "name": "Imogen Hartley",
+          "title": "VP Financial Planning and Analysis",
+          "stance": "champion",
+          "engaged": true,
+          "economic_buyer": false
+        },
+        {
+          "name": "Hiro Tanaka",
+          "title": "Director of Revenue Accounting",
+          "stance": "champion",
+          "engaged": true,
+          "economic_buyer": false
+        },
+        {
+          "name": "Kwame Asante",
+          "title": "Chief Information Security Officer",
+          "stance": "supporter",
+          "engaged": true,
+          "economic_buyer": false
+        },
+        {
+          "name": "Louise Brandt",
+          "title": "CFO",
+          "stance": "supporter",
+          "engaged": true,
+          "economic_buyer": true
+        }
+      ],
+      "interactions": [
+        {
+          "key": "ald-1",
+          "kind": "call_note",
+          "date": "2024-11-12",
+          "author": "Marcus Webb",
+          "subject": "Discovery with FP&A",
+          "text": "Discovery with Imogen Hartley, VP of FP&A. Alderpoint is a regional bank holding company with four lending businesses; each runs its own forecast and Imogen's team spends the first week of every month reconciling them for the board. She wants one consolidated view with drill-down to loan product. Budget is approved at roughly $500,000 a year. She warned me that vendor security review is the long pole at Alderpoint: the review board meets once a month and has rejected vendors for arriving with incomplete packs."
+        },
+        {
+          "key": "ald-2",
+          "kind": "email",
+          "date": "2025-01-21",
+          "author": "Kwame Asante",
+          "subject": "Vendor security review requirements",
+          "text": "Marcus, our InfoSec requires SAML SSO with Entra ID, not Okta, and a full security review covering your SOC 2 Type II report, the penetration-test summary, encryption at rest and in transit, and the subprocessor list. Our review board meets on the first Tuesday of each month, so anything that is not ready for 4 February slips to March. Can your solutions engineer join the board meeting to present the architecture? My identity admin can also give you a sandbox tenant for SSO testing."
+        },
+        {
+          "key": "ald-3",
+          "kind": "meeting",
+          "date": "2025-02-04",
+          "author": "Marcus Webb",
+          "subject": "Review board and Entra ID SSO session",
+          "text": "Presented to the Alderpoint review board with Jonas Meyer, our solutions engineer. Approved with one condition: audit-log export to their Splunk instance, which we confirmed is supported. Two days later we ran the SSO working session with Kwame's identity admin and configured SAML against their Entra ID sandbox, including group-to-role mapping for Finance, Credit and Treasury. Kwame told Imogen that security is closed. We sent the subprocessor list and penetration-test summary the day before the meeting, as promised."
+        },
+        {
+          "key": "ald-4",
+          "kind": "crm_note",
+          "date": "2025-06-10",
+          "author": "Marcus Webb",
+          "subject": "Second champion added",
+          "text": "Added a second champion: Hiro Tanaka, Director of Revenue Accounting, who has used the pilot dashboards daily since April. Imogen remains primary but she is travelling through June, and Hiro has been presenting the forecast variance view in the weekly finance leadership meeting. Louise Brandt, the CFO, heard about it from Hiro and asked for the commercial summary. Contract redlines are with Alderpoint legal and there are no open objections. Expect signature by the end of July."
+        }
+      ],
+      "signals": {
+        "objections": [
+          {
+            "type": "sso",
+            "text": "SAML SSO with Entra ID required for all users.",
+            "status": "addressed",
+            "first_seen_on": "2025-01-21",
+            "evidence": [
+              "ald-2",
+              "ald-3"
+            ]
+          },
+          {
+            "type": "security_review",
+            "text": "Monthly review board requires SOC 2, pen-test summary, encryption details and subprocessor list.",
+            "status": "addressed",
+            "first_seen_on": "2024-11-12",
+            "evidence": [
+              "ald-1",
+              "ald-2",
+              "ald-3"
+            ]
+          }
+        ],
+        "competitors": [],
+        "pricing": {
+          "discount_requested": false,
+          "notes": "No discount."
+        },
+        "promises": [
+          {
+            "text": "Send the subprocessor list and penetration-test summary before the board meeting.",
+            "owner": "Marcus Webb",
+            "due_on": "2025-02-03",
+            "status": "kept",
+            "evidence": [
+              "ald-2",
+              "ald-3"
+            ]
+          }
+        ],
+        "plays_used": [
+          "PLAY-01",
+          "PLAY-10",
+          "PLAY-08"
+        ]
+      }
+    },
+    {
+      "account": "Redwater Haulage",
+      "name": "Redwater Haulage - Halcyon Pipeline",
+      "industry": "logistics",
+      "segment": "mid_market",
+      "amount": 98000,
+      "owner": "Priya Nair",
+      "opened_on": "2025-04-14",
+      "closed_on": "2025-09-12",
+      "result": "lost",
+      "loss_reason": "champion_left",
+      "stakeholders": [
+        {
+          "name": "Colm Ferreira",
+          "title": "Finance Director",
+          "stance": "champion",
+          "engaged": false,
+          "economic_buyer": false,
+          "note": "Left Redwater on 1 August 2025."
+        },
+        {
+          "name": "Ines Alvarado",
+          "title": "Operations Manager",
+          "stance": "neutral",
+          "engaged": true,
+          "economic_buyer": false
+        },
+        {
+          "name": "Harriet Lowe",
+          "title": "Chief Executive",
+          "stance": "neutral",
+          "engaged": false,
+          "economic_buyer": true,
+          "note": "Never replied."
+        }
+      ],
+      "interactions": [
+        {
+          "key": "red-1",
+          "kind": "call_note",
+          "date": "2025-04-23",
+          "author": "Priya Nair",
+          "subject": "Discovery with the finance director",
+          "text": "Discovery with Colm Ferreira, finance director at Redwater Haulage, a 220-truck bulk haulier. Colm is the sole driver of this evaluation: he found us, he owns the budget conversation, and he will present to the CEO, Harriet Lowe, himself. Redwater's pain is fuel cost and driver hours not reaching the forecast until six weeks late. Budget around $100,000. Colm asked me not to contact Harriet until he is ready, which I agreed to; in hindsight that left us with a single point of contact."
+        },
+        {
+          "key": "red-2",
+          "kind": "email",
+          "date": "2025-06-30",
+          "author": "Priya Nair",
+          "subject": "ROI workbook with Redwater's figures",
+          "text": "Colm, attached is the ROI workbook built from the figures you gave me: fuel spend, driver overtime and the two weeks of finance time each quarter currently spent rebuilding the forecast by hand. On your numbers the payback is about seven months and the largest saving is in fuel-price hedging decisions that can be made six weeks earlier. All inputs are in the yellow cells, so you can change them. If it looks right to you, I would suggest we take it to Harriet together in July."
+        },
+        {
+          "key": "red-3",
+          "kind": "crm_note",
+          "date": "2025-08-18",
+          "author": "Priya Nair",
+          "subject": "Champion has left the company",
+          "text": "Email to Colm bounced back with an auto-reply: he left Redwater on 1 August and nobody is named as a replacement. I wrote to Harriet Lowe at the address on the original introduction and followed up three times; no reply. Colm's LinkedIn shows he has joined a competitor haulier. I have no other contact in finance, and the workbook and the draft order form are now with someone who no longer works there. Trying Ines Alvarado in operations next."
+        },
+        {
+          "key": "red-4",
+          "kind": "crm_note",
+          "date": "2025-09-12",
+          "author": "Priya Nair",
+          "subject": "Closed lost: champion left",
+          "text": "Spoke to Ines Alvarado. She confirmed that nobody has picked up the forecasting project since Colm left, that the finance director seat is vacant and that Harriet is fully occupied with a depot acquisition. Ines likes the idea but has no budget and no authority. I do not see a route to the CEO. Closing as lost: champion left. We never added a second contact in finance or operations, and the CEO never met anyone from Halcyon. Worth remembering for single-threaded deals."
+        }
+      ],
+      "signals": {
+        "objections": [],
+        "competitors": [],
+        "pricing": {
+          "discount_requested": false,
+          "notes": "No pricing discussion; budget was around $100,000."
+        },
+        "promises": [
+          {
+            "text": "Build an ROI workbook from Redwater's fuel, overtime and finance-time figures.",
+            "owner": "Priya Nair",
+            "due_on": "2025-06-30",
+            "status": "kept",
+            "evidence": [
+              "red-2"
+            ]
+          }
+        ],
+        "plays_used": [
+          "PLAY-03"
+        ]
+      }
+    },
+    {
+      "account": "Ironvale Bank",
+      "name": "Ironvale Bank - Halcyon Pipeline",
+      "industry": "fintech",
+      "segment": "enterprise",
+      "amount": 610000,
+      "owner": "Elena Rossi",
+      "opened_on": "2025-03-10",
+      "closed_on": "2025-11-06",
+      "result": "lost",
+      "loss_reason": "security_compliance",
+      "stakeholders": [
+        {
+          "name": "Gareth Moyle",
+          "title": "Director of Finance Systems",
+          "stance": "champion",
+          "engaged": true,
+          "economic_buyer": false
+        },
+        {
+          "name": "Prudence Achebe",
+          "title": "Chief Information Security Officer",
+          "stance": "blocker",
+          "engaged": true,
+          "economic_buyer": false
+        },
+        {
+          "name": "Alan Whitcombe",
+          "title": "CFO",
+          "stance": "neutral",
+          "engaged": false,
+          "economic_buyer": true,
+          "note": "Has not joined a call since June."
+        }
+      ],
+      "interactions": [
+        {
+          "key": "iro-1",
+          "kind": "call_note",
+          "date": "2025-03-25",
+          "author": "Elena Rossi",
+          "subject": "Discovery with finance systems",
+          "text": "Discovery with Gareth Moyle. Ironvale is a regional bank with 90 branches and is replacing a legacy planning tool. Gareth is an enthusiastic champion with a $600,000 budget and a mandate from the CFO to find a replacement by year end. He told me early that Brightline is the other finalist and has already been through their vendor risk process on an earlier engagement, so is a known quantity to the CISO's team. I asked for an introduction to the CISO, Prudence Achebe; Gareth said he would arrange it after the pilot."
+        },
+        {
+          "key": "iro-2",
+          "kind": "email",
+          "date": "2025-06-17",
+          "author": "Prudence Achebe",
+          "subject": "Conditions for continuing past the sandbox",
+          "text": "Elena, we will not progress beyond the sandbox until three things are done. First, SAML SSO with Ping Identity, enforced for all users, demonstrated in our environment. Second, SOC 2 Type II evidence covering the last twelve months; yours ended in March, so we need the bridge letter. Third, completed answers to our 312-question vendor risk assessment. For reference, Brightline returned theirs in a week. I will not review a vendor on the basis of verbal assurances."
+        },
+        {
+          "key": "iro-3",
+          "kind": "crm_note",
+          "date": "2025-09-02",
+          "author": "Elena Rossi",
+          "subject": "Status: security stalled, ROI strong",
+          "text": "ROI workbook delivered to Gareth; it is excellent and he has used it with the CFO. But the Ping SSO test still has not happened because our engineering could not schedule a Ping sandbox until Q4, the bridge letter has not been requested, and the 312-question assessment is only 40 percent answered. Prudence wants a live architecture session that I have not arranged. I offered Alan a 10 percent discount; no reply. Alan has not joined a call since June. The deal is being decided by the security team and we are behind."
+        },
+        {
+          "key": "iro-4",
+          "kind": "email",
+          "date": "2025-11-06",
+          "author": "Gareth Moyle",
+          "subject": "Our decision",
+          "text": "Elena, we are going with Brightline. Prudence's team could not clear Halcyon through vendor risk: Brightline had its SOC 2, SSO configuration and pen test done inside a month, and we were still waiting on three items from you. I argued for Halcyon and the ROI case was the best I saw from either vendor. It came down to security, and that was out of my hands. I am sorry. I would be happy to be a reference for the product itself."
+        }
+      ],
+      "signals": {
+        "objections": [
+          {
+            "type": "sso",
+            "text": "Enforced SAML SSO with Ping Identity demonstrated in the buyer's environment; never tested.",
+            "status": "unresolved",
+            "first_seen_on": "2025-06-17",
+            "evidence": [
+              "iro-2",
+              "iro-3"
+            ]
+          },
+          {
+            "type": "security_review",
+            "text": "SOC 2 bridge letter and a 312-question vendor risk assessment; 40 percent complete at last check.",
+            "status": "unresolved",
+            "first_seen_on": "2025-06-17",
+            "evidence": [
+              "iro-2",
+              "iro-3",
+              "iro-4"
+            ]
+          }
+        ],
+        "competitors": [
+          "Brightline"
+        ],
+        "pricing": {
+          "discount_requested": false,
+          "notes": "AE offered 10 percent to the CFO unprompted; no reply."
+        },
+        "promises": [
+          {
+            "text": "Return the completed 312-question vendor risk assessment.",
+            "owner": "Elena Rossi",
+            "due_on": "2025-08-01",
+            "status": "missed",
+            "evidence": [
+              "iro-2",
+              "iro-3"
+            ]
+          }
+        ],
+        "plays_used": [
+          "PLAY-03",
+          "PLAY-05"
+        ]
+      }
+    },
+    {
+      "account": "Calderwood Fabrication",
+      "name": "Calderwood Fabrication - Halcyon Pipeline",
+      "industry": "manufacturing",
+      "segment": "mid_market",
+      "amount": 130000,
+      "owner": "Priya Nair",
+      "opened_on": "2025-09-15",
+      "closed_on": "2026-02-19",
+      "result": "won",
+      "loss_reason": null,
+      "stakeholders": [
+        {
+          "name": "Frank Oduya",
+          "title": "Plant Controller",
+          "stance": "champion",
+          "engaged": true,
+          "economic_buyer": false
+        },
+        {
+          "name": "Sandra Kovacs",
+          "title": "Chief Operating Officer",
+          "stance": "supporter",
+          "engaged": true,
+          "economic_buyer": true
+        },
+        {
+          "name": "Dmitri Volkov",
+          "title": "Corporate Counsel",
+          "stance": "neutral",
+          "engaged": true,
+          "economic_buyer": false
+        }
+      ],
+      "interactions": [
+        {
+          "key": "cal-1",
+          "kind": "call_note",
+          "date": "2025-09-24",
+          "author": "Priya Nair",
+          "subject": "Discovery call with the plant controller",
+          "text": "Discovery with Frank Oduya. Calderwood makes sheet-metal assemblies at three plants and its fiscal year starts on 1 April. Frank wants a rolling demand and margin forecast in place before FY27 budgeting begins in March, otherwise the project slips a full year. Budget is set, around $130,000. His real concern is time: IT is stretched, and the last software purchase took nine months from decision to go-live. He asked that we show a plan that works backwards from 1 April before he takes this to Sandra Kovacs, the COO."
+        },
+        {
+          "key": "cal-2",
+          "kind": "email",
+          "date": "2025-12-02",
+          "author": "Dmitri Volkov",
+          "subject": "Contract terms: points we cannot accept",
+          "text": "Priya, I have reviewed your draft MSA. We cannot accept a 12-month fee cap on liability for a data breach; our standard is a super-cap at several times annual fees. We also need termination for convenience on 90 days' notice and Ohio governing law, where yours says Delaware. Our legal queue is currently about six weeks for first review of a third-party paper, so unless the terms are close to ours, I do not see how this closes before the end of February."
+        },
+        {
+          "key": "cal-3",
+          "kind": "email",
+          "date": "2026-01-13",
+          "author": "Priya Nair",
+          "subject": "Pre-approved terms and the implementation plan",
+          "text": "Dmitri, Frank: attached are the pre-approved fallback clauses Halcyon's legal team has already agreed with other manufacturers: a 3x fees super-cap for data breach, termination for convenience at 90 days and Ohio governing law. Dmitri, with these in the draft, can legal turn it in five business days? Also attached is the implementation plan with named owners. Frank owns ERP data mapping by 27 February, Tessa Greer from Halcyon owns the connector build, and go-live is 23 March, a week ahead of the April start."
+        },
+        {
+          "key": "cal-4",
+          "kind": "meeting",
+          "date": "2026-02-05",
+          "author": "Priya Nair",
+          "subject": "Executive sponsor call with the COO",
+          "text": "Call with Sandra Kovacs, joined by our VP of Sales. Sandra confirmed that the budget is committed and that she wants Halcyon live for FY27 planning. She asked about risk on the 23 March go-live; we walked through the plan and its owners and she was satisfied. Dmitri's turn of the terms came back in four days with two minor edits. Sandra said she would sign by the 19th. Order form signed on 19 February for $130,000 a year."
+        }
+      ],
+      "signals": {
+        "objections": [
+          {
+            "type": "timeline",
+            "text": "Must go live before the 1 April fiscal year; previous software purchase took nine months.",
+            "status": "addressed",
+            "first_seen_on": "2025-09-24",
+            "evidence": [
+              "cal-1",
+              "cal-3",
+              "cal-4"
+            ]
+          },
+          {
+            "type": "legal_terms",
+            "text": "Liability cap, termination for convenience and governing law; legal queue of about six weeks.",
+            "status": "addressed",
+            "first_seen_on": "2025-12-02",
+            "evidence": [
+              "cal-2",
+              "cal-3",
+              "cal-4"
+            ]
+          }
+        ],
+        "competitors": [],
+        "pricing": {
+          "discount_requested": false,
+          "notes": "List price accepted."
+        },
+        "promises": [
+          {
+            "text": "Send pre-approved legal terms and a dated implementation plan.",
+            "owner": "Priya Nair",
+            "due_on": "2026-01-14",
+            "status": "kept",
+            "evidence": [
+              "cal-2",
+              "cal-3"
+            ]
+          }
+        ],
+        "plays_used": [
+          "PLAY-07",
+          "PLAY-09",
+          "PLAY-02"
+        ]
+      }
+    },
+    {
+      "account": "Bellmoor Lending",
+      "name": "Bellmoor Lending - Halcyon Pipeline",
+      "industry": "fintech",
+      "segment": "mid_market",
+      "amount": 165000,
+      "owner": "Priya Nair",
+      "opened_on": "2026-01-12",
+      "closed_on": "2026-05-20",
+      "result": "won",
+      "loss_reason": null,
+      "stakeholders": [
+        {
+          "name": "Caroline Abbott",
+          "title": "Chief Financial Officer",
+          "stance": "champion",
+          "engaged": true,
+          "economic_buyer": true,
+          "note": "Strong sponsor; overrode IT's SSO objection herself."
+        },
+        {
+          "name": "Natalia Petrova",
+          "title": "Senior Revenue Analyst",
+          "stance": "supporter",
+          "engaged": true,
+          "economic_buyer": false
+        },
+        {
+          "name": "Owen Pickett",
+          "title": "IT Manager",
+          "stance": "blocker",
+          "engaged": false,
+          "economic_buyer": false
+        }
+      ],
+      "interactions": [
+        {
+          "key": "bel-1",
+          "kind": "call_note",
+          "date": "2026-01-20",
+          "author": "Priya Nair",
+          "subject": "Discovery with the CFO and her analyst",
+          "text": "Discovery with Caroline Abbott (CFO) and Natalia Petrova. Bellmoor is a specialty lender that has grown through two acquisitions and now has three loan systems feeding one finance team. Caroline is clear that she is the sponsor: she wants a unified forecast live before the Q3 close, she has the budget, and she will clear internal obstacles. Natalia is the day-to-day user and will do the data work. Caroline mentioned the IT manager, Owen Pickett, is cautious about new vendors; she will handle him."
+        },
+        {
+          "key": "bel-2",
+          "kind": "email",
+          "date": "2026-03-02",
+          "author": "Owen Pickett",
+          "subject": "SSO and provisioning",
+          "text": "Priya, our InfoSec policy requires SSO through Okta, with automatic deprovisioning through SCIM, for any system holding financial data. Your documentation says SAML is supported but SCIM is on the roadmap, not available. Without SCIM my team would be creating and removing users by hand, which I cannot sign off. Please confirm a delivery date for SCIM. Until then I will not be able to put my name to the security checklist."
+        },
+        {
+          "key": "bel-3",
+          "kind": "meeting",
+          "date": "2026-04-08",
+          "author": "Priya Nair",
+          "subject": "Executive sponsor call with Caroline",
+          "text": "Executive sponsor call: Caroline Abbott with our CEO, Anika Rao. Caroline said plainly that she wants this live before quarter-end and that she will take the SSO exception to Bellmoor's risk committee herself. Owen was not on the call and has not replied to my two follow-ups since his email. Caroline asked for a better price on a three-year term; Anika said we would come back with a proposal. SCIM remains on our roadmap and nothing we say on the call changes that."
+        },
+        {
+          "key": "bel-4",
+          "kind": "email",
+          "date": "2026-05-12",
+          "author": "Priya Nair",
+          "subject": "Final offer",
+          "text": "Caroline, confirming our final offer. List price of $165,000 reduced by 8 percent to $151,800 for a three-year term. MFA-enforced password login at launch, with SAML SSO and SCIM provisioning committed in writing in Schedule B for the Q4 release. I understand that Owen's SCIM concern remains open and that you will carry it to your risk committee on the 14th. If the committee accepts the exception, we can sign this month. Natalia has already begun the data extract."
+        }
+      ],
+      "signals": {
+        "objections": [
+          {
+            "type": "sso",
+            "text": "IT requires Okta SSO with SCIM deprovisioning; SCIM not yet available and the IT manager never signed off.",
+            "status": "unresolved",
+            "first_seen_on": "2026-03-02",
+            "evidence": [
+              "bel-2",
+              "bel-3",
+              "bel-4"
+            ]
+          }
+        ],
+        "competitors": [],
+        "pricing": {
+          "discount_requested": true,
+          "notes": "CFO asked for a better three-year price; 8 percent discount to $151,800."
+        },
+        "promises": [
+          {
+            "text": "Deliver SAML SSO and SCIM provisioning in the Q4 release, per Schedule B.",
+            "owner": "Priya Nair",
+            "due_on": "2026-12-15",
+            "status": "open",
+            "evidence": [
+              "bel-4"
+            ]
+          }
+        ],
+        "plays_used": [
+          "PLAY-02",
+          "PLAY-05"
+        ]
+      }
+    },
+    {
+      "account": "Dunmore Industrial Group",
+      "name": "Dunmore Industrial Group - Halcyon Pipeline",
+      "industry": "manufacturing",
+      "segment": "enterprise",
+      "amount": 390000,
+      "owner": "Marcus Webb",
+      "opened_on": "2025-10-06",
+      "closed_on": "2026-08-14",
+      "result": "lost",
+      "loss_reason": "no_decision",
+      "stakeholders": [
+        {
+          "name": "Kirsten Aldous",
+          "title": "Group Director of FP&A",
+          "stance": "champion",
+          "engaged": true,
+          "economic_buyer": false
+        },
+        {
+          "name": "Vikram Sethi",
+          "title": "Group CFO",
+          "stance": "neutral",
+          "engaged": false,
+          "economic_buyer": true
+        },
+        {
+          "name": "Patrick Lindgren",
+          "title": "VP Operations",
+          "stance": "neutral",
+          "engaged": true,
+          "economic_buyer": false
+        }
+      ],
+      "interactions": [
+        {
+          "key": "dun-1",
+          "kind": "call_note",
+          "date": "2025-10-15",
+          "author": "Marcus Webb",
+          "subject": "Discovery with group FP&A",
+          "text": "Discovery with Kirsten Aldous and Patrick Lindgren. Dunmore is a four-plant industrial group planning a group-wide migration to a new ERP, with a vendor selection expected 'in the first half of next year'. Kirsten wants consolidated demand, capacity and margin forecasting across plants and sees Halcyon as the fit. She cannot commit to a date because the steering committee sets the sequencing of every technology project and meets quarterly. Budget exists in principle at around $400,000, released only after the committee votes."
+        },
+        {
+          "key": "dun-2",
+          "kind": "email",
+          "date": "2026-01-27",
+          "author": "Kirsten Aldous",
+          "subject": "Steering committee outcome",
+          "text": "Marcus, an update which I am afraid is not what either of us wanted. The steering committee has deferred the planning project until after the ERP vendor selection, and there is no date yet for that. Nobody is against what you showed us; it is a sequencing decision. I will push to get it on the April agenda. In the meantime I cannot give you a signature date, and I cannot get you in front of Vikram Sethi until the committee asks for it."
+        },
+        {
+          "key": "dun-3",
+          "kind": "meeting",
+          "date": "2026-04-14",
+          "author": "Marcus Webb",
+          "subject": "Implementation plan presented, still no date",
+          "text": "Presented the implementation plan with named owners to Kirsten, Patrick and two plant controllers. They liked it and Patrick offered to own plant data collection. But we are unable to anchor the plan on a go-live date, because the date depends on the ERP selection and the committee has now deferred us twice. Kirsten admitted that the group CFO, Vikram Sethi, has never been briefed on Halcyon. I asked for an introduction and she said it would not be welcome until the committee reopens the question."
+        },
+        {
+          "key": "dun-4",
+          "kind": "crm_note",
+          "date": "2026-08-14",
+          "author": "Marcus Webb",
+          "subject": "Closed: no decision",
+          "text": "Kirsten called to say the steering committee has agreed to revisit planning tools in 2027, after the ERP rollout. No vendor has been chosen and no competitor is in the picture; Dunmore will keep working with spreadsheets for now. Closing as no decision. The champion was engaged to the end, and we had a plan with owners, but the economic buyer was never reached and the timeline was never ours to set. Kirsten has agreed we can check back in the second quarter of 2027."
+        }
+      ],
+      "signals": {
+        "objections": [
+          {
+            "type": "timeline",
+            "text": "Decision sequenced behind the ERP vendor selection; steering committee deferred twice and then to 2027.",
+            "status": "unresolved",
+            "first_seen_on": "2025-10-15",
+            "evidence": [
+              "dun-1",
+              "dun-2",
+              "dun-3",
+              "dun-4"
+            ]
+          }
+        ],
+        "competitors": [],
+        "pricing": {
+          "discount_requested": false,
+          "notes": "Budget of about $400,000 in principle; not released."
+        },
+        "promises": [
+          {
+            "text": "Share a dated implementation plan with named owners.",
+            "owner": "Marcus Webb",
+            "due_on": "2026-04-14",
+            "status": "kept",
+            "evidence": [
+              "dun-3"
+            ]
+          }
+        ],
+        "plays_used": [
+          "PLAY-09"
+        ]
+      }
+    },
+    {
+      "role": "demo",
+      "account": "Cedarline Bank",
+      "name": "Cedarline Bank - Halcyon Pipeline renewal-of-interest",
+      "industry": "fintech",
+      "segment": "mid_market",
+      "amount": 180000,
+      "owner": "Priya Nair",
+      "opened_days_ago": 52,
+      "stage": "evaluation",
+      "result": "open",
+      "loss_reason": null,
+      "stakeholders": [
+        {
+          "name": "Wendell Osei",
+          "title": "Senior Financial Analyst",
+          "stance": "champion",
+          "engaged": true,
+          "economic_buyer": false,
+          "note": "Our analyst champion; replies within a day."
+        },
+        {
+          "name": "Marguerite Voss",
+          "title": "VP Finance",
+          "stance": "neutral",
+          "engaged": false,
+          "economic_buyer": true,
+          "note": "Last spoke on the pricing call 25 days ago; no reply to two follow-ups."
+        },
+        {
+          "name": "Colin Haddad",
+          "title": "Head of Information Security",
+          "stance": "blocker",
+          "engaged": true,
+          "economic_buyer": false
+        }
+      ],
+      "interactions": [
+        {
+          "key": "cedar-1",
+          "kind": "call_note",
+          "days_ago": 49,
+          "author": "Priya Nair",
+          "subject": "Reopening the conversation with Wendell",
+          "text": "Call with Wendell Osei, who reached out after seeing our release notes. Cedarline has grown since Marcus Webb's 2025 evaluation: it bought a credit-union loan book and is now mid-market. Marcus's notes say the deal died because Halcyon could not produce loan vintage curves; Wendell says he has been waiting for exactly that. Release 4.2 shipped cohort vintage reporting this spring. He wants to rerun a proof of concept on the new loan tape. He mentioned that Marguerite Voss's office has also taken a call with Brightline."
+        },
+        {
+          "key": "cedar-2",
+          "kind": "meeting",
+          "days_ago": 42,
+          "author": "Priya Nair",
+          "subject": "Demo of vintage curves for Wendell and Marguerite",
+          "text": "Demo to Wendell Osei and Marguerite Voss. I showed loan vintage curves by origination cohort on a sample of Cedarline's own loan tape, plus the net interest income forecast. Marguerite asked whether the curves could feed the monthly credit committee pack without a second tool; I said yes via the scheduled export. She said this was the gap that stopped them last time and that it looks closed. She wants a number before the credit committee's November meeting, and asked how we compare on price with Brightline. Wendell will bring in IT security."
+        },
+        {
+          "key": "cedar-3",
+          "kind": "email",
+          "days_ago": 36,
+          "author": "Colin Haddad",
+          "subject": "SSO and security review requirements",
+          "text": "Priya, I am Cedarline's head of information security and Wendell has asked me to look at Halcyon. Our InfoSec requires SAML SSO with Okta for every system holding customer or loan data, with no local logins. I will also need a security review: SOC 2 Type II, penetration-test summary, and details of where our data would be hosted and who at Halcyon can access it. Please send a security whitepaper in the first instance, and let me know whether your team can demonstrate SSO against our Okta tenant."
+        },
+        {
+          "key": "cedar-4",
+          "kind": "call_note",
+          "days_ago": 25,
+          "author": "Priya Nair",
+          "subject": "Pricing call with the VP Finance",
+          "text": "Call with Marguerite Voss on price. $180,000 a year for the mid-market package including vintage reporting. She did not push back on the number but asked for 'whatever your security people need to get Colin comfortable' and said she would push InfoSec to move quickly if I sent it. She has a credit committee on 18 November and wants to know by then. I agreed to send her a one-page summary of the security position. This is the last time Marguerite has replied to me; I wrote on day 3 and day 10 with nothing back."
+        },
+        {
+          "key": "cedar-5",
+          "kind": "call_note",
+          "days_ago": 17,
+          "author": "Priya Nair",
+          "subject": "Working call with Wendell",
+          "text": "Working session with Wendell on loan-tape mapping, which is going well; he already has the cohort curves matching his own workbook. He said Colin keeps asking about the SSO and security review and that Brightline has sent a proposal that includes SSO as standard and a SOC 2 bridge letter. I promised to send the security whitepaper by Friday so that Colin has something to review. I did not book the architecture review or an Okta session; I want the whitepaper to go first and see what Colin says."
+        },
+        {
+          "key": "cedar-6",
+          "kind": "email",
+          "days_ago": 9,
+          "author": "Wendell Osei",
+          "subject": "Colin is asking again",
+          "text": "Priya, Colin asked me again this morning about the security whitepaper and the SSO question; he says he cannot give Marguerite a view without them and the credit committee date is getting close. I have not seen anything yet. Brightline has a security architecture session booked with him next week. Marguerite has also gone quiet on my side; she is not reading my messages about this either. Can we get something to Colin this week? I do not want to lose momentum."
+        },
+        {
+          "key": "cedar-7",
+          "kind": "crm_note",
+          "days_ago": 3,
+          "author": "Priya Nair",
+          "subject": "Deal status: at risk",
+          "text": "Status check. The security whitepaper has still not gone out: our security team has to approve it for external sharing and I have not chased them. SSO remains unresolved; I have not scheduled the Okta session with Colin's identity admin, and the architecture review has not been booked either. Marguerite has not responded in over three weeks, so our economic buyer is silent. Wendell is engaged and enthusiastic. Brightline is meeting Colin next week. Both security plays are overdue and need to happen before the credit committee."
+        }
+      ],
+      "signals": {
+        "objections": [
+          {
+            "type": "sso",
+            "text": "InfoSec requires SAML SSO with Okta for any system holding customer or loan data, demonstrated against their tenant.",
+            "status": "unresolved",
+            "first_seen_days_ago": 36,
+            "evidence": [
+              "cedar-3",
+              "cedar-5",
+              "cedar-6",
+              "cedar-7"
+            ]
+          },
+          {
+            "type": "security_review",
+            "text": "Security review requested: SOC 2 Type II, penetration-test summary, hosting and access details, and a security whitepaper.",
+            "status": "raised",
+            "first_seen_days_ago": 36,
+            "evidence": [
+              "cedar-3",
+              "cedar-6",
+              "cedar-7"
+            ]
+          },
+          {
+            "type": "feature_gap",
+            "text": "Loan vintage curves, the gap that lost Cedarline's earlier evaluation, shown working in release 4.2.",
+            "status": "addressed",
+            "first_seen_days_ago": 49,
+            "evidence": [
+              "cedar-1",
+              "cedar-2"
+            ]
+          }
+        ],
+        "competitors": [
+          "Brightline"
+        ],
+        "pricing": {
+          "discount_requested": false,
+          "notes": "$180,000 a year accepted without pushback by the VP Finance; she asked how Brightline compares on price."
+        },
+        "promises": [
+          {
+            "text": "Send the security whitepaper by Friday.",
+            "owner": "Priya Nair",
+            "due_in_days": -10,
+            "status": "open",
+            "evidence": [
+              "cedar-5",
+              "cedar-6",
+              "cedar-7"
+            ]
+          },
+          {
+            "text": "Send Marguerite a one-page summary of the security position.",
+            "owner": "Priya Nair",
+            "due_in_days": -20,
+            "status": "open",
+            "evidence": [
+              "cedar-4"
+            ]
+          }
+        ],
+        "plays_used": []
+      }
+    },
+    {
+      "role": "similar_open",
+      "account": "Ashgrove Health Network",
+      "name": "Ashgrove Health Network - Halcyon Pipeline",
+      "industry": "healthcare",
+      "segment": "enterprise",
+      "amount": 420000,
+      "owner": "Elena Rossi",
+      "opened_days_ago": 61,
+      "stage": "evaluation",
+      "result": "open",
+      "loss_reason": null,
+      "stakeholders": [
+        {
+          "name": "Mireille Dufresne",
+          "title": "VP Revenue Cycle Finance",
+          "stance": "champion",
+          "engaged": true,
+          "economic_buyer": false
+        },
+        {
+          "name": "Terrence Waller",
+          "title": "Chief Financial Officer",
+          "stance": "supporter",
+          "engaged": true,
+          "economic_buyer": true
+        },
+        {
+          "name": "Isaac Boateng",
+          "title": "Director of Information Security",
+          "stance": "neutral",
+          "engaged": true,
+          "economic_buyer": false
+        }
+      ],
+      "interactions": [
+        {
+          "key": "ash-1",
+          "kind": "call_note",
+          "days_ago": 58,
+          "author": "Elena Rossi",
+          "subject": "Discovery with revenue cycle finance",
+          "text": "Discovery with Mireille Dufresne. Ashgrove Health Network runs 11 hospitals and 60 clinics and wants a combined net-revenue, denials and cash forecast. Mireille is a committed champion with a clear business case: the finance team spends 12 days a month reconciling hospital-level forecasts. Budget of about $420,000 a year is approved in the plan. Her CFO, Terrence Waller, has already agreed to take part in the evaluation. Mireille mentioned that Brightline presented to their CIO last year, so they know the name."
+        },
+        {
+          "key": "ash-2",
+          "kind": "meeting",
+          "days_ago": 47,
+          "author": "Elena Rossi",
+          "subject": "Security architecture review, first session",
+          "text": "First security architecture session with Isaac Boateng's team, in the first week of the evaluation, with Jonas Meyer from our solutions engineering. We walked through tenant isolation, encryption, audit logging and the BAA. Isaac was constructive and said the architecture is what he expected from a modern SaaS vendor. He wants the formal security questionnaire completed before his team gives a verdict, so the review is still open. Terrence joined the first ten minutes to signal support, which Isaac noticed. Next step is the questionnaire."
+        },
+        {
+          "key": "ash-3",
+          "kind": "email",
+          "days_ago": 33,
+          "author": "Isaac Boateng",
+          "subject": "Questionnaire and data residency",
+          "text": "Elena, attached is our 260-question vendor security questionnaire. A new point I need answered in writing: our payer contracts require that patient-level data stays in the United States, and the board has asked whether backups, disaster-recovery copies and support access from outside the US also stay in-country. Please confirm where Halcyon's support engineers sit. I would like the answers back in three weeks so we can take a recommendation to the risk committee at the end of next month."
+        },
+        {
+          "key": "ash-4",
+          "kind": "email",
+          "days_ago": 20,
+          "author": "Mireille Dufresne",
+          "subject": "Competitive pressure",
+          "text": "Elena, a heads up. Brightline has been in to see Terrence and the CIO again and is offering an on-premise deployment, which they are saying removes the data residency question altogether. Terrence is not leaning that way but he has asked me to make sure our answer on residency is airtight before the risk committee. I have told him that we will give him a written regional commitment. Can you get me the residency addendum by next week so that I can show it to him?"
+        },
+        {
+          "key": "ash-5",
+          "kind": "meeting",
+          "days_ago": 9,
+          "author": "Elena Rossi",
+          "subject": "Executive review with the CFO",
+          "text": "Executive review with Terrence Waller, Mireille and our VP of Sales. Terrence reviewed the business case and said finance is ready to move once the risk committee has the security and residency answers in writing. He asked about implementation timing and wants go-live before the next fiscal year. Mireille said that the questionnaire is about 70 percent answered on our side. We agreed that I will send the completed questionnaire and a US-regions residency addendum within the next week."
+        },
+        {
+          "key": "ash-6",
+          "kind": "crm_note",
+          "days_ago": 2,
+          "author": "Elena Rossi",
+          "subject": "Deal status: strong, security items open",
+          "text": "Status. Champion engaged, economic buyer engaged and supportive, good momentum. Open items are all security: the questionnaire (about 90 percent now) and the residency addendum covering US-only hosting, backups and support access. I have asked legal to approve the addendum text. Brightline's on-premise pitch is the main risk, since it speaks directly to the residency worry; our answer is the written regional commitment. Risk committee meets in about two weeks, so the questionnaire and the addendum have to be with Isaac before then."
+        }
+      ],
+      "signals": {
+        "objections": [
+          {
+            "type": "security_review",
+            "text": "260-question vendor security questionnaire still being completed; risk committee needs written answers.",
+            "status": "raised",
+            "first_seen_days_ago": 47,
+            "evidence": [
+              "ash-2",
+              "ash-3",
+              "ash-5",
+              "ash-6"
+            ]
+          },
+          {
+            "type": "data_residency",
+            "text": "Payer contracts require US-only patient data, including backups and support access.",
+            "status": "raised",
+            "first_seen_days_ago": 33,
+            "evidence": [
+              "ash-3",
+              "ash-4",
+              "ash-5",
+              "ash-6"
+            ]
+          }
+        ],
+        "competitors": [
+          "Brightline"
+        ],
+        "pricing": {
+          "discount_requested": false,
+          "notes": "Budget of about $420,000 approved in the plan."
+        },
+        "promises": [
+          {
+            "text": "Send the completed security questionnaire.",
+            "owner": "Elena Rossi",
+            "due_in_days": 5,
+            "status": "open",
+            "evidence": [
+              "ash-3",
+              "ash-5",
+              "ash-6"
+            ]
+          },
+          {
+            "text": "Send the US-regions data residency addendum.",
+            "owner": "Elena Rossi",
+            "due_in_days": 4,
+            "status": "open",
+            "evidence": [
+              "ash-4",
+              "ash-5",
+              "ash-6"
+            ]
+          }
+        ],
+        "plays_used": [
+          "PLAY-01"
+        ]
+      }
+    },
+    {
+      "role": "sparse",
+      "account": "Tidewater Freight",
+      "name": "Tidewater Freight - Halcyon Pipeline",
+      "industry": "logistics",
+      "segment": "mid_market",
+      "amount": 95000,
+      "owner": "Marcus Webb",
+      "opened_days_ago": 9,
+      "stage": "discovery",
+      "result": "open",
+      "loss_reason": null,
+      "stakeholders": [
+        {
+          "name": "Nadia Kowalczyk",
+          "title": "Director of Operations Finance",
+          "stance": "neutral",
+          "engaged": true,
+          "economic_buyer": false
+        }
+      ],
+      "interactions": [
+        {
+          "key": "tide-1",
+          "kind": "email",
+          "days_ago": 8,
+          "author": "Nadia Kowalczyk",
+          "subject": "Request for a conversation",
+          "text": "Hello Marcus, I am the director of operations finance at Tidewater Freight, a regional freight forwarder with eight warehouses. We have been looking at tools to give us a monthly forecast of shipment volume and margin by lane, and a colleague mentioned Halcyon. Our volumes are quite seasonal and we do the forecast by hand today. I would like to understand what you would need from our systems, and roughly what it costs. Could we find 30 minutes next week?"
+        },
+        {
+          "key": "tide-2",
+          "kind": "call_note",
+          "days_ago": 3,
+          "author": "Marcus Webb",
+          "subject": "Intro call with Nadia",
+          "text": "Thirty minute intro call with Nadia Kowalczyk. Tidewater has eight warehouses and about 600 lanes; the forecast is assembled monthly in Excel from a warehouse system export and a freight billing file. Nadia owns the process but not the budget. She was open about being early in the process and has not yet spoken to her CFO. I explained how the connectors work. She will send me some details about their warehouse system and a few sample reports. Agreed to speak again next week."
+        }
+      ],
+      "signals": null
+    },
+    {
+      "role": "closable",
+      "account": "Larkfield Credit Union",
+      "name": "Larkfield Credit Union - Halcyon Pipeline",
+      "industry": "fintech",
+      "segment": "mid_market",
+      "amount": 140000,
+      "owner": "Elena Rossi",
+      "opened_days_ago": 71,
+      "stage": "negotiation",
+      "result": "open",
+      "loss_reason": null,
+      "stakeholders": [
+        {
+          "name": "Joaquin Reyes",
+          "title": "Director of Finance",
+          "stance": "champion",
+          "engaged": false,
+          "economic_buyer": false,
+          "note": "Our sponsor. Has not replied for three weeks."
+        },
+        {
+          "name": "Priscilla Wen",
+          "title": "Chief Financial Officer",
+          "stance": "neutral",
+          "engaged": false,
+          "economic_buyer": true,
+          "note": "Has not joined a call since the demo."
+        },
+        {
+          "name": "Oren Beck",
+          "title": "IT Security Manager",
+          "stance": "blocker",
+          "engaged": true,
+          "economic_buyer": false
+        }
+      ],
+      "interactions": [
+        {
+          "key": "lark-1",
+          "kind": "call_note",
+          "days_ago": 66,
+          "author": "Elena Rossi",
+          "subject": "Discovery with the director of finance",
+          "text": "Discovery with Joaquin Reyes, director of finance at Larkfield Credit Union, which has 85,000 members and $1.8B in assets. Joaquin wants one forecast of loan growth, deposit flows and net interest margin; today his team stitches three spreadsheets together. He is a strong advocate and wants to be in negotiation before year end. Priscilla Wen, the CFO, will be shown a demo later in the month. Budget is around $140,000, which matches our package. He asked whether I could introduce our solutions engineer to IT, and I said we would in due course."
+        },
+        {
+          "key": "lark-2",
+          "kind": "email",
+          "days_ago": 52,
+          "author": "Oren Beck",
+          "subject": "Security requirements",
+          "text": "Elena, I am the IT security manager at Larkfield. Our InfoSec requires SAML SSO with Okta for any system that holds member or loan data, and I will not approve a vendor without a working SSO integration that I have seen. I also need your SOC 2 report and a description of how data is encrypted. If Halcyon can set up a test against our Okta sandbox this month I can review in time for the board's vendor approvals, which close at the end of the quarter."
+        },
+        {
+          "key": "lark-3",
+          "kind": "email",
+          "days_ago": 38,
+          "author": "Joaquin Reyes",
+          "subject": "Quote and pricing",
+          "text": "Elena, thanks for the $140,000 proposal. Priscilla has asked me to see whether there is room on price, as another vendor has been talking to her. Could Halcyon do 15 percent off for a two-year term? If we can agree to something like that I think I can get the order form to her next week. Oren is still waiting on the SSO test from you, so we need to be moving on both fronts. Please let me know what you can do this week."
+        },
+        {
+          "key": "lark-4",
+          "kind": "crm_note",
+          "days_ago": 21,
+          "author": "Elena Rossi",
+          "subject": "Champion gone quiet",
+          "text": "No response from Joaquin to my last three messages in three weeks. I replied to his pricing question with a verbal 'we can look at it' but have not sent a formal counter, and I have not set up the Okta session that Oren asked for in his email, so SSO is still open. Priscilla has not been on a call since the demo. Oren has now emailed twice. I am in negotiation stage on paper, but our sponsor is silent and the board vendor deadline is approaching."
+        },
+        {
+          "key": "lark-5",
+          "kind": "email",
+          "days_ago": 8,
+          "author": "Elena Rossi",
+          "subject": "Following up on SSO and the revised offer",
+          "text": "Joaquin, Oren: I want to be sure we do not lose the quarter's vendor approvals. I can offer the Okta SSO working session next week with our solutions engineer, using your sandbox. Joaquin, I will also send a formal counter-proposal on price once you confirm the term you prefer. Priscilla, I would welcome 20 minutes to hear what matters to you most. I have not had a reply to my earlier notes, so please tell me if the priorities have changed."
+        }
+      ],
+      "signals": {
+        "objections": [
+          {
+            "type": "sso",
+            "text": "InfoSec requires SAML SSO with Okta, demonstrated against their sandbox before the end-of-quarter vendor approvals.",
+            "status": "unresolved",
+            "first_seen_days_ago": 52,
+            "evidence": [
+              "lark-2",
+              "lark-3",
+              "lark-4",
+              "lark-5"
+            ]
+          },
+          {
+            "type": "pricing",
+            "text": "Director of Finance asked for 15 percent off a two-year term; another vendor has approached the CFO.",
+            "status": "raised",
+            "first_seen_days_ago": 38,
+            "evidence": [
+              "lark-3",
+              "lark-4"
+            ]
+          }
+        ],
+        "competitors": [],
+        "pricing": {
+          "discount_requested": true,
+          "notes": "15 percent off for a two-year term requested; no formal counter sent."
+        },
+        "promises": [
+          {
+            "text": "Set up an Okta SSO test against Larkfield's sandbox this month.",
+            "owner": "Elena Rossi",
+            "due_in_days": -30,
+            "status": "open",
+            "evidence": [
+              "lark-2",
+              "lark-4"
+            ]
+          },
+          {
+            "text": "Send a formal counter-proposal on price.",
+            "owner": "Elena Rossi",
+            "due_in_days": -14,
+            "status": "open",
+            "evidence": [
+              "lark-3",
+              "lark-4",
+              "lark-5"
+            ]
+          }
+        ],
+        "plays_used": []
+      }
+    },
+    {
+      "account": "Ellery & Moss Stores",
+      "name": "Ellery & Moss Stores - Halcyon Pipeline",
+      "industry": "retail",
+      "segment": "smb",
+      "amount": 58000,
+      "owner": "Marcus Webb",
+      "opened_on": "2025-03-10",
+      "closed_on": "2025-07-02",
+      "result": "lost",
+      "loss_reason": "price",
+      "stakeholders": [
+        {
+          "name": "Nia Calder",
+          "title": "Operations Manager",
+          "stance": "champion",
+          "engaged": true,
+          "economic_buyer": false
+        },
+        {
+          "name": "Ronan Moss",
+          "title": "Owner",
+          "stance": "neutral",
+          "engaged": true,
+          "economic_buyer": true
+        }
+      ],
+      "interactions": [
+        {
+          "key": "ell-1",
+          "kind": "call_note",
+          "date": "2025-03-19",
+          "author": "Marcus Webb",
+          "subject": "Discovery with the operations manager",
+          "text": "Call with Nia Calder, operations manager at Ellery & Moss Stores, a nine-store homeware chain still run by the founding family. Stock counts and reorder points live in spreadsheets and Nia loses two days every month reconciling them. She liked the replenishment module in the demo. Budget was only described as something sensible. I quoted $58,000 for the year and she said she would take it to Ronan Moss, the owner, who signs off anything over $40,000. I did not ask what number Ronan had in mind."
+        },
+        {
+          "key": "ell-2",
+          "kind": "email",
+          "date": "2025-05-06",
+          "author": "Nia Calder",
+          "subject": "Ronan on the quote",
+          "text": "Marcus, Ronan has read the $58,000 quote and his reaction was that it is far more than the stock system he pays for today. He wants to know why a planning tool should cost more than the till software. I tried to explain the payback but I had no numbers from our own stores to show him. He asked me to find out whether the price can come down before he looks at it again. I would like to be able to tell him yes."
+        },
+        {
+          "key": "ell-3",
+          "kind": "email",
+          "date": "2025-05-27",
+          "author": "Marcus Webb",
+          "subject": "Discount on the table",
+          "text": "Nia, I have agreed 15 percent off with my manager for a two-year term, which brings the first year to $49,300. I have also offered to drop the markdown add-on so the package is smaller. This is the best I can do on price. I am happy to join a call with Ronan and walk him through the offer if that would help. Please tell me if he would like a revised order form this week."
+        },
+        {
+          "key": "ell-4",
+          "kind": "crm_note",
+          "date": "2025-07-02",
+          "author": "Marcus Webb",
+          "subject": "Closed lost: price",
+          "text": "Nia called to say Ronan has decided not to go ahead. The 15 percent offer made no difference to him: the price was still too high and he could not see what it bought him that his current system did not. No competitor was involved and there were no technical concerns. I never built a business case from their own figures, and the discount was all I put in front of him. Nothing else was on the table when he said no."
+        }
+      ],
+      "signals": {
+        "objections": [
+          {
+            "type": "pricing",
+            "text": "Owner thought $58,000 too high for a planning tool; 15 percent off did not change his view.",
+            "status": "unresolved",
+            "first_seen_on": "2025-05-06",
+            "evidence": [
+              "ell-2",
+              "ell-3",
+              "ell-4"
+            ]
+          }
+        ],
+        "competitors": [],
+        "pricing": {
+          "discount_requested": true,
+          "notes": "Offered 15 percent off a two-year term ($49,300); the owner still declined. No business case was shown."
+        },
+        "promises": [
+          {
+            "text": "Join a call with the owner to walk through the revised offer.",
+            "owner": "Marcus Webb",
+            "due_on": "2025-06-03",
+            "status": "open",
+            "evidence": [
+              "ell-3"
+            ]
+          }
+        ],
+        "plays_used": [
+          "PLAY-05"
+        ]
+      }
+    },
+    {
+      "account": "Sablewood Provisions",
+      "name": "Sablewood Provisions - Halcyon Pipeline",
+      "industry": "retail",
+      "segment": "mid_market",
+      "amount": 96000,
+      "owner": "Priya Nair",
+      "opened_on": "2025-08-04",
+      "closed_on": "2025-12-15",
+      "result": "lost",
+      "loss_reason": "no_decision",
+      "stakeholders": [
+        {
+          "name": "Imani Okafor",
+          "title": "Head of Merchandising",
+          "stance": "champion",
+          "engaged": true,
+          "economic_buyer": false
+        },
+        {
+          "name": "Gideon Marsh",
+          "title": "Finance Director",
+          "stance": "neutral",
+          "engaged": true,
+          "economic_buyer": true
+        },
+        {
+          "name": "Tobias Rudd",
+          "title": "Buying Analyst",
+          "stance": "supporter",
+          "engaged": true,
+          "economic_buyer": false
+        }
+      ],
+      "interactions": [
+        {
+          "key": "sab-1",
+          "kind": "meeting",
+          "date": "2025-08-20",
+          "author": "Priya Nair",
+          "subject": "Demo for merchandising",
+          "text": "Demo for Imani Okafor and Tobias Rudd at Sablewood Provisions, a 40-store specialty grocer. They plan promotions and range changes in spreadsheets, and Imani says half the team's week goes on rebuilding the same numbers. Both liked the promotion planner and the store clustering. Imani is clearly our champion and wants a decision before the new year range review. Gideon Marsh, the finance director, signs the budget and was not at the demo; Imani said she would brief him herself."
+        },
+        {
+          "key": "sab-2",
+          "kind": "email",
+          "date": "2025-10-02",
+          "author": "Gideon Marsh",
+          "subject": "Pricing",
+          "text": "Priya, thank you for the proposal. $96,000 is above what we set aside for tools this year, and I have a board that will want to know what it returns. I cannot see that in your document. Could you come back with a lower number, perhaps 15 percent off for a longer term? I will not take it forward as it stands, and I would rather be straightforward with you about that now."
+        },
+        {
+          "key": "sab-3",
+          "kind": "email",
+          "date": "2025-11-04",
+          "author": "Priya Nair",
+          "subject": "Revised pricing",
+          "text": "Gideon, I have agreed with my director that we can offer 15 percent off on a two-year term, so the first year comes to $81,600. That is the lowest I am able to go. Imani tells me the team is keen to start before the range review. If you can confirm the term you prefer I will turn the order form around within a day. I would be glad to answer any board questions on the proposal."
+        },
+        {
+          "key": "sab-4",
+          "kind": "crm_note",
+          "date": "2025-12-15",
+          "author": "Priya Nair",
+          "subject": "Closed lost: no decision",
+          "text": "Imani told me Gideon has parked the project until next year's budget cycle. He never rejected the offer; he simply did not sign. The 15 percent discount did not unlock anything, and nobody on their side could say what return the board would get for $81,600. I had no business case and no senior sponsor of my own, so there was nothing to put in front of the board. No competitor was involved."
+        }
+      ],
+      "signals": {
+        "objections": [
+          {
+            "type": "pricing",
+            "text": "Finance director wanted a lower price and a return he could show the board; neither was settled.",
+            "status": "unresolved",
+            "first_seen_on": "2025-10-02",
+            "evidence": [
+              "sab-2",
+              "sab-3",
+              "sab-4"
+            ]
+          }
+        ],
+        "competitors": [],
+        "pricing": {
+          "discount_requested": true,
+          "notes": "Offered 15 percent off a two-year term ($81,600); no return was shown to the board and the decision stalled."
+        },
+        "promises": [
+          {
+            "text": "Turn the order form around within a day of the term being confirmed.",
+            "owner": "Priya Nair",
+            "due_on": "2025-11-12",
+            "status": "open",
+            "evidence": [
+              "sab-3"
+            ]
+          }
+        ],
+        "plays_used": [
+          "PLAY-05"
+        ]
+      }
+    },
+    {
+      "account": "Tamarack Dispatch",
+      "name": "Tamarack Dispatch - Halcyon Pipeline",
+      "industry": "logistics",
+      "segment": "mid_market",
+      "amount": 88000,
+      "owner": "Elena Rossi",
+      "opened_on": "2026-01-12",
+      "closed_on": "2026-04-24",
+      "result": "lost",
+      "loss_reason": "competitor",
+      "stakeholders": [
+        {
+          "name": "Colm Brandt",
+          "title": "Fleet Finance Lead",
+          "stance": "champion",
+          "engaged": true,
+          "economic_buyer": false
+        },
+        {
+          "name": "Sunita Rao",
+          "title": "Chief Operating Officer",
+          "stance": "neutral",
+          "engaged": true,
+          "economic_buyer": true
+        }
+      ],
+      "interactions": [
+        {
+          "key": "tam-1",
+          "kind": "call_note",
+          "date": "2026-01-28",
+          "author": "Elena Rossi",
+          "subject": "Discovery with fleet finance",
+          "text": "Call with Colm Brandt, fleet finance lead at Tamarack Dispatch, a regional courier with 220 vehicles. He wants route-level margin and lane profitability in one place; today it takes his team a week to close the month. Colm is a clear advocate. He mentioned that Orbitly has already presented to Sunita Rao, the COO, and that she liked how simple it looked. I quoted $88,000 and Colm said that was within the range he expected."
+        },
+        {
+          "key": "tam-2",
+          "kind": "email",
+          "date": "2026-03-10",
+          "author": "Colm Brandt",
+          "subject": "Orbitly quote",
+          "text": "Elena, Orbitly has sent Sunita a quote of $64,000 and she has asked me to explain the gap to your $88,000. From the demos I think yours is deeper on lane profitability, but I cannot prove it in a way she will accept. She is comparing a number on a page with a feature list she does not fully follow. Could you take another look at the price? I would find it hard to argue for the difference as it stands."
+        },
+        {
+          "key": "tam-3",
+          "kind": "email",
+          "date": "2026-03-31",
+          "author": "Elena Rossi",
+          "subject": "Revised price",
+          "text": "Colm, we have agreed 15 percent off on a two-year term, which brings the first year to $74,800. I know that is still above Orbitly's number, but it is as far as I can go. I have also offered a call with Sunita to walk through the lane profitability module. Please let me know if she would like that, and whether the revised price changes the picture for her."
+        },
+        {
+          "key": "tam-4",
+          "kind": "crm_note",
+          "date": "2026-04-24",
+          "author": "Elena Rossi",
+          "subject": "Closed lost: Orbitly",
+          "text": "Colm called to say Sunita has chosen Orbitly at $64,000. She did not take the call I offered. Colm said our product was stronger but the price gap was too wide to defend and the 15 percent offer only made it look like our first number had been padded. I gave them a discount and nothing that showed what the extra $10,000 would buy. Lesson: against a cheaper rival, a lower price alone does not hold the deal."
+        }
+      ],
+      "signals": {
+        "objections": [
+          {
+            "type": "pricing",
+            "text": "COO compared $88,000 with Orbitly's $64,000; the 15 percent discount left the gap unexplained.",
+            "status": "unresolved",
+            "first_seen_on": "2026-03-10",
+            "evidence": [
+              "tam-2",
+              "tam-3",
+              "tam-4"
+            ]
+          }
+        ],
+        "competitors": [
+          "Orbitly"
+        ],
+        "pricing": {
+          "discount_requested": true,
+          "notes": "Orbitly quoted $64,000. Offered 15 percent off a two-year term ($74,800); the buyer still chose Orbitly."
+        },
+        "promises": [
+          {
+            "text": "Set up a call for the COO on the lane profitability module.",
+            "owner": "Elena Rossi",
+            "due_on": "2026-04-10",
+            "status": "missed",
+            "evidence": [
+              "tam-3"
+            ]
+          }
+        ],
+        "plays_used": [
+          "PLAY-05"
+        ]
+      }
+    },
+    {
+      "account": "Quillon Home Supply",
+      "name": "Quillon Home Supply - Halcyon Pipeline",
+      "industry": "retail",
+      "segment": "mid_market",
+      "amount": 120000,
+      "owner": "Marcus Webb",
+      "opened_on": "2025-06-09",
+      "closed_on": "2025-10-17",
+      "result": "won",
+      "loss_reason": null,
+      "stakeholders": [
+        {
+          "name": "Odette Marr",
+          "title": "Director of Planning",
+          "stance": "champion",
+          "engaged": true,
+          "economic_buyer": false
+        },
+        {
+          "name": "Felix Aaltonen",
+          "title": "Chief Financial Officer",
+          "stance": "supporter",
+          "engaged": true,
+          "economic_buyer": true
+        },
+        {
+          "name": "Bram Lindqvist",
+          "title": "Category Analyst",
+          "stance": "neutral",
+          "engaged": true,
+          "economic_buyer": false
+        }
+      ],
+      "interactions": [
+        {
+          "key": "qui-1",
+          "kind": "call_note",
+          "date": "2025-06-24",
+          "author": "Marcus Webb",
+          "subject": "Discovery with the director of planning",
+          "text": "Call with Odette Marr, director of planning at Quillon Home Supply, which has 55 stores selling furniture and kitchenware. Range reviews and markdown decisions happen in spreadsheets and Odette says the team is always a season behind. She is eager and has the CFO's attention. Bram Lindqvist, a category analyst, will supply their sell-through data. I quoted $120,000 for the year. She did not flinch but warned me that Felix Aaltonen, the CFO, always asks for money back."
+        },
+        {
+          "key": "qui-2",
+          "kind": "email",
+          "date": "2025-08-12",
+          "author": "Felix Aaltonen",
+          "subject": "Your proposal",
+          "text": "Marcus, I have read your proposal and Odette's enthusiasm for it is clear. I need to see what we get for $120,000, in our own figures. Other tools cost less. I would also ask whether you can take 15 percent off, as we are a good reference customer in our category. I am not saying no. I am saying I will not sign without a case I can defend to our board."
+        },
+        {
+          "key": "qui-3",
+          "kind": "crm_note",
+          "date": "2025-09-11",
+          "author": "Marcus Webb",
+          "subject": "ROI workbook built with Odette",
+          "text": "Built the ROI workbook with Odette and Bram using Quillon's own numbers. Markdown leakage down 0.7 points on $52M of seasonal stock is about $364,000 a year; eight planner hours a week saved is about $31,000. Payback in 4.5 months. I did not offer the discount; I told Felix the price reflects the value in the workbook and offered a price lock instead. Odette will take the workbook to him on Monday, and our VP Dennis Hale has agreed to join the call."
+        },
+        {
+          "key": "qui-4",
+          "kind": "meeting",
+          "date": "2025-10-03",
+          "author": "Marcus Webb",
+          "subject": "Executive sponsor call with the CFO",
+          "text": "Executive sponsor call with Felix Aaltonen, joined by Dennis Hale, our VP of Sales. Felix worked through the workbook and challenged the markdown figure; Odette answered with their own sell-through data. He said the price was no longer the question and asked for a two-year price lock, which we agreed without a discount. Verbal yes on the call, order form to follow. Bram owns the data load and Odette runs the first range review in Halcyon."
+        }
+      ],
+      "signals": {
+        "objections": [
+          {
+            "type": "pricing",
+            "text": "CFO asked what $120,000 returns and whether 15 percent could come off; settled with a workbook from their own figures.",
+            "status": "addressed",
+            "first_seen_on": "2025-08-12",
+            "evidence": [
+              "qui-2",
+              "qui-3",
+              "qui-4"
+            ]
+          }
+        ],
+        "competitors": [],
+        "pricing": {
+          "discount_requested": true,
+          "notes": "CFO asked for 15 percent off. No discount was given: an ROI workbook from the buyer's own numbers and a two-year price lock closed it at $120,000."
+        },
+        "promises": [
+          {
+            "text": "Take the ROI workbook to the CFO and go through it with him.",
+            "owner": "Odette Marr",
+            "due_on": "2025-09-15",
+            "status": "kept",
+            "evidence": [
+              "qui-3"
+            ]
+          }
+        ],
+        "plays_used": [
+          "PLAY-03",
+          "PLAY-02"
+        ]
+      }
+    },
+    {
+      "account": "Fairhollow Distribution",
+      "name": "Fairhollow Distribution - Halcyon Pipeline",
+      "industry": "logistics",
+      "segment": "mid_market",
+      "amount": 105000,
+      "owner": "Elena Rossi",
+      "opened_on": "2026-02-02",
+      "closed_on": "2026-06-26",
+      "result": "won",
+      "loss_reason": null,
+      "stakeholders": [
+        {
+          "name": "Thea Lindgren",
+          "title": "Finance Controller",
+          "stance": "champion",
+          "engaged": true,
+          "economic_buyer": false
+        },
+        {
+          "name": "Wim Dekker",
+          "title": "Operations Director",
+          "stance": "champion",
+          "engaged": true,
+          "economic_buyer": false
+        },
+        {
+          "name": "Hugo Sandoval",
+          "title": "Chief Financial Officer",
+          "stance": "supporter",
+          "engaged": true,
+          "economic_buyer": true
+        }
+      ],
+      "interactions": [
+        {
+          "key": "fai-1",
+          "kind": "call_note",
+          "date": "2026-02-18",
+          "author": "Elena Rossi",
+          "subject": "Discovery with the finance controller",
+          "text": "Call with Thea Lindgren, finance controller at Fairhollow Distribution, a warehousing and delivery group with six depots. Her month-end close takes eight working days because depot data arrives in different formats. She wants lane and depot profitability on one screen. Thea is keen but she is the only person at Fairhollow who has seen the product. Budget is around $100,000 and she says Hugo Sandoval, the CFO, will want proof of payback. I quoted $105,000."
+        },
+        {
+          "key": "fai-2",
+          "kind": "email",
+          "date": "2026-03-30",
+          "author": "Thea Lindgren",
+          "subject": "Hugo and the price",
+          "text": "Elena, Hugo has looked at the $105,000 proposal and said it is more than the incumbent reporting add-on costs us, and he does not see why. I like the product but I am not able to make his case on my own. I do not have the operations side on board either, and they are the ones who would use it daily. Is there something you can give me that shows the return on our own volumes?"
+        },
+        {
+          "key": "fai-3",
+          "kind": "crm_note",
+          "date": "2026-05-06",
+          "author": "Elena Rossi",
+          "subject": "ROI workbook and a second champion",
+          "text": "Built the ROI workbook with Thea from Fairhollow's own depot data: four days off the month-end close, about $62,000 a year in avoidable overtime and roughly $90,000 from fewer mis-billed lanes. Payback in 5.1 months. I also asked Thea to introduce me to Wim Dekker, the operations director; after a working session he asked to be on every call and now argues for the rollout himself. I have not mentioned a discount to anyone."
+        },
+        {
+          "key": "fai-4",
+          "kind": "meeting",
+          "date": "2026-06-12",
+          "author": "Elena Rossi",
+          "subject": "Final review with the CFO",
+          "text": "Final review with Hugo Sandoval, Thea and Wim. Hugo went through the workbook, and Wim confirmed the overtime figure from the depot side. Hugo said the price is justified by the numbers and asked only for a start date before the end of the quarter. We agreed 1 July without any change to the $105,000. Verbal approval on the call; the order form was signed two weeks later."
+        }
+      ],
+      "signals": {
+        "objections": [
+          {
+            "type": "pricing",
+            "text": "CFO questioned $105,000 against the incumbent add-on; answered with a workbook from their own depot data.",
+            "status": "addressed",
+            "first_seen_on": "2026-03-30",
+            "evidence": [
+              "fai-2",
+              "fai-3",
+              "fai-4"
+            ]
+          }
+        ],
+        "competitors": [],
+        "pricing": {
+          "discount_requested": false,
+          "notes": "No discount asked or given. An ROI workbook from Fairhollow's own data and a second champion in operations closed it at $105,000."
+        },
+        "promises": [
+          {
+            "text": "Introduce the vendor to the operations director.",
+            "owner": "Thea Lindgren",
+            "due_on": "2026-04-17",
+            "status": "kept",
+            "evidence": [
+              "fai-3"
+            ]
+          }
+        ],
+        "plays_used": [
+          "PLAY-03",
+          "PLAY-08"
+        ]
+      }
+    },
+    {
+      "account": "Juniper & Vale Stores",
+      "name": "Juniper & Vale Stores - Halcyon Pipeline",
+      "industry": "retail",
+      "segment": "mid_market",
+      "amount": 130000,
+      "owner": "Priya Nair",
+      "opened_days_ago": 58,
+      "stage": "negotiation",
+      "result": "open",
+      "loss_reason": null,
+      "stakeholders": [
+        {
+          "name": "Marisol Teague",
+          "title": "Head of Replenishment",
+          "stance": "champion",
+          "engaged": true,
+          "economic_buyer": false,
+          "note": "Our champion. Replies within a day and wants this live before the autumn range."
+        },
+        {
+          "name": "Declan Ashby",
+          "title": "Chief Financial Officer",
+          "stance": "neutral",
+          "engaged": true,
+          "economic_buyer": true,
+          "note": "Asked for the discount himself. Joined the demo and the last call."
+        },
+        {
+          "name": "Yusuf Demir",
+          "title": "Buying Analyst",
+          "stance": "supporter",
+          "engaged": true,
+          "economic_buyer": false
+        }
+      ],
+      "interactions": [
+        {
+          "key": "jun-1",
+          "kind": "call_note",
+          "days_ago": 52,
+          "author": "Priya Nair",
+          "subject": "Discovery with replenishment",
+          "text": "Discovery with Marisol Teague, head of replenishment at Juniper & Vale Stores, a 48-store homewares and gifts retailer. Reorders are set by hand from spreadsheets, and Marisol says stock-outs on the top 200 lines cost them sales every week. Yusuf Demir, the buying analyst, keeps the forecasts together and will be our day-to-day contact. Budget is around $125,000 to $135,000 and Declan Ashby, the CFO, signs. I quoted $130,000 and Marisol said it was in range."
+        },
+        {
+          "key": "jun-2",
+          "kind": "meeting",
+          "days_ago": 35,
+          "author": "Priya Nair",
+          "subject": "Demo with the CFO",
+          "text": "Demo for Marisol, Yusuf and Declan Ashby on last quarter's data. Declan asked sharp questions on how the forecast is checked against actual sales and was satisfied with the back-test. He said the finance team already uses a cheaper reporting tool and asked how Halcyon compares. Marisol was pleased with the reaction. Next step was a formal proposal, which I sent two days later."
+        },
+        {
+          "key": "jun-3",
+          "kind": "email",
+          "days_ago": 19,
+          "author": "Marisol Teague",
+          "subject": "Orbitly and the price",
+          "text": "Priya, Declan has had a quote from Orbitly at $96,000 and he has asked me to get your price down to somewhere near it. He specifically asked whether you can take 15 percent off the $130,000. I like Halcyon much better, particularly the store-level replenishment, but Declan is comparing the two numbers and not much else. Could you let me know what is possible? I would like to settle the commercial side this month."
+        },
+        {
+          "key": "jun-4",
+          "kind": "crm_note",
+          "days_ago": 9,
+          "author": "Priya Nair",
+          "subject": "Where we are on price",
+          "text": "Declan wants 15 percent off, which would take $130,000 to $110,500, and he is holding Orbitly's $96,000 against us. I have not given a number yet and I have not sent a counter. Marisol is fully engaged and Declan is on the calls, so we are not short of access. My manager is open to a discount, but I want to be sure it is the right move before I put one in writing. Nothing has been tried on price so far."
+        },
+        {
+          "key": "jun-5",
+          "kind": "email",
+          "days_ago": 3,
+          "author": "Priya Nair",
+          "subject": "Revised quote on the way",
+          "text": "Marisol, thanks for your patience on pricing. I know Declan wants an answer, and I will send the revised quote by the end of this week so you have it before your Friday finance meeting. I am also glad to join that meeting if it would help you make the case. Please tell me if Declan needs anything from us in the meantime, including figures from your own stores that I could work through with Yusuf."
+        }
+      ],
+      "signals": {
+        "objections": [
+          {
+            "type": "pricing",
+            "text": "CFO is holding Orbitly's $96,000 against Halcyon's $130,000 and has asked for 15 percent off.",
+            "status": "raised",
+            "first_seen_days_ago": 19,
+            "evidence": [
+              "jun-3",
+              "jun-4",
+              "jun-5"
+            ]
+          }
+        ],
+        "competitors": [
+          "Orbitly"
+        ],
+        "pricing": {
+          "discount_requested": true,
+          "notes": "CFO asked for 15 percent off $130,000 against an Orbitly quote of $96,000; no counter has been sent."
+        },
+        "promises": [
+          {
+            "text": "Send the revised quote.",
+            "owner": "Priya Nair",
+            "due_in_days": 3,
+            "status": "open",
+            "evidence": [
+              "jun-5"
+            ]
+          }
+        ],
+        "plays_used": []
+      }
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+From: Nadia Kowalczyk <nadia.kowalczyk@tidewaterfreight.example>
+To: Marcus Webb
+Subject: Re: Warehouse system export for the forecast
+
+Marcus, thanks for the call. Answering your questions about our warehouse management system, ShelfLogic WMS. It is hosted by the vendor and we have no direct database access. What we do have is a nightly CSV export of pallet movements per warehouse, dropped on an SFTP server, and a REST API that our IT team has never used. Our IT lead, Dev Pillai, thinks the API is rate limited to 60 calls a minute.
+
+From: Marcus Webb
+To: Nadia Kowalczyk
+
+Nadia, the nightly SFTP file is enough for a first version; no API work is needed. Could you send one week of the export with the column headers, with customer names removed? I will have our solutions engineer confirm the mapping before our next call.
+
+From: Nadia Kowalczyk
+To: Marcus Webb
+
+Attached. One warning: the file has a different date format for the Gdansk warehouse. Nobody has ever fixed that.

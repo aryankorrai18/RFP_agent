@@ -1,0 +1,2657 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#f5f5f7" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
+<meta name="description" content="A pre-call deal brief grounded in the deal's own history and in what memory recalls from past won and lost deals.">
+<title>Deal Intelligence</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%230071e3'/%3E%3Cpath d='M8 21l5-6 4 3 7-9M19 9h5v5' fill='none' stroke='white' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+<style>
+/* Design tokens: the Agent Hub's (light grey canvas, white surfaces, Inter, blue accent), plus this app's role colours. */
+:root {
+  color-scheme: light;
+  --canvas: #f5f5f7; --paper: var(--canvas); --surface: #ffffff; --surface-2: #f9f9fb; --rail: #fbfbfd;
+  --fill: #e8e8ed; --fill-2: #f2f2f4; --fill-hover: #dcdce1;
+  --ink: #1d1d1f; --ink-2: #424245; --muted: #6e6e73; --ink-3: #86868b;
+  --hair: rgba(0, 0, 0, .08); --line: #e3e3e8; --line-strong: #d2d2d7;
+  --btn: #0071e3; --btn-hover: #0077ed; --accent: #0066cc; --accent-ink: #ffffff; --accent-soft: rgba(0, 113, 227, .09);
+  --ok: #1d7f3a; --ok-soft: rgba(36, 138, 61, .1);
+  --warn: #b64400; --warn-soft: rgba(182, 68, 0, .09);
+  --mem: #8944ab; --mem-soft: rgba(137, 68, 171, .1);
+  --bad: #d70015; --bad-soft: rgba(215, 0, 21, .07);
+  --nav: rgba(245, 245, 247, .8); --tile-dark: #1d1d1f; --sheen: rgba(255, 255, 255, .75);
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, .03), 0 2px 8px rgba(0, 0, 0, .04);
+  --shadow: 0 2px 6px rgba(0, 0, 0, .03), 0 8px 24px rgba(0, 0, 0, .06);
+  --shadow-lg: 0 6px 16px rgba(0, 0, 0, .06), 0 20px 44px rgba(0, 0, 0, .12);
+  --ring: 0 0 0 4px rgba(0, 113, 227, .16);
+  --sans: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Inter", "Segoe UI Variable Text", "Segoe UI", system-ui, sans-serif;
+  --serif: var(--sans);
+  --mono: ui-monospace, "SF Mono", "Cascadia Mono", Consolas, monospace;
+  --mark: linear-gradient(150deg, #3d9cff, #0060cc);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --canvas: #000000; --surface: #1c1c1e; --surface-2: #232325; --rail: #0f0f10;
+    --fill: #2c2c2e; --fill-2: #232325; --fill-hover: #3a3a3c;
+    --ink: #f5f5f7; --ink-2: #d2d2d7; --muted: #a1a1a6; --ink-3: #86868b;
+    --hair: rgba(255, 255, 255, .09); --line: #2f2f32; --line-strong: #424245;
+    --btn: #0071e3; --btn-hover: #0a7cf0; --accent: #2997ff; --accent-soft: rgba(41, 151, 255, .15);
+    --ok: #30d158; --ok-soft: rgba(48, 209, 88, .14); --warn: #ff9f0a; --warn-soft: rgba(255, 159, 10, .14);
+    --mem: #bf5af2; --mem-soft: rgba(191, 90, 242, .16); --bad: #ff453a; --bad-soft: rgba(255, 69, 58, .14);
+    --nav: rgba(16, 16, 17, .72); --tile-dark: #2c2c2e; --sheen: rgba(255, 255, 255, .07);
+    --shadow-sm: 0 0 0 1px rgba(255, 255, 255, .02); --shadow: 0 10px 30px rgba(0, 0, 0, .45); --shadow-lg: 0 20px 50px rgba(0, 0, 0, .65);
+    --ring: 0 0 0 4px rgba(41, 151, 255, .25);
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --canvas: #000000; --surface: #1c1c1e; --surface-2: #232325; --rail: #0f0f10;
+  --fill: #2c2c2e; --fill-2: #232325; --fill-hover: #3a3a3c;
+  --ink: #f5f5f7; --ink-2: #d2d2d7; --muted: #a1a1a6; --ink-3: #86868b;
+  --hair: rgba(255, 255, 255, .09); --line: #2f2f32; --line-strong: #424245;
+  --btn: #0071e3; --btn-hover: #0a7cf0; --accent: #2997ff; --accent-soft: rgba(41, 151, 255, .15);
+  --ok: #30d158; --ok-soft: rgba(48, 209, 88, .14); --warn: #ff9f0a; --warn-soft: rgba(255, 159, 10, .14);
+  --mem: #bf5af2; --mem-soft: rgba(191, 90, 242, .16); --bad: #ff453a; --bad-soft: rgba(255, 69, 58, .14);
+  --nav: rgba(16, 16, 17, .72); --tile-dark: #2c2c2e; --sheen: rgba(255, 255, 255, .07);
+  --shadow-sm: 0 0 0 1px rgba(255, 255, 255, .02); --shadow: 0 10px 30px rgba(0, 0, 0, .45); --shadow-lg: 0 20px 50px rgba(0, 0, 0, .65);
+  --ring: 0 0 0 4px rgba(41, 151, 255, .25);
+}
+* { box-sizing: border-box; }
+html { min-height: 100%; background: var(--canvas); }
+body { margin: 0; min-height: 100vh; background: var(--canvas); color: var(--ink); font: 400 15px/1.5 var(--sans); letter-spacing: -.003em; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; overflow-x: hidden; }
+[hidden] { display: none !important; }
+button, input, select, textarea { font: inherit; color: inherit; letter-spacing: inherit; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.vh { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+h1, h2, h3, h4 { margin: 0; text-wrap: balance; }
+p { margin: 0; }
+a { color: var(--accent); }
+.mono { font-family: var(--sans); font-variant-numeric: tabular-nums; letter-spacing: 0; }
+.muted { color: var(--muted); }
+.small { font-size: 13px; }
+.tiny { font-size: 11.5px; }
+.eyebrow { color: var(--accent); font-size: 11.5px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; }
+* { scrollbar-width: thin; scrollbar-color: var(--fill-hover) transparent; }
+
+/* shell */
+/* The sidebar column is painted on the shell, so it runs the full page height however long the page is;
+   the sidebar itself stays pinned to the window (sticky, 100dvh, its own scrolling). */
+.app-shell { min-height: 100vh; min-height: 100dvh; display: grid; grid-template-columns: 264px minmax(0, 1fr);
+  background: linear-gradient(to right, var(--rail) 0 263px, var(--hair) 263px 264px, transparent 264px) no-repeat; }
+.sidebar { position: sticky; top: 0; height: 100vh; height: 100dvh; align-self: start; z-index: 20; display: flex; flex-direction: column; padding: 18px 14px 16px; background: var(--rail); color: var(--ink); border-right: 1px solid var(--hair); overflow-y: auto; }
+.brand-lockup { display: flex; gap: 11px; align-items: center; padding: 2px 6px 22px; color: inherit; text-decoration: none; border-radius: 10px; }
+.brand-mark { width: 32px; height: 32px; flex: none; display: grid; place-items: center; border-radius: 9px; background: var(--mark); color: #fff; box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .14); }
+.brand-mark svg { width: 18px; height: 18px; }
+.brand-copy { display: grid; gap: 1px; }
+.brand-copy strong { font-size: 16px; font-weight: 700; line-height: 1.2; letter-spacing: -.022em; }
+.brand-copy span { color: var(--muted); font-size: 12px; }
+.nav { display: grid; gap: 2px; align-content: start; }
+.nav-label { padding: 8px 10px 8px; color: var(--muted); font-size: 11.5px; line-height: 1; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; }
+.nav a, .nav button { min-height: 40px; display: flex; align-items: center; gap: 11px; padding: 8px 11px; border: 0; background: none; text-align: left; border-radius: 10px; color: var(--ink-2); font-size: 14px; font-weight: 500; text-decoration: none; cursor: pointer; transition: color .15s, background .15s; }
+.nav a:hover, .nav button:hover { color: var(--ink); background: var(--fill-2); }
+.nav a[aria-current="page"] { color: var(--accent); background: var(--accent-soft); font-weight: 600; }
+.nav svg { width: 18px; height: 18px; flex: none; stroke: currentColor; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.nav .status-btn { display: none; }
+.sidebar-bottom { margin-top: auto; display: grid; gap: 10px; padding-top: 16px; }
+.system-card { padding: 14px; border: 1px solid var(--hair); border-radius: 16px; background: var(--surface); box-shadow: var(--shadow-sm); display: grid; gap: 10px; }
+.system-head { color: var(--muted); font-size: 11.5px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; }
+.sys-row { display: grid; grid-template-columns: 10px minmax(0, 1fr); gap: 8px; align-items: start; color: var(--muted); font-size: 12px; line-height: 1.45; overflow-wrap: anywhere; }
+.sys-row b { color: var(--ink); font-weight: 600; }
+.sys-row .dot { margin-top: 5px; width: 7px; height: 7px; }
+.dot { width: 8px; height: 8px; border-radius: 50%; background: var(--ink-3); flex: none; display: inline-block; }
+.dot.ok { background: var(--ok); } .dot.warn { background: var(--warn); } .dot.bad { background: var(--bad); }
+.sys-health { padding: 10px 11px; border-radius: 12px; background: var(--bad-soft); color: var(--ink-2); font-size: 12px; display: grid; gap: 5px; }
+.sys-health.warn { background: var(--warn-soft); }
+.sys-health b { color: var(--bad); }
+.sys-health.warn b { color: var(--warn); }
+.sys-btn { justify-self: start; border: 0; background: var(--fill); color: var(--ink); border-radius: 999px; padding: 5px 12px; font-size: 12px; font-weight: 600; cursor: pointer; }
+.sys-btn:hover:not(:disabled) { background: var(--fill-hover); }
+.sys-btn:disabled { opacity: .5; cursor: not-allowed; }
+.sidebar-foot { display: flex; justify-content: space-between; color: var(--muted); font-size: 11.5px; padding: 0 6px; }
+.workspace { min-width: 0; min-height: 100vh; }
+.workspace-top { height: 56px; display: flex; align-items: center; justify-content: space-between; gap: 14px; padding: 0 clamp(16px, 3vw, 40px); background: var(--nav); backdrop-filter: saturate(180%) blur(20px); -webkit-backdrop-filter: saturate(180%) blur(20px); border-bottom: 1px solid var(--hair); position: sticky; top: 0; z-index: 15; }
+.workspace-context { display: flex; align-items: center; gap: 10px; color: var(--muted); font-size: 13px; min-width: 0; }
+.workspace-context strong { color: var(--ink); font-weight: 600; }
+.mobile-brand { display: none; align-items: center; gap: 9px; font-weight: 700; letter-spacing: -.02em; }
+.mobile-brand .brand-mark { width: 28px; height: 28px; border-radius: 8px; }
+.mobile-brand .brand-mark svg { width: 16px; height: 16px; }
+.top-actions { position: relative; display: flex; align-items: center; gap: 8px; margin-left: auto; }
+.model-btn { height: 34px; display: inline-flex; align-items: center; gap: 7px; max-width: min(42vw, 260px); padding: 0 13px; border: 1px solid var(--hair); border-radius: 999px; color: var(--ink-2); background: var(--fill-2); cursor: pointer; font: 500 12.5px/1 var(--sans); }
+.model-btn span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.model-btn:hover, .model-btn[aria-expanded="true"] { background: var(--fill); color: var(--ink); }
+.model-btn.failing { border-color: color-mix(in srgb, var(--bad) 45%, transparent); color: var(--bad); background: var(--bad-soft); }
+.model-btn svg, .theme-toggle svg { width: 16px; height: 16px; flex: none; stroke: currentColor; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.theme-toggle { width: 34px; height: 34px; display: grid; place-items: center; border: 0; border-radius: 50%; color: var(--ink-2); background: transparent; cursor: pointer; }
+.theme-toggle:hover { background: var(--fill); }
+.model-panel { position: absolute; top: calc(100% + 10px); right: 0; z-index: 30; width: min(360px, calc(100vw - 32px)); display: grid; gap: 12px; padding: 18px; background: var(--surface); color: var(--ink); border: 1px solid var(--hair); border-radius: 20px; box-shadow: var(--shadow-lg); }
+.model-panel > strong { font-size: 17px; letter-spacing: -.016em; }
+.ws-panel { width: min(380px, calc(100vw - 32px)); right: 44px; }
+.model-health { margin: 0; padding: 10px 12px; border-radius: 12px; background: var(--bad-soft); font-size: 13px; }
+.model-health b { color: var(--bad); }
+.model-msg:empty { display: none; }
+.model-msg.ok { color: var(--ok); } .model-msg.bad { color: var(--bad); }
+.ws-list { display: grid; gap: 6px; }
+.ws-row { display: flex; align-items: center; gap: 6px; }
+.ws-item { display: flex; justify-content: space-between; align-items: center; gap: 10px; flex: 1; min-width: 0; text-align: left; padding: 10px 12px; border: 1px solid var(--hair); border-radius: 14px; background: var(--surface); color: var(--ink); cursor: pointer; }
+.ws-item > span:first-child { display: grid; gap: 2px; min-width: 0; }
+.ws-item:hover:not(:disabled) { background: var(--fill-2); }
+.ws-item.active { border-color: color-mix(in srgb, var(--ok) 45%, transparent); background: var(--ok-soft); cursor: default; }
+.alert { position: fixed; right: 20px; top: 72px; z-index: 50; width: min(440px, calc(100vw - 32px)); padding: 14px 44px 14px 18px; border-radius: 18px; background: var(--surface); color: var(--bad); border: 1px solid var(--hair); box-shadow: var(--shadow-lg); animation: rise .25s cubic-bezier(.2, .7, .2, 1); }
+.alert strong { font-weight: 600; }
+.alert p { margin-top: 3px; color: var(--ink-2); font-size: 13.5px; }
+.alert.notice { color: var(--ok); }
+.alert .x { position: absolute; top: 9px; right: 9px; width: 28px; height: 28px; border: 0; border-radius: 50%; background: none; color: var(--muted); cursor: pointer; font-size: 18px; line-height: 1; }
+.alert .x:hover { color: var(--ink); background: var(--fill-2); }
+.alert .alert-actions { margin-top: 10px; }
+main#view { width: min(1280px, 100%); margin: 0 auto; padding: 36px clamp(16px, 3vw, 40px) 80px; }
+
+/* blocks */
+.page-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 20px; margin-bottom: 26px; flex-wrap: wrap; }
+.page-head-copy { display: grid; gap: 8px; min-width: 0; }
+.page-title { font: 700 clamp(30px, 3.4vw, 44px)/1.08 var(--sans); letter-spacing: -.032em; overflow-wrap: anywhere; }
+.page-subtitle { max-width: 720px; color: var(--muted); font-size: 17px; line-height: 1.47; letter-spacing: -.012em; }
+.back { font-size: 13.5px; font-weight: 500; text-decoration: none; color: var(--accent); }
+.back:hover { text-decoration: underline; }
+.panel { background: var(--surface); border: 1px solid var(--hair); border-radius: 22px; padding: 22px 24px; display: grid; gap: 14px; min-width: 0; box-shadow: var(--shadow-sm); }
+.panel.raised { box-shadow: var(--shadow); }
+.panel h2 { font: 700 19px/1.25 var(--sans); letter-spacing: -.02em; }
+.panel h3 { font: 600 15px/1.3 var(--sans); letter-spacing: -.01em; }
+.stack { display: grid; gap: 18px; }
+.stack-s { display: grid; gap: 8px; }
+.row { display: flex; flex-wrap: wrap; gap: 8px 10px; align-items: center; }
+.spread { justify-content: space-between; }
+.grid2 { display: grid; gap: 20px; grid-template-columns: minmax(0, 1fr); align-items: start; }
+@media (min-width: 1100px) { .grid2 { grid-template-columns: minmax(0, 1fr) 360px; } .sticky { position: sticky; top: 76px; } }
+.grid2.deals-grid { grid-template-columns: minmax(0, 1fr); }
+@media (min-width: 1460px) { .grid2.deals-grid { grid-template-columns: minmax(0, 1fr) 360px; } }
+.fields { display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(min(170px, 100%), 1fr)); }
+label.field { display: grid; gap: 6px; font-size: 13px; font-weight: 500; color: var(--ink-2); min-width: 0; }
+input[type=text], input[type=date], input[type=number], select, textarea { width: 100%; min-height: 42px; border: 1px solid var(--line-strong); border-radius: 11px; padding: 9px 12px; background: var(--surface); font-weight: 400; font-size: 14.5px; transition: border-color .15s, box-shadow .15s; }
+textarea { resize: vertical; min-height: 96px; line-height: 1.5; }
+input:focus, select:focus, textarea:focus { border-color: var(--btn); box-shadow: var(--ring); outline: none; }
+input[type=checkbox], input[type=radio] { accent-color: var(--btn); width: 16px; height: 16px; }
+.btn { min-height: 38px; border: 1px solid transparent; background: var(--fill); color: var(--ink); border-radius: 980px; padding: 8px 18px; font-size: 14px; font-weight: 500; line-height: 1.2; cursor: pointer; transition: background .15s, transform .15s, opacity .15s; }
+.btn:hover:not(:disabled) { background: var(--fill-hover); }
+.btn:active:not(:disabled) { transform: scale(.98); }
+.btn.primary { background: var(--btn); color: #fff; }
+.btn.primary:hover:not(:disabled) { background: var(--btn-hover); }
+.btn.small { min-height: 32px; padding: 5px 14px; font-size: 13px; }
+.btn.danger { background: var(--bad-soft); color: var(--bad); }
+.btn.danger:hover:not(:disabled) { background: color-mix(in srgb, var(--bad) 16%, transparent); }
+.btn.armed { background: var(--bad); border-color: var(--bad); color: #fff; }
+.btn.armed:hover:not(:disabled) { background: var(--bad); }
+.btn:disabled { opacity: .45; cursor: not-allowed; transform: none; }
+a.btn { text-decoration: none; display: inline-flex; align-items: center; }
+a.btn.primary { color: #fff; }
+.linkish { background: none; border: 0; padding: 0; color: var(--accent); font-weight: 500; cursor: pointer; }
+.linkish:hover { text-decoration: underline; }
+.seg { display: inline-flex; flex-wrap: wrap; gap: 2px; padding: 3px; border-radius: 12px; background: var(--fill); }
+.seg button { border: 0; background: none; padding: 6px 14px; min-height: 32px; border-radius: 9px; cursor: pointer; font-size: 13.5px; font-weight: 500; color: var(--ink-2); transition: background .15s, box-shadow .15s; }
+.seg button:hover:not(:disabled):not([aria-pressed="true"]) { color: var(--ink); }
+.seg button[aria-pressed="true"] { background: var(--surface); color: var(--ink); font-weight: 600; box-shadow: 0 1px 3px rgba(0, 0, 0, .12), 0 0 0 .5px rgba(0, 0, 0, .04); }
+.seg button:disabled { opacity: .5; cursor: not-allowed; }
+.drop { display: grid; gap: 3px; align-content: center; justify-items: start; min-height: 88px; padding: 16px 18px; border: 1.5px dashed var(--line-strong); border-radius: 16px; background: var(--surface-2); cursor: pointer; transition: border-color .15s, background .15s; }
+.drop:hover, .drop.over { border-color: var(--btn); background: var(--accent-soft); }
+.drop b { overflow-wrap: anywhere; font-weight: 600; }
+.note { border-radius: 14px; padding: 12px 15px; font-size: 14px; background: var(--role-soft, var(--fill-2)); color: var(--ink); border: 1px solid color-mix(in srgb, var(--role, var(--ink-3)) 18%, transparent); display: grid; gap: 4px; }
+.note .t { font-weight: 600; color: var(--role, var(--ink)); }
+.note ul { margin: 2px 0 0; padding-left: 18px; }
+.note p { margin: 0; }
+.problem { gap: 6px; }
+.problem details summary { cursor: pointer; font-size: 12.5px; color: var(--muted); }
+.problem details p { margin-top: 4px; font: 12px/1.45 var(--mono); overflow-wrap: anywhere; color: var(--ink-2); }
+.c-ok { --role: var(--ok); --role-soft: var(--ok-soft); }
+.c-warn { --role: var(--warn); --role-soft: var(--warn-soft); }
+.c-mem { --role: var(--mem); --role-soft: var(--mem-soft); }
+.c-bad { --role: var(--bad); --role-soft: var(--bad-soft); }
+.c-info { --role: var(--accent); --role-soft: var(--accent-soft); }
+.c-muted { --role: var(--muted); --role-soft: var(--fill-2); }
+.pill { display: inline-block; font: 600 12px/1 var(--sans); color: var(--role); background: var(--role-soft); border-radius: 999px; padding: 5px 10px; white-space: nowrap; }
+.empty { min-height: 96px; display: grid; place-content: center; text-align: center; color: var(--muted); padding: 18px 4px; gap: 6px; justify-items: center; }
+.empty b { color: var(--ink); font-weight: 600; }
+.skeleton { min-height: 220px; border-radius: 22px; background-color: var(--fill-2); background-image: linear-gradient(90deg, transparent 0, var(--sheen) 50%, transparent 100%); background-size: 40% 100%; background-repeat: no-repeat; animation: shimmer 1.5s ease-in-out infinite; }
+.sk { display: block; border-radius: 7px; background-color: var(--fill); background-image: linear-gradient(90deg, transparent 0, var(--sheen) 50%, transparent 100%); background-size: 50% 100%; background-repeat: no-repeat; animation: shimmer 1.5s ease-in-out infinite; }
+.sk-line { height: 11px; } .sk-line.sm { height: 9px; } .sk-line.lg { height: 18px; border-radius: 9px; } .sk-line.xl { height: clamp(30px, 3.4vw, 44px); border-radius: 12px; } .sk-line.num { height: 30px; border-radius: 9px; }
+.w20 { width: 20%; } .w30 { width: 30%; } .w40 { width: 40%; } .w50 { width: 50%; } .w60 { width: 60%; } .w70 { width: 70%; } .w80 { width: 80%; } .w90 { width: 90%; }
+.skel-page { display: grid; gap: 22px; }
+.skel-page .metric { gap: 12px; }
+.skel-page .metric-grid > .metric:first-child { background: var(--surface); border-color: var(--hair); }
+.sk-rows { display: grid; }
+.sk-rows > div { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 24px; padding: 16px 4px; border-top: 1px solid var(--hair); }
+.sk-rows > div:first-child { border-top: 0; }
+.sk-tabs { display: flex; gap: 22px; padding-bottom: 12px; border-bottom: 1px solid var(--hair); }
+.sk-tabs .sk { width: 92px; }
+@keyframes shimmer { from { background-position: -60% 0; } to { background-position: 160% 0; } }
+.scroll-x { overflow-x: auto; max-width: 100%; }
+.plain-table { border-collapse: collapse; width: 100%; font-size: 13.5px; font-variant-numeric: tabular-nums; }
+.plain-table th, .plain-table td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--hair); vertical-align: top; }
+.plain-table tbody tr:last-child td { border-bottom: 0; }
+.plain-table tbody tr:hover td { background: var(--surface-2); }
+.plain-table thead th { color: var(--muted); font-weight: 600; font-size: 11.5px; letter-spacing: .07em; text-transform: uppercase; white-space: nowrap; }
+.plain-table td.num, .plain-table th.num { text-align: right; }
+.ok-text { color: var(--ok); } .bad-text { color: var(--bad); }
+.legendline { display: flex; flex-wrap: wrap; gap: 8px 14px; font-size: 12.5px; color: var(--muted); align-items: center; }
+
+/* origin tags + citation chips */
+.tag { display: inline-flex; align-items: center; gap: 5px; font: 600 10.5px/1 var(--sans); letter-spacing: .06em; text-transform: uppercase; border-radius: 999px; padding: 4px 8px; color: var(--role); background: var(--role-soft); }
+.cite { font: 600 11.5px/1 var(--mono); border-radius: 7px; padding: 4px 6px; border: 1px solid transparent; cursor: pointer; color: var(--role); background: var(--role-soft); vertical-align: baseline; margin-inline: 1px; }
+.cite:hover { border-color: color-mix(in srgb, var(--role) 55%, transparent); }
+.cite.bad { text-decoration: line-through; cursor: default; }
+.cites { display: inline-flex; flex-wrap: wrap; gap: 3px; }
+.kchip { font: 500 11.5px/1 var(--mono); color: var(--ink-2); border: 1px solid var(--hair); background: var(--fill-2); border-radius: 7px; padding: 4px 7px; display: inline-block; text-decoration: none; }
+a.kchip:hover { border-color: var(--accent); color: var(--accent); }
+
+/* tabs */
+.tabs { display: flex; gap: 4px; border-bottom: 1px solid var(--hair); margin-bottom: 22px; overflow-x: auto; overflow-y: hidden; max-width: 100%; scrollbar-width: none; }
+.tabs::-webkit-scrollbar { display: none; }
+.tabs button { border: 0; background: none; padding: 11px 14px; font-weight: 500; font-size: 14.5px; color: var(--muted); cursor: pointer; border-bottom: 2px solid transparent; white-space: nowrap; margin-bottom: -1px; transition: color .15s; }
+.tabs button:hover { color: var(--ink); }
+.tabs button[aria-selected="true"] { color: var(--ink); font-weight: 600; border-bottom-color: var(--btn); }
+
+/* deals */
+.metric-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; margin-bottom: 22px; }
+.metric { padding: 18px 20px 16px; border: 1px solid var(--hair); border-radius: 20px; background: var(--surface); display: grid; gap: 6px; box-shadow: var(--shadow-sm); transition: transform .25s cubic-bezier(.2, .7, .2, 1), box-shadow .25s; min-width: 0; }
+.metric:hover { transform: translateY(-2px); box-shadow: var(--shadow); }
+.metric b { font: 700 32px/1.1 var(--sans); letter-spacing: -.03em; font-variant-numeric: tabular-nums; order: 2; overflow-wrap: anywhere; }
+.metric span { color: var(--muted); font-size: 12px; font-weight: 600; letter-spacing: .07em; text-transform: uppercase; order: 1; }
+.metric-grid > .metric:first-child { background: var(--tile-dark); color: #f5f5f7; border-color: transparent; }
+.metric-grid > .metric:first-child span { color: #a1a1a6; }
+.deal-list { display: grid; }
+.deal-row { position: relative; display: grid; gap: 6px 14px; padding: 14px 12px; border-top: 1px solid var(--hair); border-radius: 12px; align-items: center; grid-template-columns: minmax(0, 2.2fr) minmax(0, .8fr) minmax(0, .9fr) minmax(0, .9fr) minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr); transition: background .15s; }
+.deal-row:first-child { border-top: 0; }
+.deal-row:hover { background: var(--surface-2); }
+.deal-row:hover + .deal-row { border-top-color: transparent; }
+.deal-row.head { font-size: 11.5px; font-weight: 600; letter-spacing: .07em; text-transform: uppercase; color: var(--muted); padding-block: 4px 8px; }
+.deal-row.head:hover { background: none; }
+.deal-row a.name { color: var(--ink); font-weight: 600; text-decoration: none; overflow-wrap: anywhere; letter-spacing: -.01em; }
+.deal-row a.name::after { content: ""; position: absolute; inset: 0; border-radius: 12px; }
+.deal-row a.name:hover { color: var(--accent); }
+.deal-row a.name:focus-visible { outline: none; }
+.deal-row a.name:focus-visible::after { outline: 2px solid var(--accent); outline-offset: -2px; }
+.deal-row .acct { font-size: 13px; color: var(--muted); display: block; font-weight: 400; }
+.deal-row .cell-label { display: none; }
+.deal-row .mono { white-space: nowrap; }
+@media (max-width: 960px) {
+  .deal-row.head { display: none; }
+  .deal-row { grid-template-columns: 1fr 1fr; border: 1px solid var(--hair); margin-bottom: 10px; padding: 14px 16px; background: var(--surface); border-radius: 16px; }
+  .deal-row:first-child { border-top: 1px solid var(--hair); }
+  .deal-row > :first-child { grid-column: 1 / -1; }
+  .deal-row .cell-label { display: block; font-size: 10.5px; letter-spacing: .07em; text-transform: uppercase; color: var(--muted); font-weight: 600; }
+  .deal-list { gap: 0; }
+}
+details.fold > summary { cursor: pointer; font-weight: 600; font-size: 16px; padding: 4px 2px; letter-spacing: -.01em; }
+details.fold[open] > summary { margin-bottom: 10px; }
+details.more > summary { cursor: pointer; font-size: 13.5px; color: var(--accent); width: fit-content; font-weight: 500; }
+details.more[open] > summary { margin-bottom: 8px; }
+.guide { display: grid; gap: 10px; background: linear-gradient(135deg, var(--accent-soft), var(--mem-soft)); border-color: transparent; }
+.guide ol { margin: 0; padding-left: 20px; display: grid; gap: 6px; font-size: 14.5px; }
+.start-grid { display: grid; gap: 18px; grid-template-columns: repeat(auto-fit, minmax(min(320px, 100%), 1fr)); align-items: start; }
+.start-card { transition: transform .25s cubic-bezier(.2, .7, .2, 1), box-shadow .25s; }
+.start-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-lg); }
+.start-card h2 { font-size: 24px; }
+.start-card p, .start-list { margin: 0; }
+.start-list { padding-left: 20px; display: grid; gap: 6px; font-size: 14.5px; color: var(--ink-2); }
+
+/* deal page */
+.deal-meta { display: flex; flex-wrap: wrap; gap: 8px 14px; align-items: center; color: var(--muted); font-size: 14px; }
+.deal-meta strong { color: var(--ink); font-weight: 600; }
+.brief-summary { font: 400 18px/1.6 var(--sans); letter-spacing: -.012em; max-width: 74ch; color: var(--ink); }
+.claims { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.claims li { padding: 10px 14px; border-radius: 12px; background: var(--surface-2); border: 1px solid var(--hair); border-left: 3px solid var(--role, var(--btn)); max-width: 82ch; }
+.claims.mem li { --role: var(--mem); }
+.step { display: grid; gap: 7px; padding: 14px 16px; border: 1px solid var(--hair); border-radius: 16px; background: var(--surface-2); }
+.step .step-head { display: flex; gap: 8px 10px; flex-wrap: wrap; align-items: baseline; }
+.step .step-head b { font-size: 15.5px; letter-spacing: -.01em; }
+.step ul { margin: 0; padding-left: 18px; font-size: 13.5px; color: var(--ink-2); }
+.flagbar { display: flex; flex-wrap: wrap; gap: 6px; }
+.flagbadge { display: inline-flex; flex-wrap: wrap; gap: 4px 6px; align-items: center; font: 500 13px/1.35 var(--sans); padding: 6px 11px; border-radius: 12px; color: var(--role); background: var(--role-soft); }
+.flagbadge .cite { background: transparent; }
+.metaline { display: flex; flex-wrap: wrap; gap: 4px 14px; font: 500 11.5px/1.4 var(--mono); color: var(--muted); }
+.cmp-grid { display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(min(250px, 100%), 1fr)); }
+.cmp-arm { display: grid; gap: 10px; align-content: start; padding: 16px; border: 1px solid var(--hair); border-radius: 18px; background: var(--surface-2); min-width: 0; }
+.cmp-arm.hs { border-color: color-mix(in srgb, var(--mem) 45%, transparent); box-shadow: inset 0 3px var(--mem); background: var(--mem-soft); }
+.cmp-arm h3 { display: flex; justify-content: space-between; gap: 8px; align-items: baseline; flex-wrap: wrap; }
+.cmp-arm ul { margin: 0; padding-left: 18px; font-size: 13.5px; display: grid; gap: 5px; }
+.hist-row { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 12px; align-items: center; padding: 10px 4px; border-top: 1px solid var(--hair); font-size: 13.5px; }
+.hist-row:first-child { border-top: 0; }
+.diff-block { display: grid; gap: 10px; padding: 16px 18px; border-radius: 18px; background: var(--mem-soft); border: 1px solid color-mix(in srgb, var(--mem) 30%, transparent); }
+.diff-block h3 { color: var(--mem); }
+.diff-block ul { margin: 0; padding-left: 18px; display: grid; gap: 6px; font-size: 14px; }
+.diff-add { color: var(--ok); font-weight: 600; } .diff-del { color: var(--bad); font-weight: 600; }
+.evi-card { display: grid; gap: 7px; padding: 13px 16px; border: 1px solid var(--hair); border-radius: 16px; background: var(--surface-2); }
+.evi-card.mem { border-left: 3px solid var(--mem); }
+.evi-card.cnt { border-left: 3px solid var(--ink-3); }
+.evi-card.warn { border-left: 3px solid var(--warn); background: var(--warn-soft); }
+.big-n { font: 600 14px/1.4 var(--sans); }
+.avoid-card { display: grid; gap: 10px; padding: 18px 20px; border: 1px solid color-mix(in srgb, var(--warn) 40%, transparent); border-radius: 22px; background: var(--warn-soft); color: var(--ink); min-width: 0; }
+.avoid-card h3 { color: var(--warn); font: 700 18px/1.3 var(--sans); letter-spacing: -.016em; }
+.avoid-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.avoid-list li { display: grid; gap: 4px; padding: 10px 13px; border-radius: 14px; background: var(--surface); border: 1px solid color-mix(in srgb, var(--warn) 25%, transparent); overflow-wrap: anywhere; }
+.cmp-arm.warned:not(.hs) { border-color: color-mix(in srgb, var(--warn) 55%, transparent); box-shadow: inset 0 3px var(--warn); }
+.cmp-punch { display: grid; gap: 6px; padding: 14px 16px; border-radius: 18px; border: 1px solid color-mix(in srgb, var(--warn) 55%, transparent); background: var(--warn-soft); color: var(--ink); }
+.cmp-punch .t { font: 700 16px/1.35 var(--sans); color: var(--warn); letter-spacing: -.01em; }
+.says-body { display: grid; gap: 10px; min-width: 0; }
+.says-body ul.facts { margin: 0; padding-left: 18px; display: grid; gap: 6px; font-size: 13px; color: var(--ink-2); }
+.quality-line { display: grid; gap: 2px; padding: 11px 14px; border-radius: 14px; background: var(--surface-2); border: 1px solid var(--hair); border-left: 3px solid var(--btn); font-size: 14px; }
+.quality-line b { font-variant-numeric: tabular-nums; }
+.people { display: grid; gap: 10px; grid-template-columns: repeat(auto-fill, minmax(min(240px, 100%), 1fr)); }
+.person { padding: 12px 14px; border: 1px solid var(--hair); border-radius: 16px; display: grid; gap: 5px; background: var(--surface-2); }
+.ixn { display: grid; grid-template-columns: 36px minmax(0, 1fr); gap: 4px 14px; padding: 14px 2px; border-top: 1px solid var(--hair); }
+.ixn:first-child { border-top: 0; }
+.kind-badge { width: 34px; height: 34px; border-radius: 10px; display: grid; place-items: center; font: 600 12.5px/1 var(--sans); color: var(--accent); background: var(--accent-soft); }
+.ixn-text { white-space: pre-wrap; font-size: 14px; color: var(--ink-2); overflow-wrap: anywhere; max-width: 82ch; }
+.sig-grid { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr)); }
+.sig-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.sig-list li { display: grid; gap: 4px; padding: 10px 12px; border: 1px solid var(--hair); border-radius: 14px; background: var(--surface-2); font-size: 13.5px; }
+.radio-card { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 2px 10px; padding: 12px 14px; border: 1px solid var(--hair); border-radius: 14px; cursor: pointer; align-items: start; background: var(--surface); transition: background .15s, border-color .15s; }
+.radio-card:hover { background: var(--surface-2); }
+.radio-card:has(input:checked) { border-color: color-mix(in srgb, var(--btn) 55%, transparent); background: var(--accent-soft); }
+.radio-card input { margin-top: 3px; }
+.radio-card .rc-note { grid-column: 2; font-size: 12.5px; color: var(--muted); }
+.play-grid { display: grid; gap: 8px; grid-template-columns: repeat(auto-fill, minmax(min(280px, 100%), 1fr)); }
+.check-card { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 2px 10px; padding: 11px 13px; border: 1px solid var(--hair); border-radius: 14px; cursor: pointer; align-items: start; background: var(--surface); transition: background .15s, border-color .15s; }
+.check-card:hover { background: var(--surface-2); }
+.check-card:has(input:checked) { border-color: color-mix(in srgb, var(--btn) 55%, transparent); background: var(--accent-soft); }
+.check-card input { margin-top: 3px; }
+.check-card .cc-note { grid-column: 2; font-size: 12.5px; color: var(--muted); }
+.timeline { display: grid; }
+.tl-item { position: relative; display: grid; gap: 4px; padding: 3px 4px 18px 28px; }
+.tl-item:not(:last-child)::before { content: ""; position: absolute; left: 7px; top: 14px; bottom: -2px; width: 1px; background: var(--hair); }
+.tl-item::after { content: ""; position: absolute; left: 2px; top: 6px; width: 11px; height: 11px; border: 3px solid var(--surface); border-radius: 50%; background: var(--mem); box-shadow: 0 0 0 1px var(--mem); }
+.markdown-content { display: grid; gap: 10px; color: var(--ink-2); max-width: 78ch; }
+.markdown-content h3, .markdown-content h4 { margin: 8px 0 0; color: var(--ink); letter-spacing: -.012em; }
+.markdown-content h3 { font-size: 17px; } .markdown-content h4 { font-size: 14.5px; }
+.markdown-content ul, .markdown-content ol { margin: 0; display: grid; gap: 7px; padding-left: 22px; }
+.markdown-content strong { color: var(--ink); }
+.markdown-content code { padding: 2px 6px; border-radius: 6px; background: var(--fill-2); font: .88em var(--mono); }
+
+/* drawer */
+.scrim { position: fixed; inset: 0; z-index: 60; background: rgba(0, 0, 0, .32); backdrop-filter: blur(2px); }
+.drawer { position: fixed; top: 0; right: 0; bottom: 0; z-index: 61; width: min(500px, 100vw); background: var(--surface); border-left: 1px solid var(--hair); box-shadow: var(--shadow-lg); display: grid; grid-template-rows: auto minmax(0, 1fr); animation: slidein .28s cubic-bezier(.2, .7, .2, 1); }
+.drawer-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; padding: 20px 22px 16px; border-bottom: 1px solid var(--hair); }
+.drawer-head h2 { font-size: 22px; letter-spacing: -.02em; line-height: 1.2; }
+.drawer-body { overflow-y: auto; padding: 18px 22px 36px; display: grid; gap: 14px; align-content: start; }
+
+/* loading, slow and busy states */
+.topprog { position: fixed; top: 0; left: 0; right: 0; height: 3px; z-index: 100; pointer-events: none; opacity: 0; transition: opacity .3s; }
+.topprog > i { display: block; height: 100%; width: 0; background: var(--btn); box-shadow: 0 0 8px color-mix(in srgb, var(--btn) 60%, transparent); border-radius: 0 3px 3px 0; }
+.topprog.on { opacity: 1; }
+.topprog.on > i { width: 85%; transition: width 8s cubic-bezier(.1, .7, .2, 1); }
+.topprog.done { opacity: 0; transition: opacity .35s .15s; }
+.topprog.done > i { width: 100%; transition: width .15s; }
+.netbanner { position: sticky; top: 56px; z-index: 14; display: flex; align-items: center; justify-content: center; gap: 6px 12px; flex-wrap: wrap; background: color-mix(in srgb, var(--warn) 13%, var(--canvas)); color: var(--warn); font-size: 13.5px; font-weight: 500; padding: 8px 16px; text-align: center; border-bottom: 1px solid color-mix(in srgb, var(--warn) 25%, transparent); }
+.bbtn { font: inherit; font-size: 12.5px; font-weight: 600; border: 0; border-radius: 999px; padding: 4px 12px; cursor: pointer; background: color-mix(in srgb, currentColor 14%, transparent); color: inherit; }
+.bbtn:hover { background: color-mix(in srgb, currentColor 22%, transparent); }
+.slowpill { position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%); z-index: 55; display: inline-flex; align-items: center; gap: 10px; max-width: min(92vw, 560px); padding: 10px 18px; border-radius: 999px; background: var(--ink); color: var(--canvas); font-size: 13.5px; font-weight: 500; box-shadow: var(--shadow-lg); animation: rise .25s cubic-bezier(.2, .7, .2, 1); }
+.slowpill.long { background: var(--warn); color: #fff; }
+.slowpill::before, .spin::before { content: ""; width: 12px; height: 12px; border-radius: 50%; border: 1.5px solid currentColor; border-right-color: transparent; animation: spin .9s linear infinite; flex: none; }
+@keyframes spin { to { transform: rotate(360deg); } }
+@keyframes rise { from { opacity: 0; transform: translate(var(--tx, 0), 8px); } to { opacity: 1; transform: translate(var(--tx, 0), 0); } }
+.slowpill { --tx: -50%; }
+@keyframes slidein { from { transform: translateX(24px); opacity: .4; } to { transform: none; opacity: 1; } }
+
+/* responsive */
+@media (max-width: 1100px) { .metric-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 820px) {
+  .app-shell { display: block; padding-bottom: 76px; background: none; }
+  .sidebar { position: fixed; inset: auto 0 0; width: 100%; height: 66px; padding: 6px 10px calc(6px + env(safe-area-inset-bottom)); flex-direction: row; overflow: visible; border: 0; border-top: 1px solid var(--hair); background: var(--nav); backdrop-filter: saturate(180%) blur(20px); -webkit-backdrop-filter: saturate(180%) blur(20px); }
+  .brand-lockup, .nav-label, .sidebar-foot { display: none; }
+  .nav { width: 100%; grid-template-columns: repeat(3, 1fr); gap: 4px; }
+  .nav a, .nav button { min-height: 50px; justify-content: center; flex-direction: column; gap: 3px; padding: 4px; font-size: 11px; font-weight: 500; }
+  .nav a[aria-current="page"] { background: none; }
+  .nav svg { width: 21px; height: 21px; }
+  .nav .status-btn { display: flex; }
+  .sidebar-bottom { display: none; position: fixed; left: 12px; right: 12px; bottom: 78px; margin: 0; padding: 0; max-height: 70vh; overflow-y: auto; z-index: 25; }
+  body.status-open .sidebar-bottom { display: grid; }
+  .system-card { box-shadow: var(--shadow-lg); }
+  .workspace-context { display: none; }
+  .mobile-brand { display: flex; }
+  .ws-panel { right: 0; }
+  main#view { padding-top: 24px; }
+  .alert { right: 12px; top: 64px; }
+  .model-btn { max-width: 34vw; }
+  .netbanner { top: 56px; }
+  .slowpill { bottom: 84px; }
+}
+@media (max-width: 560px) { .mobile-brand .mb-text { display: none; } .workspace-top { gap: 8px; } .metric b { font-size: 26px; } .page-subtitle { font-size: 16px; } }
+@media (max-width: 520px) {
+  .panel { padding: 18px 16px; border-radius: 20px; }
+  .tabs button { padding: 10px 11px; font-size: 13.5px; }
+  .ixn { grid-template-columns: 1fr; }
+  .hist-row { grid-template-columns: auto minmax(0, 1fr); }
+  .hist-row > :last-child { grid-column: 2; }
+  .metric { padding: 14px 16px; }
+}
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition: none !important; animation: none !important; } }
+</style>
+</head>
+<body>
+<div class="topprog" id="topprog" aria-hidden="true"><i></i></div>
+<div class="app-shell">
+  <aside class="sidebar">
+    <a class="brand-lockup" href="#/deals" aria-label="Deal Intelligence home">
+      <span class="brand-mark"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 17l5-6 4 3 7-9M15 5h5v5"/></svg></span>
+      <span class="brand-copy"><strong>Deal Intelligence</strong><span>Pre-call briefs with memory</span></span>
+    </a>
+    <nav class="nav" aria-label="Main">
+      <span class="nav-label">Workspace</span>
+      <a href="#/deals" id="nav-deals"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7.5h6l1.5 2H20v9.5H4z"/><path d="M4 7.5V5h6l1.5 2.5"/></svg>Deals</a>
+      <a href="#/memory" id="nav-memory"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5a3 3 0 0 1 6 0 3.5 3.5 0 0 1 3 5.3A3.5 3.5 0 0 1 16 17H8a3.5 3.5 0 0 1-2-6.7A3.5 3.5 0 0 1 9 5z"/><path d="M9 9h6M10 13h4"/></svg>Memory</a>
+      <button type="button" class="status-btn" id="status-btn" aria-expanded="false" aria-controls="sidebar-bottom"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 13h4l2-6 4 12 2-6h4"/></svg>Status</button>
+    </nav>
+    <div class="sidebar-bottom" id="sidebar-bottom">
+      <section class="system-card" aria-label="System health">
+        <div class="system-head">System health</div>
+        <div id="status" aria-live="polite" class="stack-s"><span class="vh">Checking the system...</span>
+          <span class="sk sk-line w80" aria-hidden="true"></span><span class="sk sk-line w60" aria-hidden="true"></span><span class="sk sk-line w70" aria-hidden="true"></span>
+        </div>
+      </section>
+      <div class="sidebar-foot"><span>Deal Intelligence</span><span>Local</span></div>
+    </div>
+  </aside>
+  <section class="workspace">
+    <header class="workspace-top">
+      <div class="mobile-brand"><span class="brand-mark"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 17l5-6 4 3 7-9M15 5h5v5"/></svg></span><span class="mb-text">Deal Intelligence</span></div>
+      <div class="workspace-context"><span>Briefs cite their sources. Every claim links back to a note, email or past deal.</span></div>
+      <div class="top-actions">
+        <button class="model-btn" id="ws-btn" type="button" aria-haspopup="dialog" aria-expanded="false" aria-controls="ws-panel" title="Switch workspace">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16v12H4z"/><path d="M4 10h16"/></svg>
+          <span id="ws-btn-label">Workspace</span>
+        </button>
+        <div class="model-panel ws-panel" id="ws-panel" role="dialog" aria-labelledby="ws-panel-title" hidden>
+          <strong id="ws-panel-title">Workspaces</strong>
+          <p class="small muted">Each workspace has its own deals and its own memory.</p>
+          <div class="ws-list" id="ws-list"></div>
+          <div class="row"><button class="btn small" id="ws-new" type="button">New workspace...</button></div>
+        </div>
+        <button class="model-btn" id="model-btn" type="button" aria-haspopup="dialog" aria-expanded="false" aria-controls="model-panel" title="Change the AI model">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v3M12 18v3M3 12h3M18 12h3M7 7h10v10H7z"/><path d="M10 10h4v4h-4z"/></svg>
+          <span id="model-btn-label">Model</span>
+        </button>
+        <div class="model-panel" id="model-panel" role="dialog" aria-labelledby="model-panel-title" hidden>
+          <strong id="model-panel-title">AI model</strong>
+          <p class="small muted" id="model-panel-source"></p>
+          <div class="model-health" id="model-health" hidden></div>
+          <label class="field" for="model-select">Model for new calls
+            <select id="model-select"></select>
+          </label>
+          <p class="small muted">Applies to every call made from now on: reading deals, writing briefs and comparing. A job already running finishes with its current model.</p>
+          <p class="small model-msg" id="model-msg" role="status"></p>
+          <div class="row">
+            <button class="btn small primary" id="model-save" type="button">Use this model</button>
+            <button class="btn small" id="model-reset" type="button">Reset to default</button>
+          </div>
+        </div>
+        <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Toggle color theme"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 15.5A8 8 0 0 1 8.5 4 8 8 0 1 0 20 15.5z"/></svg></button>
+      </div>
+    </header>
+    <div class="netbanner" id="netbanner" role="status" hidden><span><span id="netmsg">Lost connection to the server.</span><span id="netwhen"></span></span><button class="bbtn" id="netretry" type="button">Retry now</button></div>
+    <div class="alert" id="alert" role="alert" hidden><strong id="alert-title"></strong><p id="alert-body"></p><div class="row alert-actions" id="alert-actions" hidden></div><button class="x" id="alert-x" type="button" aria-label="Dismiss">&times;</button></div>
+    <main id="view"><div class="skel-page" role="status" aria-label="Loading"><span class="sk sk-line xl w40" aria-hidden="true"></span><span class="sk sk-line w60" aria-hidden="true"></span></div></main>
+  </section>
+</div>
+<div class="slowpill" id="slowpill" role="status" hidden></div>
+<div class="scrim" id="scrim" hidden></div>
+<aside class="drawer" id="drawer" role="dialog" aria-modal="true" aria-labelledby="drawer-title" hidden>
+  <div class="drawer-head"><div class="stack-s"><span class="eyebrow" id="drawer-eyebrow"></span><h2 id="drawer-title"></h2></div><button class="btn small" id="drawer-close" type="button">Close</button></div>
+  <div class="drawer-body" id="drawer-body"></div>
+</aside>
+
+<script>
+/* ---------- helpers ---------- */
+const $ = (id) => document.getElementById(id);
+// replaceChildren stringifies null; builders pass optional nodes as null/false/"", so drop those.
+{
+  const orig = Element.prototype.replaceChildren;
+  Element.prototype.replaceChildren = function (...kids) { return orig.apply(this, kids.flat().filter((k) => k !== null && k !== undefined && k !== false && k !== "")); };
+}
+const store = {
+  get(k) { try { return localStorage.getItem(k); } catch { return null; } },
+  set(k, v) { try { localStorage.setItem(k, v); } catch { /* storage blocked: the theme just won't persist */ } },
+};
+const savedTheme = store.get("deal-theme");
+if (savedTheme === "dark" || savedTheme === "light") document.documentElement.dataset.theme = savedTheme;
+const isDark = () => (document.documentElement.dataset.theme || (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light")) === "dark";
+function paintThemeToggle() {  // a sun in dark mode (switch to light), a moon in light mode
+  const ns = "http://www.w3.org/2000/svg", svg = document.createElementNS(ns, "svg");
+  svg.setAttribute("viewBox", "0 0 24 24"); svg.setAttribute("aria-hidden", "true");
+  const paths = isDark()
+    ? ["M12 8.2a3.8 3.8 0 1 0 0 7.6a3.8 3.8 0 1 0 0-7.6z", "M12 2.8v1.8", "M12 19.4v1.8", "M2.8 12h1.8", "M19.4 12h1.8", "M5.5 5.5l1.3 1.3", "M17.2 17.2l1.3 1.3", "M5.5 18.5l1.3-1.3", "M17.2 6.8l1.3-1.3"]
+    : ["M20 15.5A8 8 0 0 1 8.5 4 8 8 0 1 0 20 15.5z"];
+  for (const d of paths) { const p = document.createElementNS(ns, "path"); p.setAttribute("d", d); svg.append(p); }
+  const label = isDark() ? "Switch to light mode" : "Switch to dark mode";
+  $("theme-toggle").replaceChildren(svg);
+  $("theme-toggle").setAttribute("aria-label", label); $("theme-toggle").title = label;
+}
+paintThemeToggle();
+matchMedia("(prefers-color-scheme: dark)").addEventListener("change", paintThemeToggle);
+$("theme-toggle").addEventListener("click", () => {
+  const next = isDark() ? "light" : "dark";
+  document.documentElement.dataset.theme = next;
+  store.set("deal-theme", next);
+  paintThemeToggle();
+});
+function el(tag, props = {}, ...children) {
+  const node = document.createElement(tag);
+  for (const [k, v] of Object.entries(props)) {
+    if (v === undefined || v === null || v === false) continue;
+    if (k === "class") node.className = v;
+    else if (k === "text") node.textContent = v;
+    else if (k === "value") node.value = v;
+    else if (k.startsWith("on")) node.addEventListener(k.slice(2), v);
+    else node.setAttribute(k, v === true ? "" : v);
+  }
+  for (const c of children.flat()) {
+    if (c === null || c === undefined || c === false) continue;
+    node.append(c instanceof Node ? c : document.createTextNode(String(c)));
+  }
+  return node;
+}
+// Memory playbooks come back as Markdown. Render the small subset with DOM nodes, never innerHTML.
+function markdownContent(source) {
+  const root = el("div", { class: "markdown-content" });
+  const lines = String(source || "").replace(/\r\n?/g, "\n").split("\n");
+  let list = null, listKind = null;
+  const endList = () => { list = null; listKind = null; };
+  const inline = (value) => {
+    const fragment = document.createDocumentFragment();
+    const pattern = /(\*\*([^*]+)\*\*|`([^`]+)`)/g;
+    let cursor = 0;
+    for (const match of value.matchAll(pattern)) {
+      if (match.index > cursor) fragment.append(document.createTextNode(value.slice(cursor, match.index)));
+      fragment.append(match[2] !== undefined ? el("strong", { text: match[2] }) : el("code", { text: match[3] }));
+      cursor = match.index + match[0].length;
+    }
+    if (cursor < value.length) fragment.append(document.createTextNode(value.slice(cursor)));
+    return fragment;
+  };
+  for (const raw of lines) {
+    const line = raw.trim();
+    if (!line) { endList(); continue; }
+    const heading = line.match(/^(#{1,4})\s+(.+)$/);
+    if (heading) { endList(); root.append(el(heading[1].length >= 3 ? "h4" : "h3", {}, inline(heading[2]))); continue; }
+    const bullet = line.match(/^[-*]\s+(.+)$/);
+    const numbered = line.match(/^\d+[.)]\s+(.+)$/);
+    if (bullet || numbered) {
+      const kind = numbered ? "ol" : "ul";
+      if (!list || listKind !== kind) { list = el(kind); listKind = kind; root.append(list); }
+      list.append(el("li", {}, inline((bullet || numbered)[1])));
+      continue;
+    }
+    endList();
+    root.append(el("p", {}, inline(line)));
+  }
+  return root;
+}
+/* ---------- network: a thin progress bar, a calm "still working" line, polite retries ---------- */
+// Reads (GET) that hit a busy or unreachable server are retried by themselves: 1 s, 2 s, 4 s ... up to 30 s with
+// jitter, or as long as a Retry-After header says. Writes (POST, PUT, PATCH, DELETE) are sent once and never
+// repeated by themselves: the person's input stays where it is and the alert offers "Try again".
+const RETRYABLE = [429, 502, 503, 504];
+const GET_TRIES = 7;  // about a minute of retrying, then the page's own error state takes over
+const net = { active: 0, timer: null, shown: false, slow: new Map(), seq: 0, retrying: 0, retryAt: 0, tick: null, wake: new Set() };
+function netStart() {
+  if (net.active++ === 0) net.timer = setTimeout(() => { net.shown = true; const b = $("topprog"); b.classList.remove("done"); void b.offsetWidth; b.classList.add("on"); }, 300);
+}
+function netEnd() {
+  if (--net.active > 0) return;
+  clearTimeout(net.timer);
+  if (!net.shown) return;
+  net.shown = false;
+  const b = $("topprog"); b.classList.add("done");
+  setTimeout(() => { if (!net.shown) b.classList.remove("on", "done"); }, 500);
+}
+function paintSlow() {
+  const levels = [...net.slow.values()];
+  const pill = $("slowpill");
+  pill.hidden = !levels.length;
+  if (!levels.length) return;
+  const long = levels.includes(2);
+  pill.classList.toggle("long", long);
+  pill.textContent = long ? "Still working, longer than usual. Your request is safe; nothing is sent twice." : "Still working...";
+}
+function slowStart() {  // "Still working..." after 2.5 s, the calmer busy line after 10 s; returns stop()
+  const id = ++net.seq;
+  const a = setTimeout(() => { net.slow.set(id, 1); paintSlow(); }, 2500);
+  const b = setTimeout(() => { net.slow.set(id, 2); paintSlow(); }, 10000);
+  return () => { clearTimeout(a); clearTimeout(b); if (net.slow.delete(id)) paintSlow(); };
+}
+function retryAfterOf(response) {  // seconds, from a Retry-After header (seconds or an HTTP date)
+  const h = response.headers.get("retry-after");
+  if (!h) return null;
+  if (/^\s*\d+(\.\d+)?\s*$/.test(h)) return Number(h);
+  const at = Date.parse(h);
+  return isNaN(at) ? null : Math.max(0, (at - Date.now()) / 1000);
+}
+// a failure of the server or the connection itself, not an answer from the app (which always names an error code)
+const overloaded = (e) => e.code === "network" || (RETRYABLE.includes(e.status) && !e.appError);
+// a write that failed this way may still have reached the server
+const unconfirmed = (e) => e.code === "network" || ((e.status === 502 || e.status === 504) && !e.appError);
+function backoff(e, n) {
+  if (e.retryAfter != null) return Math.min(300000, Math.max(1000, e.retryAfter * 1000));
+  const base = Math.min(30000, 1000 * 2 ** Math.max(0, n - 1));
+  return Math.round(Math.min(30000, base * (0.8 + Math.random() * 0.4)));
+}
+function netWords(e) {
+  if (e.code === "network") return "Lost connection to the server.";
+  if (e.status === 429) return "The server is busy right now.";
+  if (e.status === 503) return "The server is overloaded or restarting.";
+  return "The server is slow to answer.";
+}
+function paintNetBanner() {
+  clearInterval(net.tick);
+  $("netbanner").hidden = net.retrying === 0;
+  if (!net.retrying) return;
+  const tick = () => { const s = Math.ceil((net.retryAt - Date.now()) / 1000); $("netwhen").textContent = s > 0 ? ` Trying again in ${s} s.` : " Trying again..."; };
+  tick(); net.tick = setInterval(tick, 1000);
+}
+function waitToRetry(e, ms) {
+  $("netmsg").textContent = netWords(e);
+  net.retryAt = Date.now() + ms;
+  paintNetBanner();
+  return new Promise((resume) => {
+    const wake = () => { clearTimeout(t); net.wake.delete(wake); resume(); };
+    const t = setTimeout(wake, ms);
+    net.wake.add(wake);
+  });
+}
+$("netretry").addEventListener("click", () => { net.retryAt = Date.now(); for (const wake of [...net.wake]) wake(); });
+async function request(path, options) {
+  netStart();
+  const stop = slowStart();
+  try {
+    let response;
+    try { response = await fetch(path, options); }
+    catch { throw Object.assign(new Error("Can't reach the server. Is it still running?"), { code: "network" }); }
+    const body = await response.json().catch(() => null);
+    if (!response.ok) {
+      const plain = { 429: "The server is busy right now.", 502: "The server took too long to answer.", 503: "The server is overloaded or restarting.", 504: "The server took too long to answer." };
+      throw Object.assign(new Error(body?.error?.message || plain[response.status] || `HTTP ${response.status}`),
+        { code: body?.error?.code, status: response.status, appError: !!body?.error?.code, retryAfter: retryAfterOf(response) });
+    }
+    return body;
+  } finally { stop(); netEnd(); }
+}
+async function api(path, options = {}) {
+  const method = String(options.method || "GET").toUpperCase();
+  let counted = false;
+  try {
+    for (let attempt = 1; ; attempt++) {
+      try { return await request(path, options); }
+      catch (e) {
+        if (method !== "GET") {
+          // sent once only: say plainly what happened, and let the person decide to try again
+          if (unconfirmed(e)) Object.assign(e, { unsure: true, retryable: true,
+            message: "I couldn't confirm that went through: the server took too long or the connection dropped. Check the page before trying again; your input is still here." });
+          else if (overloaded(e)) Object.assign(e, { busy: true, retryable: true,
+            message: `The server is busy, so nothing was changed. Your input is still here; try again${e.retryAfter ? ` in ${Math.ceil(e.retryAfter)} s` : " in a moment"}.` });
+          throw e;
+        }
+        if (!overloaded(e) || attempt >= GET_TRIES) throw e;
+        if (!counted) { counted = true; net.retrying++; }
+        await waitToRetry(e, backoff(e, attempt));
+      }
+    }
+  } finally {
+    if (counted) { net.retrying--; paintNetBanner(); }
+  }
+}
+const json = (method, body) => ({ method, headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
+let pendingNotice = null;
+// The control the person last used, so a write that failed can be offered again with one click (never by itself).
+let lastAction = null;
+document.addEventListener("click", (e) => {
+  const b = e.target.closest?.("button, a.btn");
+  if (b && !b.closest("#alert, #netbanner")) lastAction = { el: b };
+}, true);
+document.addEventListener("submit", (e) => { lastAction = { form: e.target }; }, true);
+function tryAgainButton() {
+  const a = lastAction;
+  const target = a?.form || a?.el;
+  if (!target || !document.contains(target)) return null;
+  return el("button", { class: "btn small primary", type: "button", text: "Try again", onclick: () => {
+    $("alert").hidden = true;
+    if (a.form) a.form.requestSubmit(); else if (!a.el.disabled) a.el.click();
+  } });
+}
+function showError(e) {
+  $("alert").classList.remove("notice");
+  const again = e.retryable ? tryAgainButton() : null;
+  $("alert-actions").replaceChildren(again);
+  $("alert-actions").hidden = !again;
+  if (e.unsure) { $("alert-title").textContent = "Couldn't confirm that went through"; $("alert-body").textContent = e.message; }
+  else if (e.busy) { $("alert-title").textContent = "The server is busy"; $("alert-body").textContent = e.message; }
+  else if (e.code === "network") { $("alert-title").textContent = "Connection problem"; $("alert-body").textContent = e.message; }
+  else if (e.code === "workspace_busy") {
+    $("alert-title").textContent = "This workspace is busy";
+    $("alert-body").textContent = "A job (reading a deal, writing a brief or a comparison) is still running here. Wait for it to finish, or stop it, then try again.";
+  } else { $("alert-title").textContent = "That didn't work"; $("alert-body").textContent = e.message; }
+  $("alert").hidden = false;
+}
+function showNotice(title, body, keep = true) {
+  if (keep) pendingNotice = [title, body];
+  $("alert-actions").replaceChildren(); $("alert-actions").hidden = true;
+  $("alert-title").textContent = title;
+  $("alert-body").textContent = body;
+  $("alert").classList.add("notice");
+  $("alert").hidden = false;
+}
+function clearError() {
+  $("alert").hidden = true;
+  $("alert").classList.remove("notice");
+  if (pendingNotice) { const [t, b] = pendingNotice; pendingNotice = null; showNotice(t, b, false); }
+}
+$("alert-x").addEventListener("click", () => { pendingNotice = null; $("alert").hidden = true; });
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+let pollToken = 0;  // a new navigation cancels old polling loops
+async function pollJob(jobId, onTick) {
+  const token = pollToken;
+  for (;;) {
+    const job = await api(`/v1/jobs/${jobId}`);
+    if (token !== pollToken) return null;
+    onTick?.(job);
+    if (job.status === "completed" || job.status === "failed" || job.status === "cancelled") return job;
+    await sleep(1000);
+  }
+}
+// explain objects (job.error_info, status.model.health): {title, detail, action, retry_helps, switch_model, blocking}
+function openModelPanel(e) { e?.stopPropagation(); setModelPanel(true); }
+function problemNote(info, raw, { heading, extra } = {}) {
+  if (!info) return el("div", { class: "note c-bad" }, heading ? el("div", { class: "t", text: heading }) : null, raw || "Something went wrong.");
+  const buttons = [
+    info.switch_model ? el("button", { class: "btn small primary", type: "button", text: "Choose another model", onclick: openModelPanel }) : null,
+    extra || null,
+  ].filter(Boolean);
+  return el("div", { class: `note problem ${info.blocking || !info.retry_helps ? "c-bad" : "c-warn"}` },
+    el("div", { class: "t", text: heading ? `${heading}: ${info.title}` : info.title }),
+    info.detail ? el("p", { class: "small", text: info.detail }) : null,
+    info.action ? el("p", { class: "small" }, el("b", { text: "What to do: " }), info.action) : null,
+    buttons.length ? el("div", { class: "row" }, buttons) : null,
+    raw ? el("details", {}, el("summary", { text: "Error details" }), el("p", { text: raw })) : null);
+}
+// Multi-file drop zone. box.state.files is the current list; "filechange" fires when it changes.
+function fileDrop(id, accept, hint) {
+  const input = el("input", { type: "file", id, class: "vh", accept, multiple: true });
+  const idle = "Drop files here, or choose them";
+  const title = el("b", { text: idle });
+  const box = el("label", { class: "drop", for: id }, input, title, el("span", { class: "small muted", text: hint }));
+  const state = { files: [] };
+  const set = (list) => {
+    state.files = [...(list || [])];
+    title.textContent = state.files.length ? (state.files.length === 1 ? state.files[0].name : `${state.files.length} files: ${state.files.map((f) => f.name).join(", ")}`) : idle;
+    box.dispatchEvent(new Event("filechange"));
+  };
+  input.addEventListener("change", () => set(input.files));
+  box.addEventListener("dragover", (e) => { e.preventDefault(); box.classList.add("over"); });
+  box.addEventListener("dragleave", () => box.classList.remove("over"));
+  box.addEventListener("drop", (e) => { e.preventDefault(); box.classList.remove("over"); set(e.dataTransfer?.files); });
+  box.state = state;
+  box.setFiles = (l) => { if (!l || !l.length) input.value = ""; set(l); };
+  return box;
+}
+function stopButton(jobId, label, hint) {
+  const btn = el("button", { class: "btn small danger", type: "button", text: label, title: hint });
+  btn.addEventListener("click", async () => {
+    if (btn.dataset.armed !== "1") { btn.dataset.armed = "1"; btn.textContent = "Confirm stop"; return; }
+    btn.disabled = true; btn.textContent = "Stopping...";
+    try { await api(`/v1/jobs/${jobId}/cancel`, { method: "POST" }); btn.textContent = "Stop requested"; }
+    catch (e) { showError(e); btn.disabled = false; btn.dataset.armed = ""; btn.textContent = label; }
+  });
+  return btn;
+}
+// Run an async action with a button disabled and relabelled while it runs.
+async function withBusy(btn, busyText, fn) {
+  const label = btn.textContent;
+  btn.disabled = true; btn.textContent = busyText;
+  try { return await fn(); }
+  finally { btn.disabled = false; btn.textContent = label; }
+}
+// arm-then-confirm: first click changes the label, second click runs it.
+function confirmButton(label, armedLabel, onConfirm, { cls = "btn small", title, ariaLabel } = {}) {
+  const btn = el("button", { class: cls, type: "button", text: label, title, "aria-label": ariaLabel });
+  let timer = null;
+  const disarm = () => { btn.dataset.armed = ""; btn.textContent = label; btn.classList.remove("armed"); if (ariaLabel) btn.setAttribute("aria-label", ariaLabel); clearTimeout(timer); };
+  btn.addEventListener("click", async () => {
+    if (btn.dataset.armed !== "1") {
+      btn.dataset.armed = "1"; btn.textContent = armedLabel; btn.classList.add("armed"); if (ariaLabel) btn.setAttribute("aria-label", armedLabel);
+      timer = setTimeout(disarm, 6000);
+      return;
+    }
+    clearTimeout(timer);
+    btn.classList.remove("armed");
+    btn.disabled = true;
+    try { await onConfirm(btn); } finally { btn.disabled = false; btn.dataset.armed = ""; btn.textContent = label; if (ariaLabel) btn.setAttribute("aria-label", ariaLabel); }
+  });
+  return btn;
+}
+
+/* ---------- vocabulary (labels for the API's codes) ---------- */
+const SEGMENT = { smb: "SMB", mid_market: "Mid-market", enterprise: "Enterprise" };
+const STAGE = { discovery: "Discovery", evaluation: "Evaluation", proposal: "Proposal", negotiation: "Negotiation", closed: "Closed" };
+const MODE_LABEL = { none: "No history", longctx: "All deals in the prompt", similar: "Similar deals", hindsight: "Hindsight memory" };
+const MODE_HELP = {
+  none: "Uses only this deal's own notes and emails. This is the baseline.",
+  hindsight: "Also uses what Hindsight recalls from similar won and lost deals, and the lessons learned from them.",
+  longctx: "Puts every closed-deal summary into the prompt, with no retrieval.",
+  similar: "Adds the most similar closed deals Hindsight recalls, without the lessons.",
+};
+const LOSS = {
+  competitor: "Competitor", price: "Price", no_decision: "No decision", champion_left: "Champion left",
+  security_compliance: "Security or compliance", feature_gap: "Feature gap", timing: "Timing", unresolved_objection: "Unresolved objection",
+};
+const LOSS_NOTE = {
+  competitor: "A competitor won. Plays get no credit or penalty: a plain competitor loss says little about the plays.",
+  price: "Price decided it. Plays get no credit or penalty.",
+  no_decision: "The buyer chose to do nothing. Plays get no credit or penalty.",
+  champion_left: "Our champion left the buyer. Plays get no credit or penalty.",
+  security_compliance: "Security or compliance blocked it. This counts against the plays used, because they could have changed it.",
+  feature_gap: "A product gap lost it. This counts against the plays used.",
+  timing: "The timing was wrong. Plays get no credit or penalty.",
+  unresolved_objection: "An objection was never resolved. This counts against the plays used.",
+};
+const QUALITY_LOSSES = new Set(["security_compliance", "feature_gap", "unresolved_objection"]);
+const OBJ_TYPE = {
+  sso: "SSO", security_review: "Security review", pricing: "Pricing", integration: "Integration", timeline: "Timeline",
+  legal_terms: "Legal terms", data_residency: "Data residency", support: "Support", feature_gap: "Feature gap",
+};
+const OBJ_STATUS = { raised: ["Raised", "c-warn"], addressed: ["Addressed", "c-ok"], unresolved: ["Unresolved", "c-bad"] };
+const STANCE = { champion: ["Champion", "c-ok"], supporter: ["Supporter", "c-info"], neutral: ["Neutral", "c-muted"], blocker: ["Blocker", "c-bad"] };
+const KIND = { email: ["E", "Email"], call_note: ["C", "Call note"], meeting: ["M", "Meeting"], crm_note: ["N", "CRM note"] };
+const SEVERITY = { high: "c-bad", medium: "c-warn", low: "c-muted" };
+const JOURNAL_KIND = {
+  outcome_recorded: "Outcome recorded", play_credit: "Play credit changed", deal_added: "Deal added", signals_extracted: "Deal read",
+  lesson_added: "Lesson added", playbook_refreshed: "Playbook refreshed", brief_generated: "Brief written",
+};
+const labelOf = (map, key) => (key && map[key]) || (key ? String(key).replace(/_/g, " ") : "");
+const plural = (n, one, many) => `${n} ${n === 1 ? one : (many || one + "s")}`;
+const money = (n) => (n === null || n === undefined ? "n/a" : `$${Number(n).toLocaleString()}`);
+const short = (h) => (h ? String(h).slice(0, 8) : "n/a");
+const dateOnly = (s) => (s && /^\d{4}-\d{2}-\d{2}/.test(s) ? new Date(`${s.slice(0, 10)}T00:00:00`) : null);
+function fmtDate(s) {
+  if (!s) return "n/a";
+  const d = dateOnly(s);
+  if (d && String(s).length <= 10) return d.toLocaleDateString(undefined, { day: "numeric", month: "short", year: "numeric" });
+  return when(s);
+}
+// Fresh rows serialise with "+00:00"; rows read back from SQLite are naive UTC.
+function when(iso) {
+  if (!iso) return "n/a";
+  const d = new Date(/(Z|[+-]\d\d:\d\d)$/.test(iso) ? iso : `${iso}Z`);
+  return isNaN(d) ? String(iso) : d.toLocaleString(undefined, { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" });
+}
+const todayISO = () => { const d = new Date(); return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`; };
+const pill = (text, cls = "c-muted", title) => el("span", { class: `pill ${cls}`, text, title });
+const tag = (text, cls, title) => el("span", { class: `tag ${cls}`, text, title });
+const TAG_MEM = () => (currentStatus?.hindsight?.backend === "local"
+  ? tag("From local recall", "c-mem", "Retrieved from the local memory (SQLite keyword search)")
+  : tag("From Hindsight recall", "c-mem", "Retrieved from Hindsight memory"));
+const TAG_COUNT = () => tag("Counted, no model", "c-muted", "A deterministic count over the deal records. No model call.");
+const TAG_DEAL = () => tag("From this deal", "c-info", "Taken from this deal's own notes and emails");
+function resultPill(d) {
+  if (d.result === "won") return pill("Won", "c-ok");
+  if (d.result === "lost") return pill(d.loss_reason ? `Lost: ${labelOf(LOSS, d.loss_reason)}` : "Lost", "c-bad");
+  return pill("Open", "c-info");
+}
+function signalsPill(d) {
+  switch (d.signals_status) {
+    case "ready": return pill("Signals ready", "c-ok");
+    case "extracting": return pill("Reading...", "c-info");
+    case "failed": return pill("Read failed", "c-bad", d.signals_error || undefined);
+    default: return pill("Not read yet", "c-muted");
+  }
+}
+const dealId = (x) => {
+  if (x === null || x === undefined) return null;
+  if (typeof x === "number") return x;
+  if (typeof x === "object") return dealId(x.id ?? x.code);
+  const m = String(x).match(/(\d+)$/);
+  return m ? Number(m[1]) : null;
+};
+
+/* ---------- status ---------- */
+let currentStatus = null;
+let statusFetchedAt = 0;
+let llmHealth = null;
+function renderModelHealth() {
+  const bad = !!llmHealth;
+  $("model-btn").classList.toggle("failing", bad);
+  const box = $("model-health");
+  box.hidden = !bad;
+  if (bad) box.replaceChildren(el("b", { text: `${llmHealth.title}. ` }), llmHealth.action || llmHealth.detail || "");
+}
+async function runSync(btn) {
+  btn.disabled = true; btn.textContent = "Syncing...";
+  try {
+    const r = await api("/v1/sync", { method: "POST" });
+    showNotice("Memory sync finished", `${r.retained} sent to memory, ${r.deleted} removed, ${r.failed} failed, ${r.pending} still pending.`, false);
+  } catch (e) { showError(e); }
+  await loadStatus(true);
+}
+async function loadStatus(force = false) {
+  if (!force && statusFetchedAt && Date.now() - statusFetchedAt < 30_000 && $("status").children.length) return currentStatus;
+  statusFetchedAt = Date.now();
+  const box = $("status");
+  try {
+    const s = await api("/v1/status");
+    currentStatus = s;
+    const h = s.hindsight || {};
+    const health = s.model?.health || null;
+    llmHealth = health;
+    renderModelHealth();
+    const rows = [];
+    const row = (dot, ...content) => el("div", { class: "sys-row" }, el("span", { class: `dot ${dot}` }), el("span", {}, content));
+    // model
+    rows.push(row(health ? (health.blocking ? "bad" : "warn") : "ok", el("b", { text: s.model?.name || "Model" }), s.model?.provider ? ` (${s.model.provider})` : ""));
+    if (health) {
+      rows.push(el("div", { class: `sys-health${health.blocking ? "" : " warn"}` },
+        el("b", { text: health.title }),
+        health.detail ? el("span", { text: health.detail }) : null,
+        health.action ? el("span", { text: health.action }) : null,
+        health.switch_model ? el("button", { class: "sys-btn", type: "button", text: "Choose another model", onclick: openModelPanel }) : null));
+    }
+    // Hindsight
+    let hsDot = "ok", hsText;
+    if (h.backend === "local") {
+      hsDot = h.healthy === false ? "bad" : "ok";
+      hsText = [el("b", { text: "Local memory" }), " (SQLite, no Hindsight account) · keyword search, works offline"];
+    }
+    else if (!h.healthy) { hsDot = "bad"; hsText = "Hindsight unreachable. Briefs fall back to similar deals from the local database; \"No history\" still works."; }
+    else if (!h.mode) { hsDot = "warn"; hsText = `${h.cloud ? "Hindsight Cloud" : "Hindsight local"} connected, but its settings can't be read.`; }
+    else if (h.mode !== "chunks") { hsDot = "warn"; hsText = `${h.cloud ? "Hindsight Cloud" : "Hindsight local"} · mode "${h.mode}" (expected "chunks")`; }
+    else hsText = `${h.cloud ? "Hindsight Cloud" : "Hindsight local"} · chunks`;
+    rows.push(row(hsDot, ...[].concat(hsText)));
+    // lessons
+    const l = s.lessons || {};
+    if (l.enabled === false) rows.push(row("warn", "Lessons are switched off."));
+    else {
+      const parts = [`${l.retained || 0} retained`];
+      if (l.pending) parts.push(`${l.pending} pending (consolidating)`);
+      if (l.failed) parts.push(`${l.failed} failed`);
+      rows.push(row(l.failed ? "warn" : (l.pending ? "warn" : "ok"), el("b", { text: "Lessons: " }), parts.join(" · ")));
+    }
+    // counts
+    const c = s.counts || {};
+    rows.push(row("ok", el("b", { text: "Deals: " }), `${c.open || 0} open · ${c.closed || 0} closed (${c.won || 0} won, ${c.lost || 0} lost)`));
+    // sync
+    const pending = s.sync?.pending || 0;
+    if (pending || l.failed) {
+      const b = el("button", { class: "sys-btn", type: "button", text: "Sync now", title: `Send waiting items to ${memName(s)}` });
+      b.addEventListener("click", () => runSync(b));
+      rows.push(row("warn", `${pending} ${pending === 1 ? "item is" : "items are"} waiting to reach memory.`), b);
+    }
+    box.replaceChildren(...rows);
+    return s;
+  } catch {
+    statusFetchedAt = 0;
+    currentStatus = null;
+    box.replaceChildren(el("div", { class: "sys-row" }, el("span", { class: "dot bad" }), el("span", { text: "Server not reachable. Start the backend and reload." })));
+    return null;
+  }
+}
+$("status-btn").addEventListener("click", (e) => {
+  e.stopPropagation();
+  const open = !document.body.classList.contains("status-open");
+  document.body.classList.toggle("status-open", open);
+  $("status-btn").setAttribute("aria-expanded", String(open));
+  if (open) loadStatus(true);
+});
+document.addEventListener("click", (e) => {
+  if (document.body.classList.contains("status-open") && !$("sidebar-bottom").contains(e.target)) {
+    document.body.classList.remove("status-open"); $("status-btn").setAttribute("aria-expanded", "false");
+  }
+});
+
+/* ---------- model picker ---------- */
+const MODEL_SOURCE = { ui: "Chosen here", env: "From the environment", default: "Provider default" };
+function renderModel(m) {
+  $("model-btn-label").textContent = m.current;
+  $("model-btn").title = `AI model: ${m.current} (${MODEL_SOURCE[m.source] || m.source}). Click to change.`;
+  $("model-panel-source").textContent = `Now using ${m.current} · ${MODEL_SOURCE[m.source] || m.source}`;
+  const select = $("model-select");
+  const ids = (m.options || []).map((o) => o.id);
+  if (!ids.includes(m.current)) ids.unshift(m.current);
+  select.replaceChildren(...ids.map((id) => {
+    const o = (m.options || []).find((x) => x.id === id);
+    const note = id === m.env_model ? " (env)" : id === m.default ? " (default)" : "";
+    return el("option", { value: id, text: (o && o.label && o.label !== id ? `${o.label} · ${id}` : id) + note });
+  }));
+  select.value = m.current;
+  select.disabled = !(m.options || []).length;
+  $("model-save").disabled = !(m.options || []).length;
+  $("model-reset").disabled = m.source !== "ui";
+  const msg = $("model-msg");
+  msg.className = "small model-msg" + (m.list_error ? " bad" : "");
+  msg.textContent = m.list_error || "";
+}
+async function loadModels() {
+  try { renderModel(await api("/v1/models")); }
+  catch (e) { $("model-msg").className = "small model-msg bad"; $("model-msg").textContent = e.message; }
+}
+function setModelPanel(open) {
+  if (open) setWorkspacePanel(false);
+  $("model-panel").hidden = !open;
+  $("model-btn").setAttribute("aria-expanded", String(open));
+  if (open) { loadModels(); $("model-select").focus(); }
+}
+$("model-btn").addEventListener("click", (e) => { e.stopPropagation(); setModelPanel($("model-panel").hidden); });
+document.addEventListener("click", (e) => { if (!$("model-panel").hidden && !$("model-panel").contains(e.target)) setModelPanel(false); });
+async function saveModel(model) {
+  const msg = $("model-msg");
+  $("model-save").disabled = $("model-reset").disabled = true;
+  try {
+    const m = await api("/v1/models", json("PUT", { model }));
+    renderModel(m);
+    msg.className = "small model-msg ok";
+    msg.textContent = `Saved. New calls will use ${m.current}.`;
+    await loadStatus(true);
+  } catch (e) {
+    msg.className = "small model-msg bad"; msg.textContent = e.message;
+    $("model-save").disabled = false;
+  }
+}
+$("model-save").addEventListener("click", () => saveModel($("model-select").value));
+$("model-reset").addEventListener("click", () => saveModel(null));
+api("/v1/models").then(renderModel).catch(() => {});
+
+/* ---------- workspaces ---------- */
+const WS_KIND = { demo: "Demo", company: "Your deals", main: "Original data" };
+let workspace = null;  // the active workspace's summary
+async function loadWorkspace() {
+  try {
+    const data = await api("/v1/workspaces");
+    const activeId = data.active && typeof data.active === "object" ? data.active.id : data.active;
+    workspace = (data.workspaces || []).find((w) => w.active || w.id === activeId) || null;
+  } catch { workspace = null; }
+  $("ws-btn-label").textContent = workspace?.name || "Workspace";
+  $("ws-btn").title = workspace ? `Workspace: ${workspace.name} (${WS_KIND[workspace.kind] || workspace.kind}). Click to switch.` : "Switch workspace";
+  return workspace;
+}
+function setWorkspacePanel(open) {
+  if (open) { $("model-panel").hidden = true; $("model-btn").setAttribute("aria-expanded", "false"); }
+  $("ws-panel").hidden = !open;
+  $("ws-btn").setAttribute("aria-expanded", String(open));
+  if (open) renderWorkspaceList().catch(showError);
+}
+async function renderWorkspaceList() {
+  const data = await api("/v1/workspaces");
+  const list = $("ws-list");
+  const deleteButtons = [];
+  // While one delete is armed or in flight every other delete is disabled, so a click meant for a
+  // just-removed row can never land on a different row that shifted into its place.
+  const freeze = (except) => { for (const [b] of deleteButtons) if (b !== except) b.disabled = true; };
+  list.replaceChildren(...data.workspaces.map((w) => {
+    const btn = el("button", { class: `ws-item${w.active ? " active" : ""}`, type: "button", disabled: w.active },
+      el("span", {}, el("b", { text: w.name }), el("span", { class: "small muted", text: WS_KIND[w.kind] || w.kind })),
+      w.active ? pill("Open", "c-ok") : "");
+    btn.addEventListener("click", async (e) => {
+      e.stopPropagation();
+      btn.disabled = true;
+      try { await api(`/v1/workspaces/${w.id}/activate`, { method: "POST" }); await afterWorkspaceSwitch("#/deals"); }
+      catch (err) { showError(err); btn.disabled = false; }
+    });
+    const row = el("div", { class: "ws-row" }, btn);
+    if (!w.active && w.kind !== "main") {
+      const del = el("button", { class: "btn small danger", type: "button", text: "Delete", title: `Permanently delete ${w.name}: its deals and its memory` });
+      deleteButtons.push([del, w]);
+      del.addEventListener("click", async (e) => {
+        e.stopPropagation();
+        if (del.dataset.armed !== "1") { del.dataset.armed = "1"; del.textContent = "Confirm"; freeze(del); return; }
+        del.disabled = true; del.textContent = "Deleting...";
+        try {
+          await api(`/v1/workspaces/${w.id}`, { method: "DELETE" });
+          setWorkspacePanel(false);  // don't re-render the list under the cursor; make them reopen it
+          showNotice("Workspace deleted", `${w.name} and its data are gone.`);
+        } catch (err) {
+          showError(err); del.disabled = false; del.dataset.armed = ""; del.textContent = "Delete";
+          for (const [b] of deleteButtons) b.disabled = false;
+        }
+      });
+      row.append(del);
+    }
+    return row;
+  }));
+}
+async function afterWorkspaceSwitch(hash) {
+  setWorkspacePanel(false);
+  statusFetchedAt = 0;
+  historyCache = null; playsCache = null;
+  await loadWorkspace();
+  loadStatus(true);
+  if (location.hash === hash) route(); else location.hash = hash;
+}
+$("ws-btn").addEventListener("click", (e) => { e.stopPropagation(); setWorkspacePanel($("ws-panel").hidden); });
+$("ws-new").addEventListener("click", (e) => { e.stopPropagation(); setWorkspacePanel(false); location.hash = "#/start"; });
+document.addEventListener("click", (e) => { if (!$("ws-panel").hidden && !$("ws-panel").contains(e.target)) setWorkspacePanel(false); });
+document.addEventListener("keydown", (e) => {
+  if (e.key !== "Escape") return;
+  if (!$("drawer").hidden) { closeDrawer(); return; }
+  if (!$("model-panel").hidden) { setModelPanel(false); $("model-btn").focus(); }
+  if (!$("ws-panel").hidden) { setWorkspacePanel(false); $("ws-btn").focus(); }
+});
+
+/* ---------- shared data (cached per workspace) ---------- */
+let historyCache = null;  // closed deals with summaries, for D- citations
+let playsCache = null;
+const getHistory = (force = false) => {
+  if (force || !historyCache) historyCache = api("/v1/memory/history").then((d) => d.deals || []).catch((e) => { historyCache = null; throw e; });
+  return historyCache;
+};
+const getPlays = () => {
+  if (!playsCache) playsCache = api("/v1/plays").then((d) => d.plays || []).catch((e) => { playsCache = null; throw e; });
+  return playsCache;
+};
+
+/* ---------- side drawer for citations ---------- */
+let drawerReturn = null;
+function openDrawer(eyebrow, title, ...nodes) {
+  drawerReturn = document.activeElement;
+  $("drawer-eyebrow").textContent = eyebrow;
+  $("drawer-title").textContent = title;
+  $("drawer-body").replaceChildren(...nodes);
+  $("drawer").hidden = false; $("scrim").hidden = false;
+  $("drawer-close").focus();
+}
+function closeDrawer() {
+  if ($("drawer").hidden) return;
+  $("drawer").hidden = true; $("scrim").hidden = true;
+  if (drawerReturn && document.contains(drawerReturn)) drawerReturn.focus();
+  drawerReturn = null;
+}
+$("drawer-close").addEventListener("click", closeDrawer);
+$("scrim").addEventListener("click", closeDrawer);
+
+function showInteraction(code, deal) {
+  const ix = (deal.interactions || []).find((i) => i.code === code);
+  if (!ix) { openDrawer("Source", code, el("div", { class: "note c-warn" }, el("div", { class: "t", text: "Source not found" }), "That note or email is not in this deal's timeline any more.")); return; }
+  const [, kind] = KIND[ix.kind] || ["?", labelOf(KIND, ix.kind)];
+  openDrawer(`${kind} · ${fmtDate(ix.occurred_on)}`, ix.subject || code,
+    el("div", { class: "row" }, el("span", { class: "cite c-info mono", text: code }), ix.author ? el("span", { class: "small muted", text: `by ${ix.author}` }) : null),
+    el("p", { class: "ixn-text", text: ix.text }));
+}
+async function showClosedDeal(code) {
+  openDrawer("Closed deal in memory", code, el("div", { class: "skeleton", style: "min-height:120px" }));
+  try {
+    const deals = await getHistory();
+    const d = deals.find((x) => x.code === code);
+    if (!d) { $("drawer-body").replaceChildren(el("div", { class: "note c-warn" }, el("div", { class: "t", text: "Not found" }), `${code} isn't in the closed deals in memory.`)); return; }
+    $("drawer-title").textContent = `${code} · ${d.account}`;
+    $("drawer-body").replaceChildren(
+      el("div", { class: "row" }, resultPill(d), d.segment ? pill(labelOf(SEGMENT, d.segment), "c-muted") : null, d.amount != null ? el("span", { class: "small muted", text: money(d.amount) }) : null),
+      d.summary ? el("p", { text: d.summary }) : el("p", { class: "muted", text: "No summary stored for this deal." }),
+      d.loss_reason ? el("p", { class: "small" }, el("b", { text: "Lost because: " }), labelOf(LOSS, d.loss_reason)) : null,
+      (d.objections || []).length ? el("div", { class: "stack-s" }, el("b", { class: "small", text: "Objections" }),
+        el("div", { class: "row" }, d.objections.map((o) => pill(`${labelOf(OBJ_TYPE, o.type)}: ${(OBJ_STATUS[o.status] || [o.status])[0]}`, (OBJ_STATUS[o.status] || [0, "c-muted"])[1])))) : null,
+      (d.plays_used || []).length ? el("div", { class: "stack-s" }, el("b", { class: "small", text: "Plays used" }),
+        el("div", { class: "row" }, d.plays_used.map((p) => el("span", { class: "kchip", text: p.name || p.code })))) : null,
+      el("p", { class: "small muted", text: `Closed ${fmtDate(d.closed_on)}${d.owner ? ` · owner ${d.owner}` : ""}.` }));
+  } catch (e) {
+    $("drawer-body").replaceChildren(problemNote(null, e.message, { heading: "Couldn't load the closed deal" }));
+  }
+}
+// A citation chip: INT-xxxx opens the interaction, D-xxx opens the closed deal's summary.
+function citeChip(id, deal) {
+  if (/^INT-\d+$/.test(id)) return el("button", { class: "cite c-info", type: "button", text: id, title: "Open this note or email", onclick: () => showInteraction(id, deal) });
+  if (/^D-\d+$/.test(id)) return el("button", { class: "cite c-mem", type: "button", text: id, title: "Open this closed deal", onclick: () => showClosedDeal(id) });
+  return el("span", { class: "cite bad c-bad", title: "This source id isn't recognised", text: String(id) });
+}
+const cites = (ids, deal) => ((ids || []).length ? el("span", { class: "cites" }, ids.map((i) => citeChip(i, deal))) : null);
+
+// Which memory backend is in use: "local" (SQLite only) or "hindsight". null while status is unknown.
+const memoryBackend = (s = currentStatus) => s?.hindsight?.backend || null;
+const isLocalMemory = (s = currentStatus) => memoryBackend(s) === "local";
+const memName = (s = currentStatus) => (isLocalMemory(s) ? "local memory" : "Hindsight");
+const LOCAL_MEMORY_TITLE = "Local memory (SQLite, no Hindsight account)";
+const LOCAL_MEMORY_EXPLAIN = "Recall is keyword search over the deals and lessons recorded here. It runs offline. The playbook and the reflection are computed locally from recorded outcomes.";
+
+// "Likely to backfire": plays that similar closed deals used without winning. Counts only, no cause claimed.
+function avoidSentence(p) {
+  if (p.text) return p.text;
+  return `${p.name || p.play_code}: used in ${plural(p.used_in_similar || 0, "similar deal")}, ${p.won_in_similar || 0} won.`;
+}
+function avoidCard(list, deal, nClosed) {
+  if (!Array.isArray(list) || !list.length) return null;
+  return el("section", { class: "avoid-card", "aria-label": "Likely to backfire" },
+    el("div", { class: "row" }, el("h3", { text: "Likely to backfire" }), TAG_COUNT()),
+    el("p", { class: "small", text: "Similar closed deals used these plays and did not win with them. These are counts, not proof of cause." }),
+    el("ul", { class: "avoid-list" }, list.map((p) => el("li", {},
+      el("div", { class: "row" }, el("b", { text: p.name || p.play_code }), p.play_code ? el("span", { class: "kchip", text: p.play_code }) : null),
+      el("span", { text: avoidSentence(p) }),
+      (p.source_deals || []).length ? el("div", { class: "row" }, el("span", { class: "small muted", text: "Seen in:" }), cites(p.source_deals, deal)) : null))),
+    nClosed != null ? el("p", { class: "small muted", text: `Based on ${plural(nClosed, "closed deal")}.` }) : null);
+}
+
+/* ---------- start view: demo or empty workspace ---------- */
+const DEMO_HINT_KEY = "deal-demo-hint";
+function readDemoHint() { try { return JSON.parse(store.get(DEMO_HINT_KEY) || "null"); } catch { return null; } }
+
+async function ensureActive(ws) {
+  // POST /v1/workspaces may or may not activate the new workspace; make sure it is open.
+  const id = ws?.id;
+  if (!id) return;
+  const data = await api("/v1/workspaces");
+  const activeId = data.active && typeof data.active === "object" ? data.active.id : data.active;
+  if (activeId !== id) await api(`/v1/workspaces/${id}/activate`, { method: "POST" });
+}
+
+function startView(view, { heading = true } = {}) {
+  const demoBtn = el("button", { class: "btn primary", type: "button", text: "Open the demo workspace" });
+  demoBtn.addEventListener("click", async () => {
+    demoBtn.disabled = true; demoBtn.textContent = "Loading the demo history...";
+    try {
+      const made = await api("/v1/workspaces", json("POST", { kind: "demo" }));
+      const s = made.seeded || {};
+      await ensureActive(made.workspace);
+      store.set(DEMO_HINT_KEY, JSON.stringify({ ws: made.workspace?.id, demo: dealId(s.demo_deal), closable: dealId(s.closable_deal) }));
+      await afterWorkspaceSwitch("#/deals");
+      showNotice("Demo workspace ready",
+        `${s.deals ?? "Several"} deals loaded (${s.open ?? "?"} open, ${s.closed ?? "?"} closed, ${s.interactions ?? "?"} notes and emails) with no model calls. ` +
+        "Memory is filling in in the background; the Memory page says when lessons are still consolidating. Follow the walkthrough on the Deals page.");
+    } catch (e) { showError(e); demoBtn.disabled = false; demoBtn.textContent = "Try again"; }
+  });
+  const name = el("input", { type: "text", id: "ws-name", placeholder: "e.g. My pipeline", autocomplete: "off" });
+  const scratchBtn = el("button", { class: "btn primary", type: "button", text: "Start with my own deals" });
+  scratchBtn.addEventListener("click", async () => {
+    scratchBtn.disabled = true; scratchBtn.textContent = "Creating...";
+    try {
+      const made = await api("/v1/workspaces", json("POST", { kind: "company", name: name.value.trim() || undefined }));
+      await ensureActive(made.workspace);
+      await afterWorkspaceSwitch("#/deals");
+    } catch (e) { showError(e); scratchBtn.disabled = false; scratchBtn.textContent = "Start with my own deals"; }
+  });
+  const nodes = [];
+  if (heading) nodes.push(el("div", { class: "page-head" }, el("div", { class: "page-head-copy" },
+    el("span", { class: "eyebrow", text: "Welcome" }),
+    el("h1", { class: "page-title", text: "Walk into every call knowing what worked before" }),
+    el("p", { class: "page-subtitle", text: "Deal Intelligence writes a pre-call brief from the deal's own emails and notes, and from what memory recalls about similar deals you won and lost. Every sentence cites its source." }))));
+  // The memory bullet follows the backend; until status is known it keeps the original wording.
+  const memLi = el("li");
+  const memText = () => {
+    const h = currentStatus?.hindsight;
+    if (h?.backend === "local") return "Uses its own local memory (SQLite, no Hindsight account) for this workspace, so nothing from another workspace leaks in.";
+    if (h?.backend === "hindsight") return `Uses fresh memory banks in ${h.cloud === false ? "Hindsight" : "Hindsight Cloud"}, so nothing from another workspace leaks in.`;
+    return "Uses fresh memory banks in Hindsight, so nothing from another workspace leaks in.";
+  };
+  memLi.textContent = memText();
+  loadStatus().then(() => { memLi.textContent = memText(); });
+  nodes.push(el("div", { class: "start-grid" },
+    el("section", { class: "panel raised start-card" },
+      el("span", { class: "eyebrow", text: "See it in three minutes" }),
+      el("h2", { text: "Try the demo" }),
+      el("p", { text: "A fictional software company, Halcyon, with a history of won and lost deals and two open deals ready to brief." }),
+      el("ul", { class: "start-list" },
+        el("li", { text: "Makes no model calls. Loading it is free." }),
+        memLi,
+        el("li", { text: "You then brief a deal with and without memory, record an outcome on the other open deal, and see the next brief change." })),
+      el("div", { class: "row" }, demoBtn)),
+    el("section", { class: "panel raised start-card" },
+      el("span", { class: "eyebrow", text: "For your own pipeline" }),
+      el("h2", { text: "Start with my own deals" }),
+      el("p", { text: "An empty workspace with its own memory. Nothing from the demo is mixed in." }),
+      el("ol", { class: "start-list" },
+        el("li", { text: "Add a deal and drop in its emails and call notes." }),
+        el("li", { text: "Read the deal, then write a brief." }),
+        el("li", { text: "When a deal closes, record the result. Memory learns which plays worked." })),
+      el("label", { class: "field", for: "ws-name" }, "Workspace name (optional)", name),
+      el("div", { class: "row" }, scratchBtn))));
+  view.replaceChildren(...nodes);
+}
+
+/* ---------- deals page ---------- */
+// Sample files served by GET /v1/samples/{name}. Missing ones are skipped (404 is fine), so this is optional.
+const TIDEWATER_SAMPLES = [
+  "tidewater_wms_email_thread.txt", "tidewater_call_note_champion.md", "tidewater_pricing_question.txt",
+];
+async function loadTidewaterSamples() {
+  const found = [];
+  for (const name of TIDEWATER_SAMPLES) {
+    try {
+      const r = await fetch(`/v1/samples/${name}`);
+      if (!r.ok) continue;
+      const blob = await r.blob();
+      found.push(new File([blob], name, { type: blob.type }));
+    } catch { /* offline or missing: skip */ }
+  }
+  return found;
+}
+
+function addDealPanel() {
+  const f = (id, label, input) => el("label", { class: "field", for: id }, label, input);
+  const name = el("input", { type: "text", id: "nd-name", required: true, placeholder: "e.g. Platform renewal 2026" });
+  const account = el("input", { type: "text", id: "nd-account", required: true, placeholder: "e.g. Tidewater Logistics" });
+  const industry = el("input", { type: "text", id: "nd-industry", placeholder: "e.g. Logistics" });
+  const segment = el("select", { id: "nd-segment" }, el("option", { value: "", text: "Not set" }),
+    Object.entries(SEGMENT).map(([v, t]) => el("option", { value: v, text: t })));
+  const amount = el("input", { type: "number", id: "nd-amount", min: "0", step: "1000", placeholder: "Annual value" });
+  const owner = el("input", { type: "text", id: "nd-owner", placeholder: "Account executive" });
+  const stage = el("select", { id: "nd-stage" }, Object.entries(STAGE).filter(([v]) => v !== "closed").map(([v, t]) => el("option", { value: v, text: t })));
+  const drop = fileDrop("nd-files", ".txt,.md,.eml,.csv,.pdf,.docx,.xlsx", "Emails and notes: .txt .md .eml .csv .pdf .docx .xlsx");
+  const msg = el("p", { class: "small", role: "status" });
+  const submit = el("button", { class: "btn primary", type: "submit", text: "Add deal" });
+  const sampleBtn = el("button", { class: "btn small", type: "button", text: "Load the Tidewater samples", title: "Optional sample files, if this build includes them" });
+  sampleBtn.addEventListener("click", async () => {
+    sampleBtn.disabled = true; sampleBtn.textContent = "Looking for samples...";
+    const files = await loadTidewaterSamples();
+    sampleBtn.disabled = false; sampleBtn.textContent = "Load the Tidewater samples";
+    if (!files.length) { msg.className = "small muted"; msg.textContent = "No sample files are available in this build. Drop your own files instead."; return; }
+    drop.setFiles(files);
+    if (!account.value.trim()) account.value = "Tidewater Logistics";
+    if (!name.value.trim()) name.value = "Tidewater: new deal";
+    msg.className = "small ok-text"; msg.style.color = "var(--ok)";
+    msg.textContent = `Loaded ${plural(files.length, "sample file")}. Check the fields, then add the deal.`;
+  });
+  const form = el("form", { class: "stack-s", novalidate: true },
+    el("div", { class: "fields" }, f("nd-name", "Deal name", name), f("nd-account", "Account", account)),
+    el("div", { class: "fields" }, f("nd-industry", "Industry", industry), f("nd-segment", "Segment", segment)),
+    el("div", { class: "fields" }, f("nd-amount", "Amount", amount), f("nd-owner", "Owner", owner), f("nd-stage", "Stage", stage)),
+    drop, el("div", { class: "row" }, sampleBtn), msg, el("div", { class: "row" }, submit));
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    msg.style.color = ""; msg.className = "small";
+    if (!name.value.trim() || !account.value.trim()) { msg.className = "small bad-text"; msg.style.color = "var(--bad)"; msg.textContent = "A deal needs a name and an account."; return; }
+    const body = new FormData();
+    body.append("name", name.value.trim()); body.append("account", account.value.trim());
+    if (industry.value.trim()) body.append("industry", industry.value.trim());
+    if (segment.value) body.append("segment", segment.value);
+    if (amount.value) body.append("amount", amount.value);
+    if (owner.value.trim()) body.append("owner", owner.value.trim());
+    body.append("stage", stage.value);
+    for (const file of drop.state.files) body.append("files", file);
+    submit.disabled = true; submit.textContent = "Adding...";
+    try {
+      const created = await api("/v1/deals", { method: "POST", body });
+      loadStatus(true);
+      showNotice("Deal added", `${created.account}: ${plural((created.interactions || []).length, "note or email")} loaded. Read the deal next, then write a brief.`);
+      location.hash = `#/deals/${created.id}/timeline`;
+    } catch (err) { showError(err); submit.disabled = false; submit.textContent = "Add deal"; }
+  });
+  return el("section", { class: "panel raised sticky" },
+    el("h2", { text: "Add a deal" }),
+    el("p", { class: "small muted", text: "Drop in the emails and call notes. Nothing is sent to a model until you read the deal or write a brief." }),
+    form);
+}
+
+function dealRow(d) {
+  const cell = (label, content) => el("div", {}, el("span", { class: "cell-label", text: label }), content);
+  return el("div", { class: "deal-row" },
+    el("div", {}, el("a", { class: "name", href: `#/deals/${d.id}`, text: d.name }), el("span", { class: "acct", text: `${d.account}${d.industry ? ` · ${d.industry}` : ""}` })),
+    cell("Segment", el("span", { text: labelOf(SEGMENT, d.segment) || "n/a" })),
+    cell("Amount", el("span", { class: "mono", text: money(d.amount) })),
+    cell("Stage", d.result === "open" ? el("span", { text: labelOf(STAGE, d.stage) }) : resultPill(d)),
+    cell("Owner", el("span", { text: d.owner || "n/a" })),
+    cell("Last activity", el("span", { class: "small", text: d.last_activity ? fmtDate(d.last_activity) : "n/a" })),
+    cell("Signals", signalsPill(d)));
+}
+const dealHead = () => el("div", { class: "deal-row head", "aria-hidden": "true" },
+  ["Deal", "Segment", "Amount", "Stage", "Owner", "Last activity", "Signals"].map((t) => el("div", { text: t })));
+
+async function dealsView(view) {
+  const { deals } = await api("/v1/deals");
+  if (!deals.length) {
+    if (workspace?.kind === "company") {
+      view.replaceChildren(
+        el("div", { class: "page-head" }, el("div", { class: "page-head-copy" },
+          el("span", { class: "eyebrow", text: workspace.name }),
+          el("h1", { class: "page-title", text: "Add your first deal" }),
+          el("p", { class: "page-subtitle", text: "Create a deal and drop in its emails and notes. After a few closed deals, memory starts to have something to say." }))),
+        el("div", { class: "grid2" },
+          el("section", { class: "panel" }, el("h2", { text: "Want to see it work first?" }),
+            el("p", { class: "small muted", text: "The demo is a separate workspace with a ready-made history. Switch back any time from the workspace menu." }),
+            el("div", { class: "row" }, el("a", { class: "btn", href: "#/start", text: "See the demo option" }))),
+          addDealPanel()));
+    } else startView(view);
+    return;
+  }
+  const open = deals.filter((d) => d.result === "open").sort((a, b) => String(b.last_activity || "").localeCompare(String(a.last_activity || "")));
+  const closed = deals.filter((d) => d.result !== "open").sort((a, b) => String(b.closed_on || "").localeCompare(String(a.closed_on || "")));
+  const won = closed.filter((d) => d.result === "won").length;
+  const openValue = open.reduce((s, d) => s + (d.amount || 0), 0);
+  const hint = readDemoHint();
+  const byId = new Map(deals.map((d) => [d.id, d]));
+  const demoDeal = hint && workspace && hint.ws === workspace.id ? byId.get(hint.demo) : null;
+  const closable = hint && workspace && hint.ws === workspace.id ? byId.get(hint.closable) : null;
+  const guide = demoDeal && demoDeal.result === "open" ? el("section", { class: "panel guide" },
+    el("span", { class: "eyebrow", text: "Demo walkthrough, about three minutes" }),
+    el("ol", {},
+      el("li", {}, el("a", { href: `#/deals/${demoDeal.id}/brief`, text: `Open ${demoDeal.account}` }), ": write a brief with \"No history\", then with \"Hindsight memory\", and compare."),
+      closable && closable.result === "open" ? el("li", {}, el("a", { href: `#/deals/${closable.id}/close`, text: `Close ${closable.account}` }), ": record the result and the plays that were used. Memory learns from it.") : null,
+      el("li", {}, "Write the Hindsight brief again for ", el("a", { href: `#/deals/${demoDeal.id}/brief`, text: demoDeal.account }), ". A \"What changed because of memory\" block shows the difference."),
+      el("li", { text: "Press \"Compare memory on this deal\" for the three-column before and after." })),
+    el("p", { class: "small muted", text: "Reading deals and writing briefs each make model calls; the buttons say how many before you confirm." })) : null;
+  const openList = open.length ? el("div", { class: "deal-list" }, dealHead(), open.map(dealRow)) : el("p", { class: "empty", text: "No open deals. Add one with the form below." });
+  const closedBlock = closed.length ? el("details", { class: "fold" },
+    el("summary", { text: `Closed deals (${closed.length})` }),
+    el("div", { class: "deal-list" }, dealHead(), closed.map(dealRow))) : null;
+  view.replaceChildren(
+    el("div", { class: "page-head" }, el("div", { class: "page-head-copy" },
+      el("span", { class: "eyebrow", text: workspace?.name || "Pipeline" }),
+      el("h1", { class: "page-title", text: "Deals" }),
+      el("p", { class: "page-subtitle", text: "Open deals first. Pick one to write a pre-call brief, see what memory says, or record the outcome." }))),
+    el("div", { class: "metric-grid" },
+      el("div", { class: "metric" }, el("b", { text: open.length }), el("span", { text: "Open deals" })),
+      el("div", { class: "metric" }, el("b", { text: money(openValue) }), el("span", { text: "Open value" })),
+      el("div", { class: "metric" }, el("b", { text: closed.length }), el("span", { text: "Closed deals in memory" })),
+      el("div", { class: "metric" }, el("b", { text: closed.length ? `${won} of ${closed.length}` : "n/a" }), el("span", { text: "Won" }))),
+    guide ? el("div", { style: "margin-bottom:18px" }, guide) : null,
+    el("div", { class: "grid2 deals-grid" },
+      el("div", { class: "stack" },
+        el("section", { class: "panel raised" }, el("h2", { text: `Open deals (${open.length})` }), openList),
+        closedBlock ? el("section", { class: "panel" }, closedBlock) : null),
+      addDealPanel()));
+}
+
+/* ---------- routing ---------- */
+function errorState(e, back = "#/deals") {
+  const notFound = e.status === 404;
+  return el("section", { class: "panel raised" },
+    el("h2", { text: notFound ? "That page doesn't exist" : e.code === "network" ? "Can't reach the server" : "This page couldn't load" }),
+    el("p", { class: "muted", text: notFound ? e.message : e.code === "network" ? "The backend isn't answering. Start it, then try again. Nothing is lost." : e.message }),
+    el("div", { class: "row" },
+      el("button", { class: "btn primary", type: "button", text: "Try again", onclick: () => route() }),
+      el("a", { class: "btn", href: back, text: "Back to deals" })));
+}
+// Placeholders shaped like the page that is loading, instead of a blank area.
+function pageSkeleton(parts) {
+  const sk = (cls) => el("span", { class: `sk ${cls}`, "aria-hidden": "true" });
+  const rows = (n) => el("div", { class: "sk-rows", "aria-hidden": "true" }, Array.from({ length: n }, (_, i) =>
+    el("div", {}, sk(["sk-line w70", "sk-line w80", "sk-line w60"][i % 3]), sk("sk-line w50"), sk("sk-line w60"), sk("sk-line w40"))));
+  const panel = (...kids) => el("section", { class: "panel", "aria-hidden": "true" }, ...kids);
+  const head = () => el("div", { class: "page-head-copy", style: "gap:12px;margin-bottom:26px" }, sk("sk-line sm w20"), sk("sk-line xl w40"), sk("sk-line w60"));
+  const box = el("div", { class: "skel-page", role: "status", "aria-label": "Loading" }, el("span", { class: "vh", text: "Loading..." }));
+  if (parts[0] === "deals" && parts[1]) {
+    box.append(el("div", { style: "display:grid;gap:12px" }, sk("sk-line sm w20"), sk("sk-line xl w50"), sk("sk-line w40")),
+      el("div", { class: "sk-tabs", "aria-hidden": "true" }, sk("sk-line"), sk("sk-line"), sk("sk-line"), sk("sk-line")),
+      panel(sk("sk-line sm w20"), sk("sk-line lg w40"), sk("sk-line w90"), sk("sk-line w80"), sk("sk-line w50")),
+      panel(sk("sk-line w30"), rows(3)));
+  } else if (parts[0] === "memory") {
+    box.append(head(), el("div", { class: "grid2" },
+      el("div", { class: "stack" }, panel(sk("sk-line w30"), rows(3)), panel(sk("sk-line w40"), rows(2))),
+      el("div", { class: "stack" }, panel(sk("sk-line w50"), sk("sk-line w90"), sk("sk-line w70")))));
+  } else {
+    box.append(head(),
+      el("div", { class: "metric-grid", "aria-hidden": "true", style: "margin:0" }, [1, 2, 3, 4].map(() => el("div", { class: "metric" }, sk("sk-line sm w50"), sk("sk-line num w40")))),
+      panel(sk("sk-line w30"), rows(4)));
+  }
+  return box;
+}
+async function route() {
+  pollToken++;
+  clearError();
+  closeDrawer();
+  document.body.classList.remove("status-open");
+  if (!$("ws-panel").hidden) setWorkspacePanel(false);  // a menu left open must not cover the next page
+  if (!$("model-panel").hidden) setModelPanel(false);
+  const parts = (location.hash || "#/deals").replace(/^#\/?/, "").split("/");
+  for (const id of ["nav-deals", "nav-memory"]) $(id).removeAttribute("aria-current");
+  const view = $("view");
+  view.replaceChildren(pageSkeleton(parts));
+  try {
+    if (parts[0] === "memory") {
+      document.title = "Memory · Deal Intelligence";
+      $("nav-memory").setAttribute("aria-current", "page");
+      await memoryView(view);
+    } else if (parts[0] === "start") {
+      document.title = "New workspace · Deal Intelligence";
+      startView(view);
+    } else {
+      $("nav-deals").setAttribute("aria-current", "page");
+      if (parts[0] === "deals" && parts[1] && Number.isFinite(Number(parts[1]))) {
+        document.title = "Deal · Deal Intelligence";
+        await dealView(view, Number(parts[1]), parts[2]);
+      } else {
+        document.title = "Deals · Deal Intelligence";
+        await dealsView(view);
+      }
+    }
+  } catch (e) { view.replaceChildren(errorState(e)); showError(e); }
+  loadStatus();
+}
+window.addEventListener("hashchange", route);
+
+/* ---------- deal page ---------- */
+// Reads a deal's objections, competitors, promises and stakeholders (one model call), then refreshes it.
+async function readDealJob(ctx, onTick) {
+  const started = await api(`/v1/deals/${ctx.id}/signals`, { method: "POST" });
+  const job = await pollJob(started.job_id, onTick);
+  if (!job) return null;
+  await ctx.refresh().catch(() => {});
+  loadStatus(true);
+  return job;
+}
+const playLabel = (p) => (typeof p === "string" ? p : (p?.name || p?.play_name || p?.play_code || p?.code || "play"));
+
+async function dealView(view, id, tabName) {
+  const ctx = { id, deal: await api(`/v1/deals/${id}`), evidenceStale: false, showTab: null };
+  const headerBox = el("div");
+  const renderHeader = () => {
+    const d = ctx.deal;
+    headerBox.replaceChildren(
+      el("a", { class: "back", href: "#/deals", text: "< All deals" }),
+      el("div", { class: "page-head", style: "margin-top:8px" }, el("div", { class: "page-head-copy" },
+        el("span", { class: "eyebrow", text: `Deal ${d.code}${d.industry ? ` · ${d.industry}` : ""}` }),
+        el("h1", { class: "page-title", text: d.name }),
+        el("div", { class: "deal-meta" },
+          el("strong", { text: d.account }),
+          d.result === "open" ? pill(labelOf(STAGE, d.stage), "c-info") : null,
+          resultPill(d),
+          d.segment ? pill(labelOf(SEGMENT, d.segment), "c-muted") : null,
+          el("span", { class: "mono", text: money(d.amount) }),
+          el("span", { text: d.owner ? `Owner: ${d.owner}` : "No owner set" }),
+          d.opened_on ? el("span", { text: `Opened ${fmtDate(d.opened_on)}` }) : null,
+          signalsPill(d)))));
+  };
+  ctx.refresh = async () => {
+    ctx.deal = await api(`/v1/deals/${id}`);
+    ctx.evidenceStale = true;
+    renderHeader();
+    tabBtns.close.textContent = label("close");
+    panels.timeline.render();
+    panels.close.render();
+  };
+  const panels = { brief: briefPanel(ctx), evidence: evidencePanel(ctx), timeline: timelinePanel(ctx), close: closePanel(ctx) };
+  const names = ["brief", "evidence", "timeline", "close"];
+  const label = (n) => (n === "brief" ? "Brief" : n === "evidence" ? "Memory evidence" : n === "timeline" ? "Timeline" : (ctx.deal.result === "open" ? "Close deal / learning loop" : "Outcome"));
+  const tabBtns = {};
+  const holder = el("div");
+  const initialised = new Set();
+  const tablist = el("div", { class: "tabs", role: "tablist", "aria-label": "Deal sections" });
+  for (const n of names) {
+    const b = el("button", { type: "button", role: "tab", id: `tab-${n}`, "aria-controls": `panel-${n}`, text: label(n) });
+    b.addEventListener("click", () => ctx.showTab(n));
+    b.addEventListener("keydown", (e) => {
+      const i = names.indexOf(n);
+      if (e.key === "ArrowRight" || e.key === "ArrowLeft") {
+        const next = names[(i + (e.key === "ArrowRight" ? 1 : names.length - 1)) % names.length];
+        ctx.showTab(next); tabBtns[next].focus();
+      }
+    });
+    tabBtns[n] = b; tablist.append(b);
+    const p = el("div", { role: "tabpanel", id: `panel-${n}`, "aria-labelledby": `tab-${n}`, hidden: true }, panels[n].node);
+    holder.append(p);
+    panels[n].wrap = p;
+  }
+  ctx.showTab = (n) => {
+    if (!names.includes(n)) n = "brief";
+    for (const k of names) {
+      const on = k === n;
+      tabBtns[k].setAttribute("aria-selected", String(on));
+      tabBtns[k].tabIndex = on ? 0 : -1;
+      panels[k].wrap.hidden = !on;
+    }
+    if (!initialised.has(n)) { initialised.add(n); panels[n].show(); }
+    else if (n === "evidence" && ctx.evidenceStale) panels.evidence.show();
+    if (n === "evidence") ctx.evidenceStale = false;
+    history.replaceState(null, "", `#/deals/${id}/${n}`);
+  };
+  renderHeader();
+  panels.timeline.render();
+  panels.close.render();
+  view.replaceChildren(headerBox, tablist, holder);
+  ctx.showTab(names.includes(tabName) ? tabName : "brief");
+  // A deal that was being read when the page opened: follow it until it finishes.
+  if (ctx.deal.signals_status === "extracting") followExtraction(ctx);
+}
+async function followExtraction(ctx) {
+  const token = pollToken;
+  while (token === pollToken) {
+    await sleep(2500);
+    if (token !== pollToken) return;
+    try {
+      await ctx.refresh();
+      if (ctx.deal.signals_status !== "extracting") { loadStatus(true); return; }
+    } catch { return; }
+  }
+}
+
+/* ---------- Brief tab ---------- */
+function flagBadges(flags, deal) {
+  if (!flags.length) return el("p", { class: "small muted", text: "No deterministic flags: this deal has a champion, no overdue promises and no open objections." });
+  return el("div", { class: "flagbar" }, flags.map((f) =>
+    el("span", { class: `flagbadge ${SEVERITY[f.severity] || "c-muted"}`, title: `${f.severity || ""} · ${f.code || ""}` }, f.text || f.code, cites(f.evidence, deal))));
+}
+
+function renderBrief(b, ctx, { jobWarning } = {}) {
+  const c = b.content || {};
+  const deal = ctx.deal;
+  const mode = b.mode || c.mode;
+  const flags = Array.isArray(c.flags) && c.flags.length ? c.flags : (deal.flags || []);
+  const nClosed = c.n_closed;
+  const sections = [];
+  sections.push(el("div", { class: "metaline" },
+    el("span", { text: `${labelOf(MODE_LABEL, mode)} brief` }),
+    el("span", { text: when(b.created_at) }),
+    b.model ? el("span", { text: `model ${b.model}` }) : null,
+    el("span", { text: `${(b.input_tokens || 0).toLocaleString()} in / ${(b.output_tokens || 0).toLocaleString()} out tokens` }),
+    el("span", { title: b.memory_state || "", text: `memory state ${short(b.memory_state)}` }),
+    b.prompt_version ? el("span", { text: `prompt ${b.prompt_version}` }) : null));
+  if (c.degraded) sections.push(el("div", { class: "note c-warn", role: "alert" }, el("div", { class: "t", text: "Degraded: memory was only partly available" }),
+    typeof c.degraded === "string" ? c.degraded : "Hindsight was slow, unreachable or incomplete when this brief was written, so history from past deals may be missing. Check the status card, then write the brief again."));
+  if (jobWarning) sections.push(el("div", { class: "note c-warn" }, jobWarning));
+  sections.push(el("section", { class: "stack-s" },
+    el("div", { class: "row" }, el("h3", { text: "Deal flags" }), tag("Checked without a model", "c-muted")), flagBadges(flags, deal)));
+  sections.push(el("section", { class: "stack-s" },
+    el("div", { class: "row" }, el("h3", { text: "Summary" })),
+    el("p", { class: "brief-summary" }, c.summary || "No summary was written.", " ", cites(c.summary_sources, deal))));
+  sections.push(el("section", { class: "stack-s" },
+    el("div", { class: "row" }, el("h3", { text: "About this deal" }), TAG_DEAL()),
+    (c.this_deal || []).length ? el("ul", { class: "claims" }, c.this_deal.map((x) => el("li", {}, x.text, " ", cites(x.source_ids, deal)))) : el("p", { class: "small muted", text: "No claims about this deal." })));
+  if (mode === "none") {
+    sections.push(el("section", { class: "stack-s" }, el("h3", { text: "What memory says" }),
+      el("div", { class: "note c-muted" }, "No history was used for this brief. It only knows this deal. Switch to \"Hindsight memory\" to see what changes.")));
+  } else {
+    sections.push(el("section", { class: "stack-s" },
+      el("div", { class: "row" }, el("h3", { text: "What memory says" }), mode === "hindsight" ? TAG_MEM() : tag(labelOf(MODE_LABEL, mode), "c-muted")),
+      (c.memory || []).length ? el("ul", { class: "claims mem" }, c.memory.map((x) => el("li", {}, x.text, " ", cites(x.source_ids, deal)))) : el("p", { class: "small muted", text: "Memory had nothing relevant to add for this deal." }),
+      (c.warnings || []).map((w) => el("div", { class: "note c-warn" },
+        el("div", { class: "t", text: w.objection_type ? `Warning: ${labelOf(OBJ_TYPE, w.objection_type)}` : "Warning" }),
+        el("p", {}, w.text, " ", w.similar_total && !String(w.text || "").includes(`${w.similar_lost} of ${w.similar_total}`) ? el("b", { text: `(${w.similar_lost} of ${w.similar_total} similar deals lost)` }) : null, " ", cites(w.source_deals, deal)))),
+      (c.similar || []).length ? el("div", { class: "row" }, el("span", { class: "small muted", text: "Similar closed deals:" }), cites(c.similar, deal)) : null,
+      nClosed != null ? el("p", { class: "small muted", text: `Based on ${plural(nClosed, "closed deal")} in memory: a small sample.` }) : null));
+  }
+  const avoid = avoidCard(c.avoid, deal, nClosed);
+  if (avoid) sections.push(avoid);
+  sections.push(el("section", { class: "stack-s" },
+    el("h3", { text: "Recommended next steps" }),
+    (c.next_steps || []).length ? el("div", { class: "stack-s" }, c.next_steps.map((s, i) => el("div", { class: "step" },
+      el("div", { class: "step-head" }, el("span", { class: "mono muted", text: `${i + 1}.` }), el("b", { text: s.play_name || s.name || s.play_code }), s.play_code ? el("span", { class: "kchip", text: s.play_code }) : null, cites(s.source_ids, deal)),
+      s.rationale ? el("p", { class: "small", text: s.rationale }) : null,
+      (s.reasons || []).length ? el("ul", {}, s.reasons.map((r) => el("li", { text: r }))) : null))) : el("p", { class: "small muted", text: "No next steps were recommended." })));
+  if ((c.missing_info || []).length) sections.push(el("section", { class: "stack-s" }, el("h3", { text: "Missing information" }),
+    el("ul", { class: "claims" }, c.missing_info.map((m) => el("li", { text: m })))));
+  if ((b.flags || []).length) sections.push(el("details", { class: "more" },
+    el("summary", { class: "muted", text: `Validation findings (${b.flags.length})` }),
+    el("p", { class: "small muted", text: "The brief was checked automatically against its sources. These are the items that were flagged." }),
+    el("ul", { class: "small muted" }, b.flags.map((f) => el("li", { text: findingSentence(f, c.avoid) })))));
+  return el("div", { class: "stack" }, sections);
+}
+// Plain-English line for one validation finding. An avoided_play finding names a play code in its detail
+// ("PLAY-03 was tried in similar deals and never won; step dropped").
+function findingSentence(f, avoidList) {
+  if (typeof f === "string") return f;
+  if (f && f.code === "avoided_play") {
+    const detail = String(f.detail || f.text || "");
+    const code = f.play_code || (detail.includes(" was tried") ? detail.split(" was tried")[0].trim() : "");
+    const hit = (avoidList || []).find((p) => p.play_code === code);
+    const name = f.play_name || f.name || hit?.name || code || "a play";
+    return `The model suggested ${name}, which similar deals say backfires, so it was removed.`;
+  }
+  return (f && (f.detail || f.text || f.message)) || JSON.stringify(f);
+}
+
+function briefPanel(ctx) {
+  const state = { mode: "hindsight", busy: false, seq: 0 };
+  const out = el("div");
+  const statusLine = el("p", { class: "small", role: "status" });
+  const stopSlot = el("span");
+  const genBtn = el("button", { class: "btn primary", type: "button", text: "Generate brief" });
+  const help = el("p", { class: "small muted" });
+  const cost = el("p", { class: "small muted", text: "Makes 1 model call. If the deal hasn't been read yet, reading it is 1 more." });
+  const primary = el("div", { class: "seg", role: "group", "aria-label": "Memory mode" });
+  const advanced = el("div", { class: "seg", role: "group", "aria-label": "Advanced memory modes" });
+  const modeBtns = {};
+  for (const [m, host] of [["none", primary], ["hindsight", primary], ["longctx", advanced], ["similar", advanced]]) {
+    const b = el("button", { type: "button", text: MODE_LABEL[m], "aria-pressed": String(m === state.mode) });
+    b.addEventListener("click", () => setMode(m));
+    modeBtns[m] = b; host.append(b);
+  }
+  const history = briefHistoryPanel(ctx);
+  const comparison = comparisonPanel(ctx);
+  const setBusy = (v) => {
+    state.busy = v; genBtn.disabled = v;
+    for (const b of Object.values(modeBtns)) b.disabled = v;
+    genBtn.textContent = v ? "Working..." : "Generate brief";
+  };
+  function setMode(m) {
+    state.mode = m;
+    for (const [k, b] of Object.entries(modeBtns)) b.setAttribute("aria-pressed", String(k === m));
+    help.textContent = MODE_HELP[m];
+    loadLatest();
+  }
+  async function loadLatest() {
+    const seq = ++state.seq;
+    out.replaceChildren(el("div", { class: "skeleton", style: "min-height:140px" }));
+    try {
+      const b = await api(`/v1/deals/${ctx.id}/brief?mode=${state.mode}`);
+      if (seq !== state.seq) return;
+      showBrief(b);
+    } catch (e) {
+      if (seq !== state.seq) return;
+      if (e.code === "no_brief") out.replaceChildren(el("div", { class: "empty" }, el("b", { text: `No ${MODE_LABEL[state.mode].toLowerCase()} brief yet` }), el("span", { text: "Generate one to see it here." })));
+      else out.replaceChildren(problemNote(null, e.message, { heading: "Couldn't load the brief" }));
+    }
+  }
+  function showBrief(b, opts) {
+    if (b.status === "failed") { out.replaceChildren(problemNote(null, b.error || "The brief failed.", { heading: "That brief failed" })); return; }
+    out.replaceChildren(renderBrief(b, ctx, opts));
+  }
+  function askRead(message) {
+    const btn = el("button", { class: "btn primary", type: "button", text: "Read this deal (1 model call)" });
+    const msg = el("p", { class: "small", role: "status" });
+    btn.addEventListener("click", async () => {
+      btn.disabled = true; btn.textContent = "Reading this deal...";
+      try {
+        const job = await readDealJob(ctx, (j) => { msg.textContent = j.total ? `Reading... ${j.done} of ${j.total}` : "Reading the notes and emails..."; });
+        if (!job) return;
+        if (job.status !== "completed") {
+          out.replaceChildren(problemNote(job.error_info, job.error, { heading: "Couldn't read the deal", extra: askReadRetry() }));
+          return;
+        }
+        msg.textContent = "";
+        await generate();
+      } catch (e) {
+        if (e.status === 409) out.replaceChildren(el("div", { class: "note c-warn" }, el("div", { class: "t", text: "Nothing to read yet" }),
+          "This deal has no notes or emails. Add some on the Timeline tab first.", el("div", { class: "row" }, el("button", { class: "btn small", type: "button", text: "Go to the Timeline", onclick: () => ctx.showTab("timeline") }))));
+        else { showError(e); btn.disabled = false; btn.textContent = "Read this deal (1 model call)"; }
+      }
+    });
+    out.replaceChildren(el("div", { class: "note c-info" },
+      el("div", { class: "t", text: "This deal hasn't been read yet" }),
+      el("p", { text: message || "A brief is built from the deal's objections, competitors, promises and stakeholders. Reading the notes and emails pulls them out, with one model call. Then the brief is written automatically." }),
+      el("div", { class: "row" }, btn), msg));
+  }
+  const askReadRetry = () => el("button", { class: "btn small", type: "button", text: "Try reading again", onclick: () => askRead() });
+  async function generate() {
+    if (state.busy) return;
+    setBusy(true);
+    statusLine.textContent = "";
+    const mode = state.mode;
+    try {
+      let started;
+      try { started = await api(`/v1/deals/${ctx.id}/brief`, json("POST", { mode })); }
+      catch (e) { if (e.code === "signals_missing") { askRead(); return; } throw e; }
+      statusLine.textContent = "Writing the brief...";
+      stopSlot.replaceChildren(stopButton(started.job_id, "Stop", "Stop writing this brief"));
+      out.replaceChildren(el("div", { class: "skeleton", style: "min-height:140px" }));
+      const job = await pollJob(started.job_id, (j) => { statusLine.textContent = j.total ? `Writing the brief... step ${j.done} of ${j.total}` : "Writing the brief..."; });
+      stopSlot.replaceChildren();
+      if (!job) return;  // the page was left; the brief is still saved
+      statusLine.textContent = "";
+      loadStatus(true);
+      if (job.status === "completed") {
+        const b = await api(`/v1/deals/${ctx.id}/brief?mode=${mode}`);
+        if (mode === state.mode) showBrief(b, { jobWarning: job.warning });
+        await history.refresh(b);
+      } else if (job.status === "cancelled") {
+        out.replaceChildren(el("div", { class: "note c-muted" }, "That brief was stopped. Nothing was saved."));
+      } else {
+        out.replaceChildren(problemNote(job.error_info, job.error, { heading: "The brief couldn't be written",
+          extra: el("button", { class: "btn small", type: "button", text: "Try again", onclick: () => generate() }) }));
+      }
+    } catch (e) { showError(e); out.replaceChildren(problemNote(null, e.message, { heading: "The brief didn't start" })); statusLine.textContent = ""; stopSlot.replaceChildren(); }
+    finally { setBusy(false); }
+  }
+  genBtn.addEventListener("click", generate);
+  help.textContent = MODE_HELP[state.mode];
+  const node = el("div", { class: "stack" },
+    el("section", { class: "panel raised" },
+      el("div", { class: "row spread" },
+        el("div", {}, el("span", { class: "eyebrow", text: "Pre-call brief" }), el("h2", { text: "What to know before the call" })),
+        ),
+      el("p", { class: "small muted", text: "Grounded in this deal's own history and, with memory on, in what Hindsight remembers from past won and lost deals. Every claim cites its source." }),
+      el("div", { class: "row" }, primary),
+      el("details", { class: "more" }, el("summary", { text: "Advanced modes" }), advanced),
+      help,
+      el("div", { class: "row" }, genBtn, stopSlot, statusLine),
+      cost),
+    el("section", { class: "panel raised", "aria-live": "polite" }, out),
+    history.node,
+    comparison.node);
+  return {
+    node,
+    show() { loadLatest(); history.refresh(); comparison.show(); },
+  };
+}
+
+/* ---- brief history and "what changed because of memory" ---- */
+function playChangeLabel(x) { return playLabel(x); }
+function warningSentence(w) {
+  if (typeof w === "string") return w;
+  const base = w.text || (w.objection_type ? `${labelOf(OBJ_TYPE, w.objection_type)} warning` : "Warning");
+  return w.similar_total && !base.includes(`${w.similar_lost} of ${w.similar_total}`) ? `${base} (${w.similar_lost} of ${w.similar_total} similar deals lost)` : base;
+}
+function diffNode(d, fromB, toB, heading, deal, playMap = new Map()) {
+  const items = [];
+  for (const w of d.added_warnings || []) items.push(el("li", {}, el("span", { class: "diff-add", text: "New warning: " }), warningSentence(w), " ", typeof w === "object" ? cites(w.source_deals, deal) : null));
+  for (const w of d.changed_warnings || []) items.push(el("li", {}, el("span", { class: "diff-add", text: "Counts changed: " }),
+    `${labelOf(OBJ_TYPE, w.kind)} warning went from ${w.from?.similar_lost} of ${w.from?.similar_total} similar deals lost to ${w.to?.similar_lost} of ${w.to?.similar_total}.`));
+  if ((d.added_similar || []).length) items.push(el("li", {}, el("span", { class: "diff-add", text: "New similar deals recalled: " }), cites(d.added_similar, deal)));
+  for (const p of d.added_plays || []) items.push(el("li", {}, el("span", { class: "diff-add", text: "Now recommended: " }), playChangeLabel(p)));
+  for (const p of d.removed_plays || []) items.push(el("li", {}, el("span", { class: "diff-del", text: "No longer recommended: " }), playChangeLabel(p)));
+  for (const p of d.added_avoid || []) items.push(el("li", {}, el("span", { class: "diff-del", text: "Now likely to backfire: " }), avoidSentence(p), " ", cites(p.source_deals, deal)));
+  for (const p of d.removed_avoid || []) items.push(el("li", {}, el("span", { class: "diff-add", text: "No longer flagged as likely to backfire: " }), p.name || playMap.get(p.play_code) || p.play_code));
+  for (const x of d.changed_avoid || []) items.push(el("li", {}, el("span", { class: "diff-add", text: "Backfire counts changed: " }),
+    `${x.name || playMap.get(x.play_code) || x.play_code} went from used in ${x.from?.used}, ${x.from?.won} won, to used in ${x.to?.used}, ${x.to?.won} won.`));
+  const ms = d.memory_state || {};
+  return el("div", { class: "diff-block" },
+    el("div", { class: "row" }, el("h3", { text: heading || "What changed because of memory" }), tag("Compared without a model", "c-muted")),
+    el("div", { class: "metaline" },
+      el("span", { text: `earlier: ${fromB ? when(fromB.created_at) : "n/a"} · memory ${short(ms.from)}` }),
+      el("span", { text: `later: ${toB ? when(toB.created_at) : "n/a"} · memory ${short(ms.to)}` })),
+    items.length ? el("ul", {}, items) : el("p", { text: ms.from && ms.from === ms.to
+      ? "Nothing changed: memory was identical for both briefs, so the evidence was the same."
+      : "Nothing changed in the warnings, similar deals, plays or backfire flags between these two briefs." }));
+}
+
+function briefHistoryPanel(ctx) {
+  const box = el("section", { class: "panel raised" });
+  const diffBox = el("div");
+  let briefs = [];
+  let selected = [];
+  let diffSeq = 0;
+  async function showDiff(fromId, toId, heading) {
+    const seq = ++diffSeq;
+    diffBox.replaceChildren(el("div", { class: "skeleton", style: "min-height:80px" }));
+    try {
+      const [d, plays] = await Promise.all([api(`/v1/deals/${ctx.id}/brief-diff?from=${fromId}&to=${toId}`), getPlays().catch(() => [])]);
+      if (seq !== diffSeq) return;
+      diffBox.replaceChildren(diffNode(d, briefs.find((b) => b.id === fromId), briefs.find((b) => b.id === toId), heading, ctx.deal, new Map(plays.map((p) => [p.code, p.name]))));
+    } catch (e) { if (seq === diffSeq) diffBox.replaceChildren(problemNote(null, e.message, { heading: "Couldn't compare these briefs" })); }
+  }
+  function render() {
+    const ready = briefs.filter((b) => b.status !== "failed");
+    const hs = ready.filter((b) => b.mode === "hindsight");
+    const cmpBtn = el("button", { class: "btn small primary", type: "button", text: "Compare the selected two", disabled: selected.length !== 2 });
+    cmpBtn.addEventListener("click", () => {
+      const [a, b2] = selected.map((id) => briefs.find((x) => x.id === id)).sort((x, y) => String(x.created_at).localeCompare(String(y.created_at)) || x.id - y.id);
+      showDiff(a.id, b2.id, "What changed between these two briefs");
+    });
+    const latestBtn = el("button", { class: "btn small", type: "button", text: "Compare the two newest Hindsight briefs", disabled: hs.length < 2 });
+    latestBtn.addEventListener("click", () => showDiff(hs[1].id, hs[0].id, "What changed because of memory"));
+    box.replaceChildren(
+      el("div", { class: "row spread" }, el("div", {}, el("span", { class: "eyebrow", text: "Brief history" }), el("h2", { text: "What changed because of memory" }))),
+      el("p", { class: "small muted", text: "Record an outcome on a similar deal, write the Hindsight brief again, then compare it with the earlier one. The comparison is counted from the saved evidence and makes no model call." }),
+      briefs.length ? el("div", {}, briefs.map((b) => {
+        const cb = el("input", { type: "checkbox", id: `hb-${b.id}`, "aria-label": `Select the ${labelOf(MODE_LABEL, b.mode)} brief from ${when(b.created_at)}`, disabled: b.status === "failed" || (selected.length >= 2 && !selected.includes(b.id)) });
+        cb.checked = selected.includes(b.id);
+        cb.addEventListener("change", () => { selected = cb.checked ? [...selected, b.id] : selected.filter((x) => x !== b.id); render(); });
+        return el("div", { class: "hist-row" }, cb,
+          el("label", { for: `hb-${b.id}`, class: "stack-s", style: "gap:2px" },
+            el("span", {}, el("b", { text: labelOf(MODE_LABEL, b.mode) }), " ", el("span", { class: "muted", text: when(b.created_at) })),
+            el("span", { class: "metaline" }, el("span", { title: b.memory_state || "", text: `memory ${short(b.memory_state)}` }), b.n_similar != null ? el("span", { text: plural(b.n_similar, "similar deal") }) : null)),
+          b.status === "failed" ? pill("Failed", "c-bad") : el("span"));
+      })) : el("p", { class: "small muted", text: "No briefs yet. Generate one above." }),
+      el("div", { class: "row" }, cmpBtn, latestBtn),
+      diffBox);
+  }
+  async function refresh(newBrief) {
+    try {
+      const d = await api(`/v1/deals/${ctx.id}/briefs`);
+      briefs = d.briefs || [];
+      selected = selected.filter((id) => briefs.some((b) => b.id === id));
+      render();
+      // A fresh Hindsight brief: show straight away how it differs from the previous one.
+      if (newBrief && newBrief.mode === "hindsight") {
+        const prior = briefs.find((b) => b.mode === "hindsight" && b.id < newBrief.id && b.status !== "failed");
+        if (prior) await showDiff(prior.id, newBrief.id, "What changed because of memory since your previous Hindsight brief");
+      }
+    } catch (e) { box.replaceChildren(problemNote(null, e.message, { heading: "Couldn't load the brief history" })); }
+  }
+  render();
+  return { node: box, refresh };
+}
+
+/* ---- before / after comparison across the three arms ---- */
+const ARMS = ["none", "longctx", "hindsight"];
+function comparisonPanel(ctx) {
+  const box = el("section", { class: "panel raised" });
+  const state = { busy: false };
+  const result = el("div", { class: "stack" });
+  const statusLine = el("p", { class: "small", role: "status" });
+  const stopSlot = el("span");
+  const runBtn = confirmButton("Compare memory on this deal", "Confirm: this makes 3 model calls", () => run(),
+    { cls: "btn primary", title: "Writes three briefs of this deal: with no history, with every closed deal in the prompt, and with Hindsight memory" });
+  async function run() {
+    state.busy = true; runBtn.disabled = true;
+    try {
+      const started = await api(`/v1/deals/${ctx.id}/comparison`, json("POST", { arms: ARMS }));
+      statusLine.textContent = `Writing ${plural(started.planned_calls ?? 3, "brief")} to compare...`;
+      stopSlot.replaceChildren(stopButton(started.job_id, "Stop", "Stop the comparison"));
+      const job = await pollJob(started.job_id, (j) => { statusLine.textContent = j.total ? `Writing the briefs... ${j.done} of ${j.total}` : "Writing the briefs..."; });
+      stopSlot.replaceChildren(); statusLine.textContent = "";
+      if (!job) return;
+      loadStatus(true);
+      await show();
+    } catch (e) { showError(e); statusLine.textContent = ""; stopSlot.replaceChildren(); }
+    finally { state.busy = false; runBtn.disabled = false; }
+  }
+  const head = () => el("div", { class: "row spread" },
+    el("div", {}, el("span", { class: "eyebrow", text: "Before and after" }), el("h2", { text: "Does memory change the brief?" })),
+    el("div", { class: "row" }, runBtn, stopSlot));
+  const intro = el("p", { class: "small muted", text: "Writes the same brief three ways with the same model and the same deal facts: no history, every closed deal in the prompt, and Hindsight memory. Uses 3 model calls." });
+  box.replaceChildren(head(), intro, statusLine, result);
+  function armColumn(key, c) {
+    const arm = c.arms?.[key];
+    const warned = (c.differs?.avoided_play_recommended_by || []).includes(key);
+    const cls = `${key === "hindsight" ? "cmp-arm hs" : "cmp-arm"}${warned ? " warned" : ""}`;
+    if (!arm) return el("div", { class: cls }, el("h3", { text: MODE_LABEL[key] }), el("p", { class: "small muted", text: "Not run yet." }));
+    if (arm.status === "failed") return el("div", { class: cls }, el("h3", { text: MODE_LABEL[key] }), problemNote(null, arm.error || "This brief failed."));
+    const content = arm.content || {};
+    const claims = (key === "none" ? (content.this_deal || []) : [...(content.memory || []), ...(content.this_deal || [])]).slice(0, 3);
+    const planNames = (content.next_steps || []).map((s) => s.play_name || s.name || s.play_code);
+    const codes = c.differs?.play_codes?.[key] || [];
+    const tokens = c.differs?.tokens?.[key] ?? ((arm.input_tokens || 0) + (arm.output_tokens || 0));
+    return el("div", { class: cls },
+      el("h3", {}, el("span", { text: MODE_LABEL[key] }), el("span", { class: "mono small muted", text: `${Number(tokens).toLocaleString()} tokens` })),
+      el("div", { class: "stack-s" }, el("b", { class: "small", text: "Recommended plays" }),
+        (planNames.length || codes.length) ? el("ul", {}, (planNames.length ? planNames : codes).map((p) => el("li", { text: p }))) : el("p", { class: "small muted", text: "None" })),
+      el("div", { class: "stack-s" }, el("b", { class: "small", text: "Top claims" }),
+        claims.length ? el("ul", {}, claims.map((x) => el("li", {}, x.text, " ", cites(x.source_ids, ctx.deal)))) : el("p", { class: "small muted", text: "None" })),
+      warned ? pill("Recommends a play memory warns against", "c-warn") : null,
+      (content.degraded) ? pill("Memory degraded", "c-warn") : null);
+  }
+  // Names the plays an arm recommended that memory flags, by matching play codes against any arm's avoid list.
+  function avoidedPlayNames(c, key) {
+    const flagged = new Map();
+    for (const a of ARMS) for (const p of c.arms?.[a]?.content?.avoid || []) flagged.set(p.play_code, p.name || p.play_code);
+    return (c.differs?.play_codes?.[key] || []).filter((code) => flagged.has(code)).map((code) => flagged.get(code));
+  }
+  function avoidLine(c) {
+    const by = c.differs?.avoided_play_recommended_by;
+    if (!Array.isArray(by)) return null;
+    if (!by.length) return el("p", { class: "small" }, el("b", { text: "Recommended a play that memory says backfires: " }), "none. No arm recommended a play memory warns against on this deal.");
+    const parts = ARMS.filter((k) => by.includes(k)).map((k) => {
+      const names = avoidedPlayNames(c, k);
+      return names.length ? `${MODE_LABEL[k]} (${names.join(", ")})` : MODE_LABEL[k];
+    });
+    const base = el("p", {}, el("b", { text: "Recommended a play that memory says backfires: " }), parts.join("; "), ".");
+    if (!by.includes("none")) return el("div", { class: "note c-warn" }, base);
+    return el("div", { class: "cmp-punch", role: "status" },
+      el("div", { class: "t", text: "Without history, the brief recommended a play that memory says backfires." }),
+      base,
+      el("p", { class: "small", text: "Similar closed deals used that play and did not win with it. That is a count over a small sample, not proof of why those deals were lost." }));
+  }
+  function renderComparison(c) {
+    const have = ARMS.filter((k) => c.arms && c.arms[k]);
+    if (c.job && c.job.status === "failed") {
+      result.replaceChildren(problemNote(c.job.error_info, c.job.error || "The comparison failed.", { heading: "The comparison stopped" }));
+      if (!have.length) return;
+    }
+    if (!have.length) { result.replaceChildren(el("p", { class: "small muted", text: "No comparison yet." })); return; }
+    const d = c.differs || {};
+    const n = c.n_closed;
+    const lines = [];
+    if (d.same_play_as_longctx != null) lines.push(d.same_play_as_longctx
+      ? "Hindsight memory and \"All deals in the prompt\" land on the same recommended play."
+      : "Hindsight memory and \"All deals in the prompt\" recommend different plays.");
+    if ((d.cited_deals || []).length) lines.push(`Hindsight memory cited ${plural(d.cited_deals.length, "closed deal")}.`);
+    result.replaceChildren(
+      avoidLine(c),
+      el("div", { class: "cmp-grid" }, ARMS.map((k) => armColumn(k, c))),
+      el("div", { class: "stack-s" },
+        lines.length ? el("p", {}, lines.join(" "), " ", cites(d.cited_deals, ctx.deal)) : null,
+        c.prompt_hash_same === false ? el("div", { class: "note c-warn" }, "The prompts differ by more than the memory section, so some difference may not come from memory.") : null,
+        el("div", { class: "note c-info" },
+          el("div", { class: "t", text: "An honest caveat" }),
+          `n = ${n ?? "?"} closed deals. At this size putting every summary in the prompt also works; Hindsight's value is targeted retrieval, citations for every changed sentence, and scale.`)));
+  }
+  async function show() {
+    try {
+      const c = await api(`/v1/deals/${ctx.id}/comparison`);
+      if (c.job && (c.job.status === "queued" || c.job.status === "running") && !state.busy) {
+        state.busy = true; runBtn.disabled = true;
+        statusLine.textContent = "A comparison is already running...";
+        stopSlot.replaceChildren(stopButton(c.job.id, "Stop", "Stop the comparison"));
+        const job = await pollJob(c.job.id, (j) => { statusLine.textContent = j.total ? `Writing the briefs... ${j.done} of ${j.total}` : "Writing the briefs..."; });
+        state.busy = false; runBtn.disabled = false; stopSlot.replaceChildren(); statusLine.textContent = "";
+        if (job) await show();
+        return;
+      }
+      renderComparison(c);
+    } catch (e) { result.replaceChildren(e.code === "network" ? problemNote(null, e.message) : el("p", { class: "small muted", text: "No comparison yet." })); }
+  }
+  return { node: box, show };
+}
+
+/* ---------- Memory evidence tab (no model call) ---------- */
+// "What Hindsight says about deals like this": a short written reflection over similar deals. Reading it is free;
+// refreshing it asks the memory backend again (spends Hindsight credit on the Cloud backend, free on local).
+function memorySaysPanel(ctx) {
+  const box = el("section", { class: "panel raised" });
+  const body = el("div", { class: "says-body", "aria-live": "polite" });
+  const msg = el("p", { class: "small", role: "status" });
+  const st = { data: null, err: null, loading: false, busy: false, seq: 0 };
+  const local = () => (st.data?.backend ? st.data.backend === "local" : isLocalMemory());
+  const url = `/v1/deals/${ctx.id}/memory-says`;
+  async function ask() {
+    ++st.seq;
+    st.busy = true; st.err = null;
+    msg.textContent = local() ? "Asking the local memory..." : "Asking Hindsight...";
+    draw();
+    try { st.data = await api(url, { method: "POST" }); }
+    catch (e) { st.err = e; }
+    st.busy = false; msg.textContent = "";
+    draw();
+  }
+  async function load() {
+    if (st.busy) return;
+    const my = ++st.seq;
+    st.loading = true; st.err = null;
+    draw();
+    try {
+      const d = await api(url);
+      if (my !== st.seq) return;
+      st.data = d;
+    } catch (e) { if (my !== st.seq) return; st.err = e; }
+    st.loading = false;
+    draw();
+  }
+  const refreshHs = confirmButton("Refresh", "Confirm: spends a little Hindsight credit", () => ask(),
+    { title: "This asks Hindsight again and spends a little Hindsight credit", ariaLabel: "Refresh what Hindsight says about this deal" });
+  const refreshLocal = el("button", { class: "btn small", type: "button", text: "Refresh", "aria-label": "Refresh what the memory says about this deal", title: "Recompute this from the recorded outcomes. Free." });
+  refreshLocal.addEventListener("click", () => withBusy(refreshLocal, "Asking...", ask));
+  function errorNote(e) {
+    if (e.code === "lessons_disabled") return problemNote({ title: "Lessons are switched off", detail: "This reflection is built from the lessons recorded after outcomes, and lessons are disabled here.", action: null, retry_helps: false, blocking: true }, e.message);
+    if (e.code === "hindsight_unavailable") return problemNote({ title: "Hindsight can't be reached", detail: "The question could not be put to Hindsight right now.", action: "Check the status card, then press Refresh again.", retry_helps: true, blocking: false }, e.message);
+    return problemNote(null, e.message, { heading: "Couldn't get what the memory says" });
+  }
+  function content() {
+    const d = st.data;
+    if (st.loading && !d) return el("div", { class: "skeleton", style: "min-height:90px" });
+    if (d && d.state !== "missing" && d.text) {
+      const facts = d.based_on || [];
+      return [
+        markdownContent(d.text),
+        el("div", { class: "metaline" },
+          d.created_at ? el("span", { text: `asked ${when(d.created_at)}` }) : null,
+          d.backend ? el("span", { text: d.backend === "local" ? "computed locally" : "answered by Hindsight" }) : null),
+        el("details", { class: "more" },
+          el("summary", { text: `Based on ${plural(facts.length, "fact")}` }),
+          facts.length ? el("ul", { class: "facts" }, facts.map((f) => el("li", {}, f.type ? el("span", { class: "kchip", text: f.type }) : null, f.type ? " " : null, f.text))) : el("p", { class: "small muted", text: "No supporting facts were returned." })),
+      ];
+    }
+    if (st.err) return null;
+    return el("div", { class: "empty" }, el("b", { text: "Not asked yet" }),
+      el("span", { text: `Press Refresh to ask ${local() ? "the memory" : "Hindsight"} what it makes of deals like this one.` }));
+  }
+  function draw() {
+    const isLocal = local();
+    refreshHs.hidden = isLocal; refreshLocal.hidden = !isLocal;
+    refreshLocal.disabled = st.busy || st.loading;
+    if (!st.busy) refreshHs.disabled = st.loading;
+    body.replaceChildren(st.err ? errorNote(st.err) : null, content());
+    box.replaceChildren(
+      el("div", { class: "row spread" },
+        el("div", {}, el("span", { class: "eyebrow", text: "Reflection" }), el("h2", { text: isLocal ? "What the memory says" : "What Hindsight says about deals like this" })),
+        el("div", { class: "row" }, isLocal ? tag("Computed locally", "c-muted", "Built on this machine from recorded outcomes") : TAG_MEM(), refreshHs, refreshLocal)),
+      el("p", { class: "small muted", text: isLocal
+        ? "Free: written on this machine from the outcomes recorded in this workspace. Opening this tab and refreshing both cost nothing."
+        : "Opening this tab is free. Refresh asks Hindsight again and spends a little Hindsight credit." }),
+      msg, body);
+  }
+  draw();
+  return { node: box, load };
+}
+
+function evidencePanel(ctx) {
+  const box = el("div", { class: "stack" });
+  const says = memorySaysPanel(ctx);
+  let seq = 0;
+  function sentence(p) {
+    const used = p.used_in_similar || 0;
+    if (!used) return `${p.name || p.play_code} was not used in any similar deal.`;
+    const lostQ = p.lost_quality_in_similar || 0;
+    return `${p.name || p.play_code} used in ${plural(used, "similar deal")}, ${p.won_in_similar || 0} won${lostQ ? `, ${lostQ} lost on a quality issue` : ""}.`;
+  }
+  function render(r) {
+    const n = r.n_closed ?? 0;
+    const pending = currentStatus?.lessons?.pending || 0;
+    const lessonsUsed = Array.isArray(r.lessons_used) ? r.lessons_used.length : r.lessons_used;
+    const intro = el("section", { class: "panel raised" },
+      el("div", { class: "row spread" },
+        el("div", {}, el("span", { class: "eyebrow", text: "Memory evidence" }), el("h2", { text: "What memory says about deals like this one" })),
+        el("button", { class: "btn small", type: "button", text: "Refresh", onclick: () => show() })),
+      el("p", { class: "small muted", text: "This view makes no model call. Where a line comes from matters, so each block is labelled:" }),
+      el("div", { class: "legendline" }, TAG_MEM(), el("span", { text: `similar deals and lesson signals recalled from ${memName()}` }), TAG_COUNT(), el("span", { text: "exact counts over those recalled deals" })),
+      el("div", { class: `note ${n >= 10 ? "c-info" : "c-warn"}` },
+        el("div", { class: "t", text: n ? `Based on ${plural(n, "closed deal")} in memory: a small sample.` : "No closed deals in memory yet." }),
+        n ? "Counts like \"3 of 3\" are real but rest on very few deals. Read them as hints, not statistics." : "Record an outcome on a deal, or use the demo workspace, to give memory something to recall."),
+      r.degraded ? el("div", { class: "note c-warn", role: "alert" }, el("div", { class: "t", text: "Degraded" }), "Hindsight was only partly available, so this evidence may be incomplete.") : null,
+      el("div", { class: "metaline" },
+        lessonsUsed != null ? el("span", { text: `lessons used: ${lessonsUsed}` }) : null,
+        el("span", { title: r.memory_state || "", text: `memory state ${short(r.memory_state)}` }),
+        pending ? el("span", { text: `${pending} lessons still consolidating` }) : null));
+    const plays = r.plays || [];
+    const playsCard = el("section", { class: "panel raised" },
+      el("div", { class: "row" }, el("h2", { text: "Plays in similar deals" }), TAG_COUNT()),
+      plays.length ? el("div", { class: "stack-s" }, plays.map((p) => el("div", { class: "evi-card cnt" },
+        el("div", { class: "big-n", text: sentence(p) }),
+        (p.reasons || []).length ? el("ul", { class: "small muted", style: "margin:0;padding-left:18px" }, p.reasons.map((x) => el("li", { text: x }))) : null,
+        el("div", { class: "row" },
+          p.lesson_signal ? el("span", { class: "row", style: "gap:6px" }, TAG_MEM(), pill(`Lessons: ${p.lesson_signal}${pending ? " (consolidating)" : ""}`, p.lesson_signal === "positive" ? "c-ok" : p.lesson_signal === "negative" ? "c-bad" : "c-muted")) : null,
+          cites(p.source_deals, ctx.deal))))) : el("p", { class: "small muted", text: "No plays to report: no similar closed deal used one." }));
+    const warns = r.warnings || [];
+    const warnCard = el("section", { class: "panel raised" },
+      el("div", { class: "row" }, el("h2", { text: "Warnings" }), TAG_COUNT()),
+      warns.length ? el("div", { class: "stack-s" }, warns.map((w) => el("div", { class: "evi-card warn" },
+        el("div", { class: "big-n", text: `${w.similar_lost} of ${w.similar_total} similar deals were lost${w.objection_type ? ` (objection: ${labelOf(OBJ_TYPE, w.objection_type)})` : ""}.` }),
+        w.text ? el("p", { class: "small", text: w.text }) : null,
+        cites(w.source_deals, ctx.deal)))) : el("p", { class: "small muted", text: "No warnings for this deal." }));
+    const sim = r.similar || [];
+    const simCard = el("section", { class: "panel raised" },
+      el("div", { class: "row" }, el("h2", { text: "Similar closed deals" }), TAG_MEM()),
+      sim.length ? el("div", { class: "stack-s" }, sim.map((s) => el("div", { class: "evi-card mem" },
+        el("div", { class: "row" }, citeChip(s.code, ctx.deal), el("b", { text: s.account }), resultPill(s),
+          s.rank != null ? el("span", { class: "small muted mono", text: `rank ${s.rank}${s.relevance != null ? ` · relevance ${Number(s.relevance).toFixed(2)}` : ""}` }) : null),
+        (s.shared_keys || []).length ? el("div", { class: "row" }, el("span", { class: "small muted", text: "Matched on:" }), s.shared_keys.map((k) => el("span", { class: "kchip", text: k }))) : null,
+        (s.plays_used || []).length ? el("div", { class: "row" }, el("span", { class: "small muted", text: "Plays used:" }), s.plays_used.map((p) => el("span", { class: "kchip", text: playLabel(p) }))) : null,
+        s.summary ? el("p", { class: "small", text: s.summary }) : null))) : el("p", { class: "small muted", text: "Hindsight didn't recall any similar closed deal." }));
+    box.replaceChildren(intro, avoidCard(r.avoid, ctx.deal, n), says.node,
+      el("div", { class: "grid2" }, el("div", { class: "stack" }, simCard), el("div", { class: "stack" }, playsCard, warnCard)));
+    says.load();
+  }
+  async function show() {
+    const my = ++seq;
+    box.replaceChildren(el("div", { class: "skeleton" }));
+    try {
+      const [r] = await Promise.all([api(`/v1/deals/${ctx.id}/recommendations?mode=hindsight`), loadStatus()]);
+      if (my === seq) render(r);
+    } catch (e) {
+      if (my !== seq) return;
+      box.replaceChildren(el("section", { class: "panel raised" },
+        problemNote(null, e.code === "network" ? e.message : `${e.message}${isLocalMemory() ? "" : " Hindsight may be unreachable: check the status card."}`, { heading: "Couldn't load the memory evidence" }),
+        el("div", { class: "row" }, el("button", { class: "btn small", type: "button", text: "Try again", onclick: () => show() }))));
+    }
+  }
+  return { node: box, show };
+}
+
+/* ---------- Timeline tab ---------- */
+function timelinePanel(ctx) {
+  const dynamic = el("div", { class: "stack" });
+  const side = el("div", { class: "stack" });
+  const readBox = el("section", { class: "panel raised" });
+  let readMsg = null;  // problem note from the last failed read
+
+  async function doRead(btn, statusEl) {
+    btn.disabled = true;
+    readMsg = null;
+    try {
+      const job = await readDealJob(ctx, (j) => { statusEl.textContent = j.total ? `Reading... ${j.done} of ${j.total}` : "Reading the notes and emails..."; });
+      if (!job) return;
+      if (job.status === "failed") readMsg = problemNote(job.error_info, job.error, { heading: "Couldn't read the deal" });
+      else if (job.status === "cancelled") readMsg = el("div", { class: "note c-muted" }, "Reading was stopped.");
+    } catch (e) {
+      if (e.status === 409) readMsg = el("div", { class: "note c-warn" }, el("div", { class: "t", text: "Nothing to read yet" }), "Add a note or email first, then read the deal.");
+      else { showError(e); }
+    }
+    renderRead();
+  }
+  function renderRead() {
+    const d = ctx.deal;
+    const status = el("p", { class: "small", role: "status" });
+    if (d.signals_status === "extracting") {
+      readBox.replaceChildren(el("h2", { text: "Reading this deal..." }), el("p", { class: "small muted", text: "Pulling out objections, competitors, promises and stakeholders. This page updates when it's done." }), el("div", { class: "bar-pulse skeleton", style: "min-height:8px" }));
+      return;
+    }
+    const ready = d.signals_status === "ready";
+    const btn = ready
+      ? confirmButton("Read again (1 model call)", "Confirm: 1 model call", () => doRead(btn, status), { cls: "btn small" })
+      : el("button", { class: "btn primary", type: "button", text: "Read this deal (1 model call)" });
+    if (!ready) btn.addEventListener("click", () => doRead(btn, status));
+    const noNotes = !(d.interactions || []).length;
+    if (noNotes) btn.disabled = true;
+    readBox.replaceChildren(
+      el("div", { class: "row spread" }, el("h2", { text: ready ? "Deal read" : "Read this deal" }), signalsPill(d)),
+      el("p", { class: "small muted", text: ready
+        ? `Objections, competitors, promises and stakeholders were taken from the notes and emails${d.signals?.source ? ` (source: ${d.signals.source})` : ""}. After adding notes, read the deal again.`
+        : "Briefs rely on the deal's objections, competitors, promises and stakeholders. Reading the notes and emails extracts them with one model call." }),
+      noNotes ? el("p", { class: "small muted", text: "Add a note or email first." }) : null,
+      d.signals_status === "failed" ? el("div", { class: "note c-bad" }, el("div", { class: "t", text: "The last read failed" }), d.signals_error || "No details were recorded.") : null,
+      readMsg, el("div", { class: "row" }, btn), status);
+  }
+
+  // ---- add a note ----
+  const kindSel = el("select", { id: "nt-kind", "aria-label": "Kind" }, Object.entries(KIND).map(([v, [, t]]) => el("option", { value: v, text: t })));
+  const dateIn = el("input", { type: "date", id: "nt-date", value: todayISO() });
+  const authorIn = el("input", { type: "text", id: "nt-author", placeholder: "Optional" });
+  const subjectIn = el("input", { type: "text", id: "nt-subject", placeholder: "Optional" });
+  const textIn = el("textarea", { id: "nt-text", rows: 6, placeholder: "Paste the email or type your call notes here." });
+  const noteMsg = el("p", { class: "small", role: "status" });
+  const noteBtn = el("button", { class: "btn primary", type: "submit", text: "Add to timeline" });
+  const noteForm = el("form", { class: "stack-s", novalidate: true },
+    el("div", { class: "fields" }, el("label", { class: "field", for: "nt-kind" }, "Kind", kindSel), el("label", { class: "field", for: "nt-date" }, "Date", dateIn)),
+    el("details", { class: "more" }, el("summary", { text: "Author and subject" }), el("div", { class: "fields" }, el("label", { class: "field", for: "nt-author" }, "Author", authorIn), el("label", { class: "field", for: "nt-subject" }, "Subject", subjectIn))),
+    el("label", { class: "field", for: "nt-text" }, "Text", textIn), noteMsg, el("div", { class: "row" }, noteBtn));
+  noteForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    noteMsg.style.color = "";
+    if (!textIn.value.trim()) { noteMsg.style.color = "var(--bad)"; noteMsg.textContent = "Add some text first."; return; }
+    noteBtn.disabled = true; noteBtn.textContent = "Adding...";
+    try {
+      const body = { kind: kindSel.value, text: textIn.value.trim(), occurred_on: dateIn.value || undefined };
+      if (authorIn.value.trim()) body.author = authorIn.value.trim();
+      if (subjectIn.value.trim()) body.subject = subjectIn.value.trim();
+      await api(`/v1/deals/${ctx.id}/notes`, json("POST", body));
+      textIn.value = ""; subjectIn.value = "";
+      await ctx.refresh();
+      loadStatus(true);
+      noteMsg.style.color = "var(--ok)"; noteMsg.textContent = "Added. Read the deal again to pick up any new objections or promises.";
+    } catch (err) { showError(err); }
+    finally { noteBtn.disabled = false; noteBtn.textContent = "Add to timeline"; }
+  });
+  // ---- add files ----
+  const drop = fileDrop("tl-files", ".txt,.md,.eml,.csv,.pdf,.docx,.xlsx", ".txt .md .eml .csv .pdf .docx .xlsx");
+  const fileBtn = el("button", { class: "btn", type: "button", text: "Add files", disabled: true });
+  const fileMsg = el("p", { class: "small", role: "status" });
+  drop.addEventListener("filechange", () => { fileBtn.disabled = !drop.state.files.length; });
+  fileBtn.addEventListener("click", async () => {
+    const body = new FormData();
+    for (const f of drop.state.files) body.append("files", f);
+    fileBtn.disabled = true; fileBtn.textContent = "Uploading...";
+    try {
+      const before = (ctx.deal.interactions || []).length;
+      await api(`/v1/deals/${ctx.id}/files`, { method: "POST", body });
+      drop.setFiles(null);
+      await ctx.refresh();
+      loadStatus(true);
+      const added = (ctx.deal.interactions || []).length - before;
+      fileMsg.style.color = "var(--ok)"; fileMsg.textContent = added > 0 ? `Added ${plural(added, "note or email")}.` : "Those files were already on the timeline.";
+    } catch (err) { showError(err); fileBtn.disabled = false; }
+    finally { fileBtn.textContent = "Add files"; }
+  });
+  side.append(readBox,
+    el("section", { class: "panel raised" }, el("h2", { text: "Add a note or email" }), noteForm),
+    el("section", { class: "panel raised" }, el("h2", { text: "Add files" }), drop, el("div", { class: "row" }, fileBtn), fileMsg));
+
+  function signalsBlock(d) {
+    const s = d.signals;
+    if (!s) return el("section", { class: "panel raised" }, el("h2", { text: "Signals" }),
+      el("p", { class: "empty", text: d.signals_status === "extracting" ? "Reading this deal now..." : "Not read yet. Use \"Read this deal\" to pull out objections, competitors and promises." }));
+    const today = todayISO();
+    const objections = s.objections || [], promises = s.promises || [], competitors = s.competitors || [], used = s.plays_used || [];
+    return el("section", { class: "panel raised" },
+      el("div", { class: "row spread" }, el("h2", { text: "Signals" }), TAG_DEAL()),
+      el("div", { class: "sig-grid" },
+        el("div", { class: "stack-s" }, el("h3", { text: `Objections (${objections.length})` }),
+          objections.length ? el("ul", { class: "sig-list" }, objections.map((o) => {
+            const [t, c] = OBJ_STATUS[o.status] || [o.status, "c-muted"];
+            return el("li", {}, el("div", { class: "row" }, el("b", { text: labelOf(OBJ_TYPE, o.type) }), pill(t, c), o.first_seen_on ? el("span", { class: "small muted", text: `since ${fmtDate(o.first_seen_on)}` }) : null),
+              o.text ? el("span", { text: o.text }) : null, cites(o.evidence, d));
+          })) : el("p", { class: "small muted", text: "None raised." })),
+        el("div", { class: "stack-s" }, el("h3", { text: `Promises (${promises.length})` }),
+          promises.length ? el("ul", { class: "sig-list" }, promises.map((p) => {
+            const overdue = p.status === "open" && p.due_on && p.due_on < today;
+            return el("li", {}, el("span", { text: p.text }),
+              el("div", { class: "row" }, p.owner ? el("span", { class: "small muted", text: p.owner }) : null,
+                p.due_on ? el("span", { class: "small muted", text: `due ${fmtDate(p.due_on)}` }) : null,
+                overdue ? pill("Overdue", "c-bad") : pill(p.status === "kept" ? "Kept" : p.status === "missed" ? "Missed" : "Open", p.status === "kept" ? "c-ok" : p.status === "missed" ? "c-bad" : "c-muted"),
+                cites(p.evidence, d)));
+          })) : el("p", { class: "small muted", text: "No promises recorded." })),
+        el("div", { class: "stack-s" }, el("h3", { text: "Competitors" }),
+          competitors.length ? el("div", { class: "row" }, competitors.map((c) => el("span", { class: "kchip", text: c }))) : el("p", { class: "small muted", text: "None mentioned." }),
+          el("h3", { text: "Pricing" }),
+          s.pricing && (s.pricing.discount_requested || s.pricing.notes)
+            ? el("div", { class: "stack-s" }, s.pricing.discount_requested ? pill("Discount requested", "c-warn") : pill("No discount requested", "c-muted"), s.pricing.notes ? el("p", { class: "small", text: s.pricing.notes }) : null)
+            : el("p", { class: "small muted", text: "Nothing noted." }),
+          el("h3", { text: "Plays used so far" }),
+          used.length ? el("div", { class: "row" }, used.map((p) => el("span", { class: "kchip", text: playLabel(p) }))) : el("p", { class: "small muted", text: "None yet." }))));
+  }
+  function stakeholdersBlock(d) {
+    const sh = d.stakeholders || [];
+    return el("section", { class: "panel raised" }, el("h2", { text: `Stakeholders (${sh.length})` }),
+      sh.length ? el("div", { class: "people" }, sh.map((p) => {
+        const [t, c] = STANCE[p.stance] || [p.stance, "c-muted"];
+        return el("div", { class: "person" }, el("b", { text: p.name }), p.title ? el("span", { class: "small muted", text: p.title }) : null,
+          el("div", { class: "row" }, pill(t, c), pill(p.engaged ? "Engaged" : "Quiet for 30+ days", p.engaged ? "c-ok" : "c-warn"), p.economic_buyer ? pill("Economic buyer", "c-mem") : null),
+          p.note ? el("p", { class: "small", text: p.note }) : null);
+      })) : el("p", { class: "empty", text: "No stakeholders yet. They appear once the deal has been read." }));
+  }
+  function interactionsBlock(d) {
+    const ixs = [...(d.interactions || [])].sort((a, b) => String(b.occurred_on).localeCompare(String(a.occurred_on)) || (b.id - a.id));
+    return el("section", { class: "panel raised" }, el("h2", { text: `Timeline (${ixs.length})` }),
+      ixs.length ? el("div", {}, ixs.map((i) => {
+        const [letter, label] = KIND[i.kind] || ["?", labelOf(KIND, i.kind)];
+        const long = (i.text || "").length > 420;
+        const body = el("p", { class: "ixn-text", text: long ? `${i.text.slice(0, 420)}...` : i.text });
+        const toggle = long ? el("button", { class: "linkish small", type: "button", text: "Show the full text" }) : null;
+        if (toggle) {
+          let open = false;
+          toggle.addEventListener("click", () => { open = !open; body.textContent = open ? i.text : `${i.text.slice(0, 420)}...`; toggle.textContent = open ? "Show less" : "Show the full text"; });
+        }
+        return el("article", { class: "ixn", id: `ixn-${i.code}` },
+          el("div", { class: "kind-badge", title: label, text: letter }),
+          el("div", { class: "stack-s" },
+            el("div", { class: "row" }, el("b", { text: i.subject || label }), el("span", { class: "cite c-info mono", text: i.code }), el("span", { class: "small muted", text: `${label} · ${fmtDate(i.occurred_on)}${i.author ? ` · ${i.author}` : ""}` }),
+              ["pending", "pending_delete"].includes(i.hindsight_status) ? pill("Syncing to memory", "c-warn") : null),
+            body, toggle));
+      })) : el("p", { class: "empty", text: "No notes or emails yet. Paste one or drop in files in the panels beside or below." }));
+  }
+  function render() {
+    const d = ctx.deal;
+    const flags = d.flags || [];
+    dynamic.replaceChildren(
+      el("section", { class: "panel raised" },
+        el("div", { class: "row" }, el("h2", { text: "Flags" }), tag("Checked without a model", "c-muted")),
+        flagBadges(flags, d)),
+      signalsBlock(d), stakeholdersBlock(d), interactionsBlock(d));
+    renderRead();
+  }
+  const node = el("div", { class: "grid2" }, dynamic, el("div", {}, side));
+  return { node, render, show() {} };
+}
+
+/* ---------- Close deal / learning loop tab ---------- */
+function closePanel(ctx) {
+  const box = el("div", { class: "stack" });
+  const state = { result: null, reason: null, plays: new Set(), closedOn: todayISO(), formBuilt: false, outcome: null, prefilled: false };
+
+  function creditTable(credit, playMap) {
+    if (!credit || !credit.length) return el("p", { class: "small muted", text: "No play credit changed. Only plays used on wins, or on losses they could have changed, earn or lose credit." });
+    return el("div", { class: "scroll-x" }, el("table", { class: "plain-table" },
+      el("thead", {}, el("tr", {}, ["Play", "Credit", "Times used", "Won", "Lost (quality)", "Lost (other)"].map((h, i) => el("th", { class: i ? "num" : "", text: h })))),
+      el("tbody", {}, credit.map((c) => el("tr", {},
+        el("td", {}, el("b", { text: playMap.get(c.play_code) || c.play_code }), " ", el("span", { class: "kchip", text: c.play_code })),
+        el("td", { class: "num" }, el("b", { class: c.delta > 0 ? "diff-add" : c.delta < 0 ? "diff-del" : "", text: `${c.delta > 0 ? "+" : ""}${c.delta}` })),
+        [c.times_used, c.won, c.lost_quality, c.lost_other].map((v) => el("td", { class: "num", text: v })))))));
+  }
+  async function outcomeView(resp) {
+    let playMap = new Map();
+    try { playMap = new Map((await getPlays()).map((p) => [p.code, p.name])); } catch { /* codes are shown instead */ }
+    const d = resp.deal || ctx.deal;
+    let others = [];
+    try { others = (await api("/v1/deals")).deals.filter((x) => x.result === "open" && x.id !== ctx.id); } catch { /* the link list is optional */ }
+    const hint = readDemoHint();
+    others.sort((a, b) => (b.id === hint?.demo) - (a.id === hint?.demo));
+    const pending = resp.lessons_added || 0;
+    return [
+      el("section", { class: "panel raised" },
+        el("div", { class: "note c-ok" }, el("div", { class: "t", text: `Outcome recorded: ${d.result === "won" ? "won" : `lost${d.loss_reason ? ` (${labelOf(LOSS, d.loss_reason)})` : ""}`}` }),
+          d.closed_on ? `Closed ${fmtDate(d.closed_on)}.` : null),
+        el("h2", { text: "Play credit" }), creditTable(resp.credit, playMap)),
+      el("section", { class: "panel raised hs-learned" },
+        el("div", { class: "row" }, el("h2", { text: "What memory learned" }), TAG_MEM()),
+        (resp.events || []).length ? el("ul", { class: "claims mem" }, resp.events.map((x) => el("li", { text: x }))) : null,
+        resp.memory_note ? el("p", { text: resp.memory_note }) : null,
+        el("p", { class: "small muted", text: pending
+          ? `${plural(pending, "lesson")} added. Hindsight is consolidating them in the background; the Memory page shows when they are done. A brief written before that may not show them yet.`
+          : "No new lessons were added." }),
+        el("div", { class: "row" }, el("a", { class: "btn small", href: "#/memory", text: "See what memory learned" }))),
+      el("section", { class: "panel raised", style: "border-left:4px solid var(--accent)" },
+        el("span", { class: "eyebrow", text: "Next" }),
+        el("h2", { text: "Brief the similar open deal again" }),
+        el("p", { class: "small muted", text: "Write the Hindsight brief again on an open deal. The brief history then shows what changed because of this outcome." }),
+        others.length ? el("div", { class: "row" }, others.map((o, i) => el("a", { class: `btn ${i === 0 ? "primary" : ""}`, href: `#/deals/${o.id}/brief`, text: `Brief ${o.account}` }))) : el("p", { class: "small muted", text: "There are no other open deals. Add one on the Deals page." }))];
+  }
+  async function renderOutcome() {
+    if (state.outcomeNodes) { box.replaceChildren(...state.outcomeNodes); return; }
+    box.replaceChildren(el("div", { class: "skeleton", style: "min-height:140px" }));
+    state.outcomeNodes = await outcomeView(state.outcome);
+    box.replaceChildren(...state.outcomeNodes);
+  }
+  function readOnly() {
+    const d = ctx.deal;
+    const summaryBox = el("div");
+    getHistory().then((deals) => {
+      const h = deals.find((x) => x.code === d.code);
+      if (h?.summary) summaryBox.replaceChildren(el("div", { class: "stack-s" }, el("div", { class: "row" }, el("h3", { text: "How memory stores this deal" }), TAG_MEM()), el("p", { text: h.summary })));
+    }).catch(() => {});
+    box.replaceChildren(el("section", { class: "panel raised" },
+      el("span", { class: "eyebrow", text: "Outcome" }), el("h2", { text: "This deal is closed" }),
+      el("div", { class: "row" }, resultPill(d), d.closed_on ? el("span", { class: "small muted", text: `Closed ${fmtDate(d.closed_on)}` }) : null),
+      d.loss_reason ? el("div", { class: "note c-muted" }, el("div", { class: "t", text: labelOf(LOSS, d.loss_reason) }), LOSS_NOTE[d.loss_reason] || "") : null,
+      (d.signals?.plays_used || []).length ? el("div", { class: "stack-s" }, el("b", { class: "small", text: "Plays used" }), el("div", { class: "row" }, d.signals.plays_used.map((p) => el("span", { class: "kchip", text: playLabel(p) })))) : null,
+      summaryBox,
+      el("p", { class: "small muted", text: "The outcome is read-only. Its summary and lessons are part of memory and shape briefs on similar open deals." })));
+  }
+  function buildForm() {
+    state.formBuilt = true;
+    const resultSeg = el("div", { class: "seg", role: "group", "aria-label": "Result" });
+    const reasonBox = el("div", { class: "stack-s" });
+    const playBox = el("div", { class: "stack-s" }, el("div", { class: "skeleton", style: "min-height:80px" }));
+    const dateIn = el("input", { type: "date", id: "co-date", value: state.closedOn });
+    dateIn.addEventListener("input", () => { state.closedOn = dateIn.value; });
+    const recordBtn = confirmButton("Record outcome", "Confirm: this closes the deal", async () => {
+      try {
+        const resp = await api(`/v1/deals/${ctx.id}/outcome`, json("PUT", {
+          result: state.result, loss_reason: state.result === "lost" ? state.reason : undefined, plays_used: [...state.plays], closed_on: state.closedOn || undefined,
+        }));
+        state.outcome = resp;
+        historyCache = null;
+        await ctx.refresh();
+        loadStatus(true);
+        showNotice("Outcome recorded", "Memory is learning from it. Brief a similar open deal again to see what changed.", false);
+      } catch (e) { showError(e); }
+    }, { cls: "btn primary", title: "Closes the deal and teaches memory the result" });
+    const validity = el("p", { class: "small muted", role: "status" });
+    const validate = () => {
+      const ok = state.result === "won" || (state.result === "lost" && !!state.reason);
+      recordBtn.disabled = !ok;
+      validity.textContent = ok ? "" : (state.result === "lost" ? "Pick the loss reason to continue." : "Choose won or lost to continue.");
+    };
+    const drawReasons = () => {
+      if (state.result !== "lost") {
+        reasonBox.replaceChildren(state.result === "won" ? el("div", { class: "note c-ok" }, "Plays used on a won deal earn credit. Pick the plays that were actually used below.") : null);
+        return;
+      }
+      reasonBox.replaceChildren(el("h3", { text: "Why was it lost?" }), el("p", { class: "small muted", text: "Quality reasons count against the plays used. The others say little about the plays, so they get no credit or penalty." }),
+        ...Object.keys(LOSS).map((k) => {
+          const r = el("input", { type: "radio", name: "loss-reason", value: k, id: `lr-${k}` });
+          r.checked = state.reason === k;
+          r.addEventListener("change", () => { state.reason = k; validate(); });
+          return el("label", { class: "radio-card", for: `lr-${k}` }, r,
+            el("span", { class: "row" }, el("b", { text: LOSS[k] }), QUALITY_LOSSES.has(k) ? pill("Plays get credit or penalty", "c-warn") : pill("No play credit", "c-muted")),
+            el("span", { class: "rc-note", text: LOSS_NOTE[k] }));
+        }));
+    };
+    for (const [v, t] of [["won", "Won"], ["lost", "Lost"]]) {
+      const b = el("button", { type: "button", text: t, "aria-pressed": "false" });
+      b.addEventListener("click", () => {
+        state.result = v;
+        for (const x of resultSeg.children) x.setAttribute("aria-pressed", String(x === b));
+        drawReasons(); validate();
+      });
+      resultSeg.append(b);
+    }
+    getPlays().then((plays) => {
+      if (!state.prefilled) { for (const p of ctx.deal.signals?.plays_used || []) state.plays.add(p.code || p); state.prefilled = true; }
+      const groups = new Map();
+      for (const p of plays) { if (!groups.has(p.category)) groups.set(p.category, []); groups.get(p.category).push(p); }
+      playBox.replaceChildren(...[...groups.entries()].map(([cat, list]) => el("div", { class: "stack-s" },
+        el("b", { class: "small muted", text: labelOf({}, cat).replace(/^./, (x) => x.toUpperCase()) }),
+        el("div", { class: "play-grid" }, list.map((p) => {
+          const cb = el("input", { type: "checkbox", id: `pl-${p.code}` });
+          cb.checked = state.plays.has(p.code);
+          cb.addEventListener("change", () => { if (cb.checked) state.plays.add(p.code); else state.plays.delete(p.code); });
+          return el("label", { class: "check-card", for: `pl-${p.code}` }, cb, el("span", {}, el("b", { text: p.name }), " ", el("span", { class: "kchip", text: p.code })), p.description ? el("span", { class: "cc-note", text: p.description }) : null);
+        })))));
+    }).catch((e) => playBox.replaceChildren(problemNote(null, e.message, { heading: "Couldn't load the plays" })));
+    box.replaceChildren(el("section", { class: "panel raised" },
+      el("span", { class: "eyebrow", text: "Learning loop" }), el("h2", { text: "Close this deal and teach memory" }),
+      el("p", { class: "small muted", text: "Record how the deal ended and which plays were actually used. Memory turns that into lessons, and the next brief on a similar open deal can change because of it." }),
+      el("div", { class: "row" }, resultSeg),
+      reasonBox,
+      el("h3", { text: "Which plays were actually used?" }), playBox,
+      el("label", { class: "field", for: "co-date", style: "max-width:220px" }, "Closed on", dateIn),
+      validity, el("div", { class: "row" }, recordBtn)));
+    validate();
+  }
+  function render() {
+    if (state.outcome) { renderOutcome(); return; }
+    if (ctx.deal.result !== "open") { readOnly(); return; }
+    if (!state.formBuilt) buildForm();
+  }
+  return { node: box, render, show() {} };
+}
+
+/* ---------- Memory page ---------- */
+const sectionError = (title, e) => el("section", { class: "panel raised" }, el("h2", { text: title }), problemNote(null, e?.message || "This section couldn't load.", { heading: "Couldn't load" }));
+const dealLink = (code) => {
+  const id = dealId(code);
+  return id ? el("a", { class: "kchip", href: `#/deals/${id}`, text: code, title: "Open this deal" }) : el("span", { class: "kchip", text: code });
+};
+
+function journalSection(data) {
+  const events = data.events || [];
+  const show = events.slice(0, 20), rest = events.slice(20);
+  const item = (ev) => el("article", { class: "tl-item" },
+    el("div", { class: "row spread" }, el("b", { text: labelOf(JOURNAL_KIND, ev.kind) }), el("time", { class: "small muted", datetime: ev.created_at, text: when(ev.created_at) })),
+    el("p", { class: "small", text: ev.detail }),
+    (ev.deal_code || ev.play_code) ? el("div", { class: "row" }, ev.deal_code ? dealLink(ev.deal_code) : null, ev.play_code ? el("span", { class: "kchip", text: ev.play_code }) : null) : null);
+  return el("section", { class: "panel raised" },
+    el("div", { class: "row spread" }, el("div", {}, el("span", { class: "eyebrow", text: "Journal" }), el("h2", { text: "What memory learned" })), pill(plural(events.length, "event"), "c-info")),
+    el("p", { class: "small muted", text: "Everything the workspace remembered, newest first: outcomes, play credit and lessons." }),
+    events.length ? el("div", { class: "timeline" }, show.map(item), rest.length ? el("details", { class: "more" }, el("summary", { text: `Show ${rest.length} older events` }), el("div", { class: "timeline" }, rest.map(item))) : null)
+      : el("p", { class: "empty", text: "Nothing learned yet. Record an outcome on a deal and it appears here." }));
+}
+function lessonsSection(data) {
+  const lessons = data.lessons || [];
+  const c = data.counts || {};
+  const signal = { positive: "c-ok", negative: "c-bad", neutral: "c-muted" };
+  const stateOf = (l) => l.hindsight_status === "retained" ? pill("Retained", "c-ok", "Stored in Hindsight")
+    : l.hindsight_status === "failed" ? pill("Failed to send", "c-bad") : pill("Consolidating", "c-warn", "Waiting for Hindsight to process it");
+  return el("section", { class: "panel raised" },
+    el("div", { class: "row spread" }, el("div", {}, el("span", { class: "eyebrow", text: "Lessons" }), el("h2", { text: "Lessons from outcomes" })),
+      el("div", { class: "row" }, pill(`${c.retained || 0} retained`, "c-ok"), c.pending ? pill(`${c.pending} consolidating`, "c-warn") : null, c.failed ? pill(`${c.failed} failed`, "c-bad") : null)),
+    el("p", { class: "small muted", text: isLocalMemory()
+      ? "Each outcome becomes short plain-language lessons, stored locally. Briefs recall them by keyword search."
+      : "Each outcome becomes short plain-language lessons. Hindsight turns them into facts and patterns that briefs can recall." }),
+    lessons.length ? el("div", { class: "stack-s" }, lessons.slice(0, 40).map((l) => el("div", { class: "evi-card" },
+      el("div", { class: "row spread" }, el("div", { class: "row" }, pill(l.signal, signal[l.signal] || "c-muted"), stateOf(l)), el("time", { class: "small muted", text: when(l.happened_at) })),
+      el("p", { class: "small", text: l.text }),
+      el("div", { class: "row" }, l.deal_code ? dealLink(l.deal_code) : null, (l.tags || []).filter((t) => !String(t).startsWith("signal:")).map((t) => el("span", { class: "kchip", text: t })))))) : el("p", { class: "empty", text: "No lessons yet." }));
+}
+function playStatsSection(data) {
+  const plays = [...(data.plays || [])].sort((a, b) => (b.times_used || 0) - (a.times_used || 0) || String(a.name).localeCompare(String(b.name)));
+  return el("section", { class: "panel raised" },
+    el("div", { class: "row" }, el("span", { class: "eyebrow", text: "Plays" })),
+    el("div", { class: "row" }, el("h2", { text: "Plays: what worked" }), TAG_COUNT()),
+    el("p", { class: "small muted", text: "Exact counts of how often each play was used and how those deals ended. Credit is shown small: with so few deals it only breaks ties." }),
+    plays.length ? el("div", { class: "scroll-x" }, el("table", { class: "plain-table" },
+      el("thead", {}, el("tr", {}, ["Play", "Used", "Won", "Lost (quality)", "Lost (other)", "Credit"].map((h, i) => el("th", { class: i ? "num" : "", text: h })))),
+      el("tbody", {}, plays.map((p) => el("tr", {},
+        el("td", {}, el("b", { text: p.name }), " ", el("span", { class: "small muted", text: p.category })),
+        [p.times_used, p.won, p.lost_quality, p.lost_other].map((v) => el("td", { class: "num", text: v ?? 0 })),
+        el("td", { class: "num small muted", text: p.outcome_credit != null ? Number(p.outcome_credit).toFixed(1) : "n/a" })))))) : el("p", { class: "empty", text: "No play has been used yet." }));
+}
+function historySection(data) {
+  const deals = data.deals || [];
+  return el("section", { class: "panel raised" },
+    el("div", { class: "row spread" }, el("div", {}, el("span", { class: "eyebrow", text: "History" }), el("h2", { text: `Closed deals in memory (${deals.length})` }))),
+    el("p", { class: "small muted", text: deals.length ? `${plural(deals.length, "closed deal")} in memory: a small sample. Briefs recall these summaries.` : "No closed deals in memory yet." }),
+    deals.length ? el("div", { class: "stack-s" }, deals.map((d) => el("div", { class: "evi-card mem" },
+      el("div", { class: "row" }, citeChip(d.code, null), el("b", { text: d.account }), resultPill(d), d.segment ? pill(labelOf(SEGMENT, d.segment), "c-muted") : null, d.amount != null ? el("span", { class: "small muted mono", text: money(d.amount) }) : null),
+      d.summary ? el("p", { class: "small", text: d.summary }) : null,
+      el("div", { class: "row" },
+        (d.plays_used || []).map((p) => el("span", { class: "kchip", text: playLabel(p) })),
+        (d.objections || []).map((o) => pill(`${labelOf(OBJ_TYPE, o.type)}: ${(OBJ_STATUS[o.status] || [o.status])[0]}`, (OBJ_STATUS[o.status] || [0, "c-muted"])[1])))))) : null);
+}
+function playbookSection(initial, status) {
+  const box = el("section", { class: "panel raised", style: "border-left:4px solid var(--mem)" });
+  const pending = status?.lessons?.pending || 0;
+  const local = isLocalMemory(status);
+  const render = (pb) => {
+    const doRefresh = async () => {
+      try { render(await api("/v1/memory/playbook/refresh", { method: "POST" })); loadStatus(true); }
+      catch (e) { showError(e); }
+    };
+    const refreshLabel = pb.content ? "Refresh playbook" : "Build playbook";
+    let refresh;
+    if (local) {
+      refresh = el("button", { class: "btn small", type: "button", text: refreshLabel, title: "Recompute the playbook from the recorded outcomes. Free." });
+      refresh.addEventListener("click", () => withBusy(refresh, "Building...", doRefresh));
+    } else refresh = confirmButton(refreshLabel, "Confirm: spends Hindsight credits", doRefresh,
+      { title: "Asks Hindsight to consolidate every lesson into a playbook. Spends Hindsight credits." });
+    const stateNote = pb.state === "unavailable"
+      ? el("div", { class: "note c-warn" }, el("div", { class: "t", text: "Playbook unavailable" }), local ? "The playbook couldn't be computed right now." : "Hindsight couldn't produce a playbook right now. Check the status card.")
+      : pb.state === "missing" || !pb.content ? el("p", { class: "small muted", text: "Not built yet. A playbook summarises every lesson into what tends to win and lose. Building one is optional." }) : null;
+    box.replaceChildren(
+      el("div", { class: "row spread" }, el("div", {}, el("span", { class: "eyebrow", text: "Playbook" }), el("h2", { text: "Playbook: what wins, what loses" })), pill(pb.state || "missing", pb.state === "ready" ? "c-ok" : "c-muted")),
+      local
+        ? el("div", { class: "note c-info" }, el("div", { class: "t", text: "Computed locally, free" }),
+          "The playbook is worked out on this machine from the recorded outcomes. It never runs on its own, only when you press the button.")
+        : el("div", { class: "note c-warn" }, el("div", { class: "t", text: "Spends Hindsight credits" }),
+          `Refreshing asks Hindsight to consolidate every lesson into a new playbook. It never runs on its own, only when you confirm.${pending ? ` ${plural(pending, "lesson")} are still consolidating: refresh after they finish.` : ""}`),
+      el("div", { class: "row" }, refresh),
+      stateNote,
+      pb.content ? markdownContent(pb.content) : null,
+      pb.last_refreshed_at ? el("p", { class: "small muted", text: `Refreshed ${when(pb.last_refreshed_at)}${pb.is_stale ? ". Newer lessons have arrived since, so it is out of date." : "."}` }) : null);
+  };
+  render(initial);
+  return box;
+}
+// Leave-one-out self-check of the recommendations. Percentages are shown only next to the counts.
+function qualitySection(q) {
+  const n = q.n_closed ?? 0;
+  const won = q.won || {}, lost = q.lost || {};
+  const pct = (x, y) => (y > 0 ? ` (${Math.round((100 * x) / y)}%)` : "");
+  const tiny = (y) => (y === 0 ? " Nothing to check." : y < 5 ? " Very few deals: one more or less changes this a lot." : "");
+  const line = (lead, x, y, of, extra) => el("div", { class: "quality-line" },
+    el("span", {}, lead, " ", el("b", { text: `${x} of ${y}` }), ` ${of}${pct(x, y)}.`, tiny(y)),
+    extra ? el("span", { class: "small muted", text: extra }) : null);
+  const lines = [];
+  if (n === 0) lines.push(el("p", { class: "empty", text: "No closed deals have been read yet, so there is nothing to check." }));
+  else {
+    lines.push(line(`Recommendations from the other deals pointed at a play that was really used in`, won.hit ?? 0, won.covered ?? 0, "won deals",
+      (won.n ?? 0) > (won.covered ?? 0) ? `${(won.n ?? 0) - (won.covered ?? 0)} of ${won.n} won deals had no recommendation to check. "Pointed at" means one of the top ${q.top ?? 3} plays.` : `"Pointed at" means one of the top ${q.top ?? 3} plays.`));
+    lines.push(line("It warned about the unresolved objection in", lost.warned ?? 0, lost.had_unresolved ?? 0, "lost deals that had an unresolved objection"));
+    lines.push(line("It flagged, as likely to backfire, a play that was really used in", lost.avoid_hit ?? 0, lost.n ?? 0, "lost deals",
+      "This is the discount-type backfire check: the play was marked likely to backfire when that deal was left out."));
+  }
+  return el("section", { class: "panel raised" },
+    el("div", { class: "row spread" }, el("div", {}, el("span", { class: "eyebrow", text: "Self-check" }), el("h2", { text: "Memory self-check" })), el("div", { class: "row" }, TAG_COUNT(), pill(plural(n, "closed deal"), "c-info"))),
+    el("p", { class: "small muted", text: "When each closed deal is left out, did the recommendations from the others point the right way? Plain counts, no model." }),
+    n > 0 && n < 10 ? el("div", { class: "note c-warn" }, el("div", { class: "t", text: `Only ${plural(n, "closed deal")}: a tiny sample` }), "These counts are real but easy to move. Read them as a sanity check, not a score.") : null,
+    el("div", { class: "stack-s" }, lines),
+    q.method ? el("p", { class: "small" }, el("b", { text: "Method: " }), q.method) : null,
+    q.caveat ? el("p", { class: "small muted" }, el("b", { text: "Caveat: " }), q.caveat) : null);
+}
+function bankSection(status) {
+  const h = status?.hindsight;
+  if (h && h.backend === "local") return el("section", { class: "panel" },
+    el("h2", { text: "Memory backend" }),
+    el("div", { class: "stack-s small" },
+      el("div", {}, el("span", { class: "muted", text: "Backend: " }), el("b", { text: LOCAL_MEMORY_TITLE })),
+      el("p", { class: "muted", text: `${LOCAL_MEMORY_EXPLAIN} SQLite is the system of record and the only copy: there is no Hindsight bank to sync to.` })));
+  return el("section", { class: "panel" },
+    el("h2", { text: "Hindsight bank info" }),
+    h ? el("div", { class: "stack-s small" },
+      el("div", {}, el("span", { class: "muted", text: "Connection: " }), `${h.healthy ? "reachable" : "unreachable"} · ${h.cloud ? "Hindsight Cloud" : "local"}`),
+      el("div", {}, el("span", { class: "muted", text: "Extraction mode: " }), h.mode || "unknown", h.mode && h.mode !== "chunks" ? " (the app expects \"chunks\")" : ""),
+      el("div", {}, el("span", { class: "muted", text: "Deals bank: " }), el("span", { class: "mono", text: h.bank || "n/a" })),
+      el("div", {}, el("span", { class: "muted", text: "Lessons bank: " }), el("span", { class: "mono", text: h.lessons_bank || "n/a" })),
+      el("p", { class: "muted", text: "The deals bank holds one summary per closed deal and the notes of open deals. The lessons bank holds the lessons learned from outcomes. SQLite stays the system of record; Hindsight holds a searchable copy." }))
+      : el("p", { class: "small muted", text: "Status isn't available." }));
+}
+
+async function memoryView(view) {
+  const [journal, lessons, stats, history, playbook, status, quality] = await Promise.allSettled([
+    api("/v1/memory/journal"), api("/v1/memory/lessons"), api("/v1/memory/play-stats"), api("/v1/memory/history"), api("/v1/memory/playbook"), loadStatus(true),
+    api("/v1/memory/quality"),
+  ]);
+  const all = [journal, lessons, stats, history, playbook];
+  if (all.every((r) => r.status === "rejected")) throw all[0].reason;
+  const st = status.status === "fulfilled" ? status.value : currentStatus;
+  const pending = Math.max(st?.lessons?.pending || 0, lessons.status === "fulfilled" ? (lessons.value.counts?.pending || 0) : 0);
+  const banner = pending ? el("div", { class: "note c-warn", role: "status" },
+    el("div", { class: "t", text: "Memory is consolidating" }),
+    `${plural(pending, "lesson")} ${pending === 1 ? "is" : "are"} still being processed by ${memName(st)}. Briefs and the playbook may not reflect them yet.`,
+    el("div", { class: "row" }, (() => { const b = el("button", { class: "btn small", type: "button", text: "Sync now" }); b.addEventListener("click", async () => { await runSync(b); route(); }); return b; })())) : null;
+  const sec = (r, title, fn) => (r.status === "fulfilled" ? fn(r.value) : sectionError(title, r.reason));
+  view.replaceChildren(
+    el("div", { class: "page-head" }, el("div", { class: "page-head-copy" },
+      el("span", { class: "eyebrow", text: workspace?.name || "Memory" }),
+      el("h1", { class: "page-title", text: "Memory" }),
+      el("p", { class: "page-subtitle", text: "What this workspace has learned from the deals that closed, and how that shapes the next brief." }))),
+    banner ? el("div", { style: "margin-bottom:16px" }, banner) : null,
+    el("div", { class: "grid2" },
+      el("div", { class: "stack" },
+        sec(quality, "Memory self-check", qualitySection),
+        sec(journal, "What memory learned", journalSection),
+        sec(lessons, "Lessons", lessonsSection),
+        sec(stats, "Plays: what worked", playStatsSection),
+        sec(history, "Closed deals in memory", historySection)),
+      el("div", { class: "stack" },
+        sec(playbook, "Playbook", (pb) => playbookSection(pb, st)),
+        bankSection(st))));
+}
+
+/* ---------- start ---------- */
+loadWorkspace().finally(() => { route(); });
+</script>
+</body>
+</html>

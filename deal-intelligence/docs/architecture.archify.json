@@ -1,0 +1,234 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "Deal Intelligence",
+    "quality_profile": "showcase",
+    "output": "architecture.html"
+  },
+  "components": [
+    {
+      "id": "browser",
+      "type": "frontend",
+      "label": "Browser",
+      "sublabel": "frontend/app.html",
+      "pos": [
+        40,
+        40
+      ],
+      "size": [
+        200,
+        64
+      ]
+    },
+    {
+      "id": "api",
+      "type": "backend",
+      "label": "FastAPI",
+      "sublabel": "/v1 API",
+      "pos": [
+        500,
+        40
+      ],
+      "size": [
+        170,
+        64
+      ]
+    },
+    {
+      "id": "providers",
+      "type": "external",
+      "label": "Model Providers",
+      "sublabel": "Gemini · Anthropic · Groq",
+      "pos": [
+        1100,
+        40
+      ],
+      "size": [
+        200,
+        64
+      ]
+    },
+    {
+      "id": "retrieval",
+      "type": "backend",
+      "label": "Retrieval",
+      "sublabel": "recall + SQLite validate",
+      "pos": [
+        500,
+        260
+      ],
+      "size": [
+        170,
+        64
+      ]
+    },
+    {
+      "id": "ranking",
+      "type": "backend",
+      "label": "Gate + Ranking",
+      "sublabel": "shared problem keys → plays",
+      "pos": [
+        1100,
+        260
+      ],
+      "size": [
+        200,
+        64
+      ]
+    },
+    {
+      "id": "hindsight_answers",
+      "type": "database",
+      "label": "Hindsight",
+      "sublabel": "deals + interactions (chunks)",
+      "pos": [
+        40,
+        470
+      ],
+      "size": [
+        200,
+        64
+      ]
+    },
+    {
+      "id": "sqlite",
+      "type": "database",
+      "label": "SQLite",
+      "sublabel": "system of record",
+      "pos": [
+        820,
+        470
+      ],
+      "size": [
+        170,
+        64
+      ]
+    },
+    {
+      "id": "hindsight_lessons",
+      "type": "database",
+      "label": "Hindsight",
+      "sublabel": "outcome lessons (concise)",
+      "pos": [
+        1100,
+        470
+      ],
+      "size": [
+        200,
+        64
+      ]
+    }
+  ],
+  "boundaries": [
+    {
+      "kind": "region",
+      "label": "Workspace (per company): own SQLite db + own pair of Hindsight banks",
+      "wraps": [
+        "hindsight_answers",
+        "sqlite",
+        "hindsight_lessons"
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "id": "browser-api",
+      "from": "browser",
+      "to": "api",
+      "label": "HTTPS /v1",
+      "variant": "emphasis"
+    },
+    {
+      "id": "api-providers",
+      "from": "api",
+      "to": "providers",
+      "label": "read deal · write brief"
+    },
+    {
+      "id": "api-retrieval",
+      "from": "api",
+      "to": "retrieval",
+      "label": "similar deals for an open deal",
+      "labelDy": 24
+    },
+    {
+      "id": "retrieval-hindsight-answers",
+      "from": "retrieval",
+      "to": "hindsight_answers",
+      "label": "recall by deal situation"
+    },
+    {
+      "id": "retrieval-sqlite-validate",
+      "from": "retrieval",
+      "to": "sqlite",
+      "label": "drop deleted / self deals",
+      "variant": "dashed"
+    },
+    {
+      "id": "retrieval-ranking",
+      "from": "retrieval",
+      "to": "ranking",
+      "label": "gated similar deals",
+      "labelDy": -31
+    },
+    {
+      "id": "ranking-sqlite-signals",
+      "from": "ranking",
+      "to": "sqlite",
+      "label": "plays used, outcomes",
+      "variant": "dashed"
+    },
+    {
+      "id": "ranking-api",
+      "from": "ranking",
+      "to": "api",
+      "label": "plays + counted warnings"
+    },
+    {
+      "id": "sqlite-lessons-sync",
+      "from": "sqlite",
+      "to": "hindsight_lessons",
+      "label": "sync lessons",
+      "variant": "dashed",
+      "labelAt": [
+        1070,
+        560
+      ]
+    },
+    {
+      "id": "lessons-ranking",
+      "from": "hindsight_lessons",
+      "to": "ranking",
+      "label": "tiebreak only — never cited in a brief",
+      "fromSide": "top",
+      "toSide": "bottom"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "Runtime flow",
+      "items": [
+        "Read the deal: flags from SQLite, signals from one model call",
+        "Recall similar closed deals, validate every hit, apply the structural gate",
+        "Counts and warnings come from the gated deals; the model only phrases them and cites INT-/D- ids"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "Memory",
+      "items": [
+        "Interactions bank: verbatim, no Hindsight LLM, so a recorded outcome changes the next brief at once",
+        "Lessons bank: consolidates outcomes asynchronously; or run the same two banks locally on SQLite FTS5 with no Hindsight account"
+      ]
+    },
+    {
+      "dot": "violet",
+      "title": "Isolation",
+      "items": [
+        "Every workspace owns its own SQLite db and pair of Hindsight banks; each demo gets fresh banks"
+      ]
+    }
+  ]
+}

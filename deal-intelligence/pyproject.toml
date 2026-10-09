@@ -1,0 +1,10 @@
+[project]
+name = "deal-intelligence"
+version = "0.1.0"
+description = "Deal Intelligence: pre-call deal briefs grounded in a deal's own history and in what Hindsight remembers from past won and lost deals."
+requires-python = ">=3.11"
+
+[tool.pytest.ini_options]
+pythonpath = ["src", "."]
+testpaths = ["tests"]
+addopts = "-q"

@@ -1,0 +1,12 @@
+.venv/
+__pycache__/
+.pytest_cache/
+.env
+runs/
+data/deals.db
+data/deals.db-*
+data/uploads/
+data/model_choice.json
+data/workspaces.json
+data/workspaces/
+*.visual-check.*
