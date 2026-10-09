@@ -1,0 +1,352 @@
+{
+  "agents": [
+    {
+      "id": "deals",
+      "number": 1,
+      "name": "Deal Intelligence",
+      "status": "live",
+      "url": "http://127.0.0.1:8002",
+      "health_path": "/health",
+      "open_path": "/#/deals",
+      "description": "Pre-call briefs for an open sales deal, grounded in its own emails and notes and in what memory recalls from past won and lost deals.",
+      "examples": [
+        "How many deals do I have?",
+        "Why did we lose similar deals last quarter?",
+        "What should I do next on a stalled deal?"
+      ],
+      "keywords": [
+        "deal",
+        "deals",
+        "pipeline",
+        "account executive",
+        "prospect",
+        "objection",
+        "competitor",
+        "forecast",
+        "champion",
+        "economic buyer",
+        "stakeholder",
+        "renewal",
+        "call prep",
+        "win loss",
+        "crm",
+        "sales",
+        "quote",
+        "negotiation",
+        "stalled",
+        "close",
+        "lose",
+        "lost deal",
+        "lost deals",
+        "won deal",
+        "won deals",
+        "lost the deal"
+      ],
+      "start_hint": "run.ps1 in the deal-intelligence folder (port 8002)",
+      "token_env": "HUB_DEAL_SERVICE_TOKEN"
+    },
+    {
+      "id": "rfp",
+      "number": 3,
+      "name": "RFP Memory Assistant",
+      "status": "live",
+      "url": "http://127.0.0.1:8001",
+      "health_path": "/health",
+      "open_path": "/#/projects",
+      "description": "Drafts grounded answers to RFPs and security questionnaires from official company facts and approved past answers, learning from won and lost proposals.",
+      "examples": [
+        "Answer this security questionnaire",
+        "Draft our response to a new RFP",
+        "Which past answers won us bids?"
+      ],
+      "keywords": [
+        "rfp",
+        "rfi",
+        "rfq",
+        "tender",
+        "proposal",
+        "proposals",
+        "questionnaire",
+        "security questionnaire",
+        "bid",
+        "bids",
+        "procurement",
+        "response",
+        "requirements",
+        "past answers",
+        "answer library",
+        "compliance matrix"
+      ],
+      "start_hint": "run.ps1 in the rfp-v0 folder (port 8001)",
+      "token_env": "HUB_RFP_SERVICE_TOKEN"
+    },
+    {
+      "id": "outbound",
+      "number": 2,
+      "name": "Outbound Prospecting",
+      "status": "planned",
+      "description": "Outreach that improves with every reply or silence.",
+      "examples": [
+        "Write a first email to a new prospect"
+      ],
+      "keywords": [
+        "outbound",
+        "cold email",
+        "outreach",
+        "prospecting",
+        "sequence",
+        "sdr",
+        "reply rate",
+        "first email"
+      ]
+    },
+    {
+      "id": "content",
+      "number": 4,
+      "name": "Content Strategy",
+      "status": "planned",
+      "description": "A content plan based on what has performed before.",
+      "examples": [
+        "What should we publish next month?"
+      ],
+      "keywords": [
+        "content",
+        "blog",
+        "editorial",
+        "content plan",
+        "topics",
+        "publish",
+        "brand voice",
+        "articles"
+      ]
+    },
+    {
+      "id": "seo",
+      "number": 5,
+      "name": "SEO and Citation",
+      "status": "planned",
+      "description": "Learns from earlier SEO changes and their ranking effects.",
+      "examples": [
+        "Why did our rankings drop?"
+      ],
+      "keywords": [
+        "seo",
+        "ranking",
+        "rankings",
+        "backlinks",
+        "keywords",
+        "search traffic",
+        "citations",
+        "serp"
+      ]
+    },
+    {
+      "id": "social",
+      "number": 6,
+      "name": "Social Media Engagement",
+      "status": "planned",
+      "description": "Learns what the audience responds to.",
+      "examples": [
+        "What should we post this week?"
+      ],
+      "keywords": [
+        "social",
+        "linkedin",
+        "twitter",
+        "instagram",
+        "post",
+        "posts",
+        "followers",
+        "engagement",
+        "reach"
+      ]
+    },
+    {
+      "id": "incident",
+      "number": 7,
+      "name": "Incident Response",
+      "status": "planned",
+      "description": "Uses past incidents and postmortems to help resolve a production incident.",
+      "examples": [
+        "Checkout is returning 500s, have we seen this before?"
+      ],
+      "keywords": [
+        "incident",
+        "outage",
+        "production down",
+        "500 errors",
+        "postmortem",
+        "root cause",
+        "on call",
+        "pager",
+        "downtime",
+        "sev1"
+      ]
+    },
+    {
+      "id": "review",
+      "number": 8,
+      "name": "Code Review",
+      "status": "planned",
+      "description": "Reviews pull requests against the team's real conventions.",
+      "examples": [
+        "Review this pull request"
+      ],
+      "keywords": [
+        "pull request",
+        "code review",
+        "pr",
+        "diff",
+        "lint",
+        "coding standards",
+        "review comments",
+        "merge"
+      ]
+    },
+    {
+      "id": "devops",
+      "number": 9,
+      "name": "DevOps Pipeline",
+      "status": "planned",
+      "description": "Learns from deployment history and failures.",
+      "examples": [
+        "Why did the deploy fail?"
+      ],
+      "keywords": [
+        "deploy",
+        "deployment",
+        "pipeline failed",
+        "build failed",
+        "ci",
+        "cd",
+        "rollback",
+        "release",
+        "infrastructure",
+        "terraform"
+      ]
+    },
+    {
+      "id": "support",
+      "number": 10,
+      "name": "Customer Support",
+      "status": "planned",
+      "description": "A persistent history for every customer.",
+      "examples": [
+        "Has this customer had this issue before?"
+      ],
+      "keywords": [
+        "support",
+        "ticket",
+        "tickets",
+        "customer issue",
+        "helpdesk",
+        "escalation",
+        "bug report",
+        "refund"
+      ]
+    },
+    {
+      "id": "payables",
+      "number": 11,
+      "name": "Accounts Payable",
+      "status": "planned",
+      "description": "Learns each vendor's invoice behavior.",
+      "examples": [
+        "Does this invoice match the purchase order?"
+      ],
+      "keywords": [
+        "invoice",
+        "invoices",
+        "vendor",
+        "purchase order",
+        "payment terms",
+        "accounts payable",
+        "three way match",
+        "approval workflow"
+      ]
+    },
+    {
+      "id": "compliance",
+      "number": 12,
+      "name": "Compliance and Audit",
+      "status": "planned",
+      "description": "Keeps an organization's audit memory across audits.",
+      "examples": [
+        "What findings are still open from last audit?"
+      ],
+      "keywords": [
+        "audit",
+        "compliance",
+        "soc 2",
+        "iso 27001",
+        "gdpr",
+        "controls",
+        "findings",
+        "remediation",
+        "regulation",
+        "policy"
+      ]
+    },
+    {
+      "id": "feedback",
+      "number": 13,
+      "name": "User Feedback Synthesizer",
+      "status": "planned",
+      "description": "Connects feedback to the product changes it led to.",
+      "examples": [
+        "What are users complaining about most?"
+      ],
+      "keywords": [
+        "feedback",
+        "reviews",
+        "survey",
+        "nps",
+        "feature request",
+        "feature requests",
+        "complaints",
+        "themes",
+        "user research"
+      ]
+    },
+    {
+      "id": "intel",
+      "number": 14,
+      "name": "Competitive Intelligence",
+      "status": "planned",
+      "description": "A long-term timeline of what competitors do.",
+      "examples": [
+        "What has Brightline changed recently?"
+      ],
+      "keywords": [
+        "competitor pricing",
+        "competitive",
+        "competitor news",
+        "market intelligence",
+        "pricing changes",
+        "launches",
+        "hiring"
+      ]
+    },
+    {
+      "id": "meeting",
+      "number": 15,
+      "name": "Meeting Prep",
+      "status": "planned",
+      "description": "Turns a contact's history into a briefing before a meeting.",
+      "examples": [
+        "Prep me for my 3pm with Dana"
+      ],
+      "keywords": [
+        "meeting",
+        "meetings",
+        "agenda",
+        "prep me",
+        "calendar",
+        "follow up",
+        "follow-ups",
+        "talking points",
+        "briefing"
+      ]
+    }
+  ]
+}

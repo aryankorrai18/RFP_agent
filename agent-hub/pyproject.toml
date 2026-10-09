@@ -1,0 +1,10 @@
+[project]
+name = "agent-hub"
+version = "0.1.0"
+description = "One front door for the agents: a launcher and a chat that routes a question to the right agent."
+requires-python = ">=3.11"
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
+addopts = "-q"

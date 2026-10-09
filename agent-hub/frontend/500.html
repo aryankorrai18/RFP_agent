@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Something went wrong | Agent Hub</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+<script>
+  // the theme the person chose in the hub (same key as the chat and admin pages); otherwise the system's
+  try { const t = localStorage.getItem("hub-theme"); if (t === "light" || t === "dark") document.documentElement.dataset.theme = t; } catch (e) { /* storage blocked: follow the system */ }
+</script>
+<style>
+:root {
+  color-scheme: light;
+  --canvas: #f5f5f7; --surface: #ffffff; --fill: #e8e8ed; --fill-hover: #dcdce1;
+  --ink: #1d1d1f; --muted: #6e6e73; --ink-3: #86868b; --hair: rgba(0, 0, 0, .08);
+  --accent: #0071e3; --accent-hover: #0077ed; --link: #0066cc; --accent-soft: rgba(0, 113, 227, .09);
+  --nav: rgba(245, 245, 247, .8); --warn: #b64400; --glow: rgba(182, 68, 0, .08);
+  --font: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Inter", "Segoe UI Variable Text", "Segoe UI", system-ui, sans-serif;
+  --mono: ui-monospace, "SF Mono", "Cascadia Mono", Consolas, monospace;
+  --mark: radial-gradient(circle at 32% 32%, #fff 0 3.4px, transparent 4px), radial-gradient(circle at 68% 68%, rgba(255, 255, 255, .62) 0 3.4px, transparent 4px), linear-gradient(150deg, #3d9cff, #0060cc);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark; --canvas: #000000; --surface: #1c1c1e; --fill: #2c2c2e; --fill-hover: #3a3a3c;
+    --ink: #f5f5f7; --muted: #a1a1a6; --ink-3: #86868b; --hair: rgba(255, 255, 255, .09);
+    --link: #2997ff; --accent-soft: rgba(41, 151, 255, .15); --nav: rgba(16, 16, 17, .72); --warn: #ff9f0a; --glow: rgba(255, 159, 10, .10);
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark; --canvas: #000000; --surface: #1c1c1e; --fill: #2c2c2e; --fill-hover: #3a3a3c;
+  --ink: #f5f5f7; --muted: #a1a1a6; --ink-3: #86868b; --hair: rgba(255, 255, 255, .09);
+  --link: #2997ff; --accent-soft: rgba(41, 151, 255, .15); --nav: rgba(16, 16, 17, .72); --warn: #ff9f0a; --glow: rgba(255, 159, 10, .10);
+}
+* { box-sizing: border-box; }
+html, body { min-height: 100%; }
+body { margin: 0; min-height: 100vh; min-height: 100dvh; display: flex; flex-direction: column; background: var(--canvas); color: var(--ink); font: 15px/1.5 var(--font); letter-spacing: -.003em; -webkit-font-smoothing: antialiased; overflow-wrap: anywhere; }
+:focus-visible { outline: 2px solid var(--link); outline-offset: 3px; }
+a { color: var(--link); text-decoration: none; }
+.nav { position: sticky; top: 0; background: var(--nav); backdrop-filter: saturate(180%) blur(20px); -webkit-backdrop-filter: saturate(180%) blur(20px); border-bottom: 1px solid var(--hair); }
+.nav-in { max-width: 1160px; margin: 0 auto; padding: 0 24px; height: 52px; display: flex; align-items: center; }
+.brand { display: inline-flex; align-items: center; gap: 9px; font-weight: 700; font-size: 16px; letter-spacing: -.02em; color: var(--ink); border-radius: 8px; }
+.mark { width: 26px; height: 26px; border-radius: 8px; background: var(--mark); flex: none; }
+main { flex: 1; display: grid; place-items: center; padding: 48px 24px 72px; background: radial-gradient(ellipse 60% 45% at 50% 38%, var(--glow), transparent 70%); }
+.box { max-width: 720px; display: grid; gap: 20px; justify-items: start; }
+.code { font-size: 13px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--warn); }
+h1 { margin: 0; font-size: clamp(38px, 6vw, 64px); line-height: 1.04; letter-spacing: -.035em; font-weight: 700; }
+h1 .g { color: var(--ink-3); }
+p { margin: 0; font-size: 18px; color: var(--muted); max-width: 560px; letter-spacing: -.012em; }
+code { font: 500 .88em var(--mono); color: var(--ink); background: var(--fill); padding: 1px 7px; border-radius: 6px; }
+.row { display: flex; align-items: center; gap: 14px 26px; flex-wrap: wrap; margin-top: 8px; }
+button.btn { border: 0; font: inherit; cursor: pointer; }
+.btn { display: inline-flex; align-items: center; justify-content: center; min-height: 46px; padding: 10px 24px; border-radius: 980px; background: var(--accent); color: #fff; font-size: 16px; font-weight: 500; transition: background .15s, transform .15s; }
+.btn:hover { background: var(--accent-hover); }
+.btn:active { transform: scale(.98); }
+.lnk { font-size: 16px; font-weight: 500; display: inline-flex; align-items: center; gap: 4px; border-radius: 6px; }
+.lnk:hover { text-decoration: underline; }
+footer { text-align: center; font-size: 12px; color: var(--muted); padding: 0 16px 24px; }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+</head>
+<body>
+<header class="nav"><div class="nav-in"><a class="brand" href="/"><span class="mark" aria-hidden="true"></span>Agent Hub</a></div></header>
+<main>
+  <div class="box">
+    <span class="code">Error 500</span>
+    <h1>Something went wrong on our side. <span class="g">It's not you.</span></h1>
+    <p>The hub hit an unexpected error while loading this page. Trying again usually works; if it keeps happening, the hub's log has the details.</p>
+    <div class="row">
+      <button class="btn" id="retry" type="button">Try again</button>
+      <a class="lnk" href="/">Back to the chat <span aria-hidden="true">&rsaquo;</span></a>
+    </div>
+  </div>
+</main>
+<footer>Agent Hub runs on this machine.</footer>
+<script>
+  document.getElementById("retry").addEventListener("click", () => location.reload());
+</script>
+</body>
+</html>
